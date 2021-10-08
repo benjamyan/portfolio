@@ -1,0 +1,27 @@
+{
+  "name": "coast-cms-management",
+  "author": "Benjamin Yannella",
+  "license": "ISC",
+  "version": "0.0.1",
+  "description": "Storyblok management via API",
+  "scripts": {},
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "minimist": "^1.2.5",
+    "replace-in-file": "^6.2.0",
+    "storyblok": "^3.10.0",
+    "storyblok-js-client": "^4.1.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjamyan/coast-cms.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benjamyan/coast-cms/issues"
+  },
+  "homepage": "https://github.com/benjamyan/coast-cms#readme"
+}
