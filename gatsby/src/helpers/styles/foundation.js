@@ -61,7 +61,7 @@ const foundation = `
         padding: 0;
         margin: 0;
         font-kerning: normal;
-        text-align: left;
+        // text-align: left;
         // line-height: 1;
     }
     center * {

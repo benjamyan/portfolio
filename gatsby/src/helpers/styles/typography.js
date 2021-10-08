@@ -10,8 +10,8 @@ const textH1 = `
 `;
 const textH2 = `
     ${ fonts.archivo }
-    font-size: 82px;
-    font-size: calc(62px + (92 - 62) * ((99vw - 300px) / (1900 - 300)));
+    font-size: 100px;
+    font-size: calc(82px + (112 - 82) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: 1px;
 `;
 const textH3 = `

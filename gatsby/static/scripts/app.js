@@ -15,7 +15,7 @@ async function main() {
 		buildNewModule(
 			'justifyText',
 			DOM.justifyText,
-			(data)=> new JustifyText(data)
+			(data)=> new MagicText(data)
 		);
 	}
 	return true;
@@ -23,7 +23,7 @@ async function main() {
 
 main()
 	.then(
-		()=> console.log("Loaded")
+		()=> console.log("DOM Loaded")
 	).catch(
 		err=> console.log(err)
 	);

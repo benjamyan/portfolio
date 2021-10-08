@@ -36,6 +36,9 @@ const bigHeadline = `
 		margin-top: calc(-2.5vw + 1.25px);
 		margin-left: -0.5vw;
 		z-index: -1;
+		&:not(:last-of-type) {
+			padding: 0 0 6vh 0;
+		}
 	}
 `;
 const floatingBox = `

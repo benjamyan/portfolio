@@ -50,7 +50,8 @@ const RT = {
 	},
 	mark(item) {
 		const MARKS = item.marks;
-		const markStyle = ['display: inline-block;'];
+		// const markStyle = ['display: inline-block;'];
+		const markStyle = ['display: inline;'];
 		let isLink = false;
 		console.log(item)
 		for (let i = 0; i < MARKS.length; i++) {

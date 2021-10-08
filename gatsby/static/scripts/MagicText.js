@@ -1,4 +1,4 @@
-const JustifyTextNode = function(ref) {
+const MagicText = function(ref) {
 	const self = this;
 	self.nodes = {};
 	this.destory = function() {
