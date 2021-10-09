@@ -33,7 +33,7 @@ export default function HTML(props) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" /> 
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono@wght:400;700&display=swap" rel="stylesheet" />
         {/* <link
           rel="icon"
           type="image/png"
@@ -69,7 +69,7 @@ export default function HTML(props) {
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}
-        <script type="text/javascript" src="../scripts/JustifyText.js" />
+        <script type="text/javascript" src="../scripts/MagicText.js" />
         <script type="text/javascript" src="../scripts/app.js" />
       </body>
     </html>

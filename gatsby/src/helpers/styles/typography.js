@@ -27,9 +27,11 @@ const textH4 = `
 `;
 const textH5 = `
     ${fonts.robotoMono}
-    font-size: 13px;
-    font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1900 - 300)));
-    letter-spacing: 4.21px;
+    font-size: 11px;
+    font-size: calc(10px + (13 - 10) * ((100vw - 300px) / (1900 - 300)));
+    letter-spacing: 2.5px;
+    font-weight: 700;
+    text-transform: uppercase;
 `;
 const textP = `
     ${fonts.robotoMono}
@@ -37,6 +39,7 @@ const textP = `
     font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (1900 - 300)));
     letter-spacing: 0.0025rem;
     font-style: normal;
+    font-weight: 400;
     line-height: 1.5;
 `;
 const textLi = `

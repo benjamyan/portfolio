@@ -53,7 +53,6 @@ const RT = {
 		// const markStyle = ['display: inline-block;'];
 		const markStyle = ['display: inline;'];
 		let isLink = false;
-		console.log(item)
 		for (let i = 0; i < MARKS.length; i++) {
 			switch (MARKS[i].type) {
 				case 'underline':
@@ -78,6 +77,8 @@ const RT = {
 					break;
 				case 'link':
 					isLink = MARKS[i].attrs;
+					break;
+				case 'styled':
 					break;
 				default:
 					console.log("No case")

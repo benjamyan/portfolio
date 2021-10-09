@@ -61,12 +61,9 @@ module.exports = {
     {
       resolve: 'gatsby-source-storyblok',
       options: {
-        oauthToken: '589I1062d8xSDWcvK4layAtt-97212-iCXyB_HRe-e8gYx9mB9E',
-        accessToken: '4Y80bAwp8vMrx8KBD46Epgtt',
-        spaceId: 128980,
-        // spaceId: process.env.GATSBY_SPACE_ID,
-        // oauthToken: process.env.GATSBY_OAUTH_TOKEN,
-        // accessTokenTest: process.env.GATSBY_PREVIEW_TOKEN,
+        spaceId: process.env.GATSBY_SPACE_ID,
+        oauthToken: process.env.GATSBY_OAUTH_TOKEN,
+        accessTokenTest: process.env.GATSBY_PREVIEW_TOKEN,
         version: 'draft',
         resolveRelations: [
           'global_reference.reference'

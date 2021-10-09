@@ -1,5 +1,3 @@
-// import { createGlobalStyle } from 'styled-components';
-
 const foundation = `
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -54,6 +52,9 @@ const foundation = `
         -moz-box-sizing: inherit;
         box-sizing: inherit;
     }
+    body {
+        overflow-x: hidden;
+    }
     h1, h2, h3, h4, h5, h6, p, em, body, html, textarea, 
     input, submit, select, button, strong, span, b, sup, sub, 
     figcaption, blockquote {
@@ -61,8 +62,6 @@ const foundation = `
         padding: 0;
         margin: 0;
         font-kerning: normal;
-        // text-align: left;
-        // line-height: 1;
     }
     center * {
         text-align: center;
