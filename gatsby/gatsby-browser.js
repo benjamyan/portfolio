@@ -2,8 +2,8 @@
 //
 // exports.disableCorePrefetching = () => true;
 exports.onClientEntry = () => {
-    console.log("We've started!");
+    // console.log("We've started!");
 }
 exports.onInitialClientRender = () => {
-    console.log("ReactDOM.render has executed")
+    // console.log("ReactDOM.render has executed");
 }

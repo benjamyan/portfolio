@@ -1,23 +1,22 @@
 const MODULES = {};
 const DOM = {
-	justifyText: document.querySelectorAll('*[data-justifytext]')
+	magicText: document.querySelectorAll('*[data-magictext]')
 };
 
-const buildNewModule = (name='', nodes={}, module=Function)=> {
-	MODULES[name] = [];
-	Array.from(nodes).forEach(
-		node=> MODULES[name].push( module(node) )
+const buildNewModule = (node='', module=Function)=> {
+	MODULES[node] = [];
+	Array.from(DOM[node]).forEach(
+		node=> MODULES[node].push( module(node) )
 	);
 };
 
 async function main() {
-	if (DOM.justifyText) {
+	if (DOM.magicText) {
 		buildNewModule(
-			'justifyText',
-			DOM.justifyText,
+			'magicText',
 			(data)=> new MagicText(data)
 		);
-	}
+	};
 	return true;
 };
 

@@ -55,20 +55,20 @@ export default function useStoryblok(originalStory, location) {
 				);
 			});
 		}
-	}
+	};
 
-	useEffect(() => {
+	useEffect( ()=> {
 		if (location.search.includes('_storyblok')) {
 			const sbScriptId = 'storyblokBridge';
 			const existingScript = document.getElementById(sbScriptId);
 			if (!existingScript) {
-			const script = document.createElement('script');
-			script.id = sbScriptId;
-			script.src = '//app.storyblok.com/f/storyblok-v2-latest.js';
-			document.body.appendChild(script);
-			script.onload = () => initEventListeners();
+				const script = document.createElement('script');
+				script.id = sbScriptId;
+				script.src = '//app.storyblok.com/f/storyblok-v2-latest.js';
+				document.body.appendChild(script);
+				script.onload = ()=> initEventListeners();
 			} else {
-			initEventListeners();
+				initEventListeners();
 			}
 		}
 	}, [location]);

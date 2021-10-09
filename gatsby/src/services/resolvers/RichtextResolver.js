@@ -20,23 +20,24 @@ const rtMarks = {
 	_default: ''
 };
 const rtClasses = {
-	'text-left': 'text-align: left;',
-	'text-center': 'text-align: center;',
-	'text-right': 'text-align:right; float:right;'
+	'text-left': `text-align:left;`,
+	'text-center': `text-align:center;`,
+	'text-right': `text-align:right;`,
+	'text-justify': `text-align:justify; text-align-last:justify;`
 };
 */
 const RichtextStyleClasses = function({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
-			return `text-align: center;`;
+			return `text-align:center;`;
 		case 'text-right':
-			return `text-align:right;`;
+			return `text-alignright;`;
 		case 'text-justify':
-			return `text-align: justify;`;
+			return `text-align:justify; text-align-last:justify;`;
 		case 'text-left':
-			return `text-align: left;`;
+			return `text-align:left;`;
 		default:
-			return `text-align: left;`;
+			return `text-align:left;`;
 	}
 };
 const RT = {
@@ -87,7 +88,6 @@ const RT = {
 		}
 		const Mark = styled.span`${markStyle.join('')}`;
 		if (isLink !== false) {
-			console.log(isLink)
 			return (
 				<Mark key={utils.getRandomString()}>
 					<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>

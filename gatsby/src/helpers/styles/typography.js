@@ -11,18 +11,18 @@ const textH1 = `
 const textH2 = `
     ${ fonts.archivo }
     font-size: 100px;
-    font-size: calc(82px + (112 - 82) * ((99vw - 300px) / (1900 - 300)));
+    font-size: calc(86px + (120 - 86) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: 1px;
 `;
 const textH3 = `
     ${fonts.archivo}
     font-size: 38px;
-    font-size: calc(32px + (46 - 32) * ((100vw - 300px) / (1900 - 300)));
+    font-size: calc(42px + (60 - 42) * ((100vw - 300px) / (1900 - 300)));
 `;
 const textH4 = `
     ${fonts.robotoMono}
-    font-size: 20px;
-    font-size: calc(18px + (22 - 18) * ((100vw - 300px) / (1900 - 300)));
+    font-size: 26px;
+    font-size: calc(21px + (28 - 21) * ((100vw - 300px) / (1900 - 300)));
     font-style: normal;
 `;
 const textH5 = `

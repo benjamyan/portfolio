@@ -1,4 +1,5 @@
-console.log('*\n* gatsby-config\n*');
+// console.log('*\n* gatsby-config\n*');
+//
 // require('dotenv').config();
 // const storyblokOauthToken = (' ' + process.env.GATSBY_OAUTH_TOKEN).slice(1);
 // const GatsbySourceStoryblok = {
@@ -21,7 +22,7 @@ console.log('*\n* gatsby-config\n*');
 //     ancestry: 'ancestry'
 //   }
 // };
-
+//
 module.exports = {
   siteMetadata: {
     title: `SurfAir Gatsby StoryBlok`,
@@ -45,6 +46,13 @@ module.exports = {
           `_static/*/*.js`
         ]
       }
+    }, 
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'static',
+        path: `${__dirname}/static/scripts/`,
+      }
     }, // !! everything below was added default by storyblok
     {
       resolve: `gatsby-plugin-manifest`,
@@ -55,19 +63,19 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `static/images/icon.png`,
-      },
+        icon: `static/media/icon.png`
+      }
     },
     {
       resolve: 'gatsby-source-storyblok',
       options: {
-        spaceId: process.env.GATSBY_SPACE_ID,
-        oauthToken: process.env.GATSBY_OAUTH_TOKEN,
-        accessTokenTest: process.env.GATSBY_PREVIEW_TOKEN,
-        version: 'draft',
-        resolveRelations: [
-          'global_reference.reference'
-        ]
+        spaceId: 128980,
+        oauthToken: '589I1062d8xSDWcvK4layAtt-97212-iCXyB_HRe-e8gYx9mB9E',
+        accessToken: '4Y80bAwp8vMrx8KBD46Epgtt',
+        // spaceId: process.env.SPACE_ID,
+        // oauthToken: process.env.OAUTH_TOKEN,
+        // accessToken: process.env.PREVIEW_TOKEN,
+        version: 'draft'
       }
     }
   ]

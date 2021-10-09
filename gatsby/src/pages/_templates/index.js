@@ -2,12 +2,14 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { 
 	ComponentResolver, 
-	useStoryblokBridge
+	useStoryblokBridge,
+	utils
 } from '../..';
 import Meta from '../_static/Meta';
 import Styles from '../_static/Styles';
 
 const StoryblokWrapper = ({ node }) => {
+	console.log('StoryblokWrapper');
 	const DATA = node.pageContext ? node.pageContext.data : false;
 	const story = useStoryblokBridge(DATA || null, node.location);
 	const components = [];
@@ -28,9 +30,13 @@ const StoryblokWrapper = ({ node }) => {
 				resolveContent(item);
 			};
 		}
+		return (
+			<>{components}</>
+		);
 	};
+	console.log(node)
 	return (
-		<>{components}</>
+		<utils.DevDialogue message={ 'No content found' } />
 	);
 };
 const ProductionWrapper = ({ node }) => {
@@ -39,25 +45,20 @@ const ProductionWrapper = ({ node }) => {
 };
 
 export default function DOMContentWrapper({ ...props }) {
-	console.log('DOMContentWrapper')
 	const { pageContext } = props;
 	return (
 		<>
-			{
-				!!pageContext && pageContext.data
-				&& (
-					<Meta
-						site={pageContext.data.full_slug}
-						meta={pageContext.data.content.meta}
-					/>
-				)
-			}
 			<Styles />
-			{
-				//props.location.search.indexOf('_storyblok') > -1 ?
-					<StoryblokWrapper node={ props } />
-				//	:
-				//	<ProductionWrapper node={ props } />
+			{ !!pageContext && pageContext.data &&
+				<Meta
+					site={pageContext.data.full_slug}
+					meta={pageContext.data.content.meta}
+				/>
+			}
+			{ props.location.search.indexOf('_storyblok') > -1 ?
+				<StoryblokWrapper node={ props } />
+				:
+				<ProductionWrapper node={ props } />
 			}
 		</>
 	);

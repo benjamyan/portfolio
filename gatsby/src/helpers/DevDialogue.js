@@ -8,7 +8,7 @@ export default function DevDialogue({ message, type='', ...props }) {
 		</center>
 	};
 	return (
-		<center style={{ background: 'rgb(255,220,220)', padding: '50px' }}>
+		<center style={{ padding: '50px' }}>
 			<p style={{ color: '#000' }}>{ message }</p>
 		</center>
 	);
