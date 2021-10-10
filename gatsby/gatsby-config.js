@@ -1,4 +1,4 @@
-// console.log('*\n* gatsby-config\n*');
+console.log('*\n* gatsby-config\n*');
 //
 // require('dotenv').config();
 // const storyblokOauthToken = (' ' + process.env.GATSBY_OAUTH_TOKEN).slice(1);
@@ -69,11 +69,11 @@ module.exports = {
     {
       resolve: 'gatsby-source-storyblok',
       options: {
-        spaceId: 128980,
-        oauthToken: '589I1062d8xSDWcvK4layAtt-97212-iCXyB_HRe-e8gYx9mB9E',
+        // spaceId: 128980,
+        // oauthToken: '589I1062d8xSDWcvK4layAtt-97212-iCXyB_HRe-e8gYx9mB9E',
         accessToken: '4Y80bAwp8vMrx8KBD46Epgtt',
-        // spaceId: process.env.SPACE_ID,
-        // oauthToken: process.env.OAUTH_TOKEN,
+        spaceId: process.env.SPACE_ID,
+        oauthToken: process.env.OAUTH_TOKEN,
         // accessToken: process.env.PREVIEW_TOKEN,
         version: 'draft'
       }
