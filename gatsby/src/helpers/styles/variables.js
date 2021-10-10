@@ -73,6 +73,10 @@ const fonts = {
   openSans: `
     font-family: "Open Sans", Arial, sans-serif;
     font-style: normal;
+  `,
+  playfair: `
+    font-family: "Playfair Display", serif;
+    font-style: normal;
   `
 };
 

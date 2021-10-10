@@ -31,11 +31,11 @@ const RichtextStyleClasses = function({ attrs }) {
 		case 'text-center':
 			return `text-align:center;`;
 		case 'text-right':
-			return `text-alignright;`;
-		case 'text-justify':
-			return `text-align:justify; text-align-last:justify;`;
+			return `text-align:right;`;
 		case 'text-left':
 			return `text-align:left;`;
+		case 'text-justify':
+			return `text-align:justify; text-align-last:justify;`;
 		default:
 			return `text-align:left;`;
 	}
@@ -100,7 +100,7 @@ const RT = {
 	},
 };
 
-const getTextContent = (item) => {
+const processSoloTextContent = (item) => {
 	let contentStr = item.text,
 		parentStyle = [];
 	if (item.type) {
@@ -117,50 +117,72 @@ const getTextContent = (item) => {
 		contentStr, parentStyle
 	}
 };
+const getRichtextContent = (content)=> {
+	const parentStyles = [];
+	const resolvedContent = content.map(
+		(item) => {
+			const {
+				contentStr,
+				parentStyle = false
+			} = processSoloTextContent(item);
+			if (parentStyle) {
+				parentStyles.push(parentStyle);
+			};
+			return (
+				<React.Fragment key={utils.getRandomString()}>
+					{contentStr}
+				</React.Fragment>
+			);
+		}
+	);
+	return {
+		parentStyles,
+		resolvedContent
+	}
+};
 const getElementTagname = ({ type, attrs }) => {
 	switch (type) {
-		case ('heading'): 
+		case ('heading'):
 			return `h${attrs.level}`;
 		default: return 'p';
 	};
 };
 
 function Tempname1({ content, type, ...props }) {
-  try {
-		if (type === 'blok') {
+	try {
+		switch (type) {
+			case 'horizontal_rule': 
+				return (
+					<hr></hr>
+				);
+			case 'blok':
+				return (
+					<ComponentResolver componentProps={props.attrs.body} />
+				);
+			default:
+				console.log('default');
+		};
+		const {
+			parentStyles = [],
+			resolvedContent = []
+		} = getRichtextContent(content);
+		if (parentStyles.length > 0) {
+			const tagName = getElementTagname({ type, ...props });
+			const StyledTag = styled(tagName)`
+				${ parentStyles }
+			`;
 			return (
-				<ComponentResolver 
-					componentProps={props.attrs.body} 
-					key={utils.getRandomString()} 
-				/>
-			)
-		} else if (type === 'horizontal_rule') {
-			return <hr></hr>;
-		} else {
-			const FoundTag = getElementTagname({ type, ...props });
-			let StyledFoundTag = styled(FoundTag)``;
-			const textContent = content.map(
-				(item) => {
-					const { 
-						contentStr, 
-						parentStyle 
-					} = getTextContent(item);
-					StyledFoundTag = styled(StyledFoundTag)`
-						${parentStyle}
-					`;
-					return (
-						<React.Fragment key={utils.getRandomString()}>
-							{contentStr}
-						</React.Fragment>
-					)
-				}
-			);
-			return (
-				<StyledFoundTag key={utils.getRandomString()}>
-					{textContent}
-				</StyledFoundTag>
+				<StyledTag key={utils.getRandomString()}>
+					{ resolvedContent }
+				</StyledTag>
 			);
 		};
+		const TextTag = getElementTagname({ type, ...props });
+		return (
+			<TextTag key={utils.getRandomString()}>
+				{resolvedContent}
+			</TextTag>
+		);
 	} catch (err) {
 		console.log(err)
 		return <></>;

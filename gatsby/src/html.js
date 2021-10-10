@@ -34,6 +34,7 @@ export default function HTML(props) {
         <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono@wght:400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,600;1,900&display=swap" rel="stylesheet" />
         {/* <link
           rel="icon"
           type="image/png"
