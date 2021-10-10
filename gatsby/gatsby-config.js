@@ -1,27 +1,6 @@
 console.log('*\n* gatsby-config\n*');
 //
 // require('dotenv').config();
-// const storyblokOauthToken = (' ' + process.env.GATSBY_OAUTH_TOKEN).slice(1);
-// const GatsbySourceStoryblok = {
-//   oauthToken: storyblokOauthToken,
-//   accessToken: '4Y80bAwp8vMrx8KBD46Epgtt',
-//   // spaceId: process.env.GATSBY_SPACE_ID,
-//   // oauthToken: process.env.GATSBY_OAUTH_TOKEN,
-//   // accessTokenTest: process.env.GATSBY_PREVIEW_TOKEN,
-//   version: 'draft',
-//   resolveRelations: [
-//     'global_reference.reference'
-//   ],
-//   gatsbyApi: {
-//     _headers: {
-//       post: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json; charset=UTF-8'
-//       }
-//     },
-//     ancestry: 'ancestry'
-//   }
-// };
 //
 module.exports = {
   siteMetadata: {
