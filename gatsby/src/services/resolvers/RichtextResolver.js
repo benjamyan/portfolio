@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
 
+/*
 const rtTagnames = {
 	'heading': function(attrs) {
 		return `h${attrs.level}`
@@ -32,6 +33,7 @@ const rtClasses = {
 		text-align-last: justify;
 	`
 };
+*/
 
 const RichtextStyleClasses = function({ attrs }) {
 	switch (attrs.class) {

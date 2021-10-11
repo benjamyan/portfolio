@@ -25,7 +25,7 @@ const HeaderWrapper = styled.header`
 					margin: 35px 0 0;
 				}
 				p {
-					font-size: 16px;
+					font-size: 15px;
 					font-weight: 600;
 					letter-spacing: 2px;
 					color: white;

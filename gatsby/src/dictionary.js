@@ -25,6 +25,7 @@ import VideoMedia from './components/media/VideoMedia';
 import MediaContent from './components/content/MediaContent';
 import TextContent from './components/content/TextContent';
 import StandardButton from './components/button/StandardButton';
+import IconButton from './components/button/IconButton';
 
 const globals = {
 	global_components: ComponentResolver,
@@ -48,6 +49,7 @@ const atomicComponents = {
 	atomic_content_media_content: MediaContent,
 	atomic_content_text_content: TextContent,
 	atomic_button_basic_button: StandardButton,
+	atomic_button_icon_button: IconButton,
 	misc_single_image_media: ImageMedia,
 	misc_single_video_url: VideoMedia
 };

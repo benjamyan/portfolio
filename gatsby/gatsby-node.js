@@ -26,6 +26,19 @@ exports.onCreateDevServer = ({ app }) => {
     app.use(
         express.json({type: '*/*'})
     );
+    app.post('/publish', function (req, res) {
+        /*
+        Publishes all or specified pages
+        *
+        Request body: 
+        *
+        Response body: Array of strings/objects
+        */
+        console.log(req.body);
+        res.send(
+            `200 - /publish`
+        );
+    });
 };
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
@@ -56,23 +69,27 @@ exports.createPages = async function({ actions, graphql }) {
     return newData.forEach(
         node=> {
             const TEMPLATE = function() {
-                const DEFAULT_PATH = `./src/pages/_templates/StandardLayout.js`;
-                switch (node.field_component) {
-                    default: {
-                        return DEFAULT_PATH;
-                    };
+                switch (node.field_component) { 
+                    case 'templates_standard_layout':
+                        return `./src/pages/_templates/StandardLayout.js`;
+                    case 'templates_project_layout':
+                        return `./src/pages/_templates/ProjectLayout.js`;
+                    default: 
+                        return false;
                 };
             }();
-            return createPage({
-                path: node.full_slug,
-                component: path.resolve(TEMPLATE),
-                context: {
-                    data: node,
-                    location: {
-                        search: /*ENV === 'development' && */'_storyblok'
+            if (TEMPLATE) {
+                return createPage({
+                    path: node.full_slug,
+                    component: path.resolve(TEMPLATE),
+                    context: {
+                        data: node,
+                        location: {
+                            search: /*ENV === 'development' && */'_storyblok'
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     );
 };

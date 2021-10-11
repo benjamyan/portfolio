@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { utils } from '../..';
+import { utils, settingsResolver } from '../..';
 import { StandardContent, StandardBackground } from '../';
 
 const GriddedContentSection = styled.section`
@@ -13,6 +13,7 @@ const GriddedContentSection = styled.section`
 	justify-content: center;
 	resize: horizontal;
 	align-content: baseline;
+	${ (props)=> props.settings }
 	* {
 		display: flex;
 		flex-direction: column;
@@ -23,55 +24,70 @@ const GriddedContentSection = styled.section`
 `;
 const GridContainer = styled.div`
     position: relative;
-    width: ${ (props) => 100 / props.contentLength }%;
-	height: 100%;
-	min-height: 500px;
+    width: ${ ({contentLength}) => (100 / contentLength) }%;
+    height: 100%;
+    min-height: 500px;
     padding: 5rem;
+	${ ({contentAlign})=> (
+		(contentAlign === 'top' && `
+			> * {
+				margin-bottom: auto;
+			}
+		`) || 
+		(contentAlign === 'bottom' && `
+			> * {
+				margin-top: auto;
+			}
+		`)
+	)}
+    ${ ({settings}) => (settings) }
 `;
 
-const GridContent = ({ content, totalContentsLength }) => {
-	// If we need to re-implement content settings, settings can be pulled from content
+const GridContent = ({ content, contentLength, contentAlign }) => {
 	return (
-		<GridContainer contentLength={totalContentsLength}>
-			<center>
-				{ content.content?.length > 0
-					&& <StandardContent content={content.content} />
+		<GridContainer 
+			contentLength={ contentLength }
+			contentAlign={ contentAlign }
+			settings={settingsResolver(content.settings)}>
+				<center>
+					{ content.content?.length > 0
+						&& <StandardContent content={content.content} />
+					}
+				</center>
+				{ content.background?.length > 0
+					&& <StandardBackground background={content.background[0]} />
 				}
-			</center>
-			{ content.background?.length > 0
-				&& <StandardBackground background={content.background[0]} />
-			}
 		</GridContainer>
 	);
 };
 const GridColumnsWithContent = ({ columns }) => {
-  return (
-    <>
-      { columns.map(
-		  (content) => <GridContent
-			  content={content}
-			  key={utils.getRandomString()}
-			  totalContentsLength={columns.length}
-		  />
-		)
-      }
-    </>
-  );
+	return (
+		<>
+			{ columns.map(
+				(content) => (
+					<GridContent
+						content={content}
+						key={utils.getRandomString()}
+						contentLength={ columns.length }
+						contentAlign={ content.alignment }
+					/>
+				)
+			)}
+		</>
+	);
 };
 
-export default function MultiColumnContentSection({ columns }) {
+export default function MultiColumnContentSection({ columns, settings }) {
 	return (
-		<GriddedContentSection>
-			<GridColumnsWithContent
-				columns={columns}
-			/>
+		<GriddedContentSection settings={ settingsResolver(settings) }>
+			<GridColumnsWithContent columns={columns} />
 		</GriddedContentSection>
 	);
-}
+};
 
 MultiColumnContentSection.propTypes = {
   columns: PropTypes.array.isRequired,
-  settings: PropTypes.object,
+  settings: PropTypes.string,
 };
 GridColumnsWithContent.propTypes = {
   columns: PropTypes.array,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import StandardBackground from './StandardBackground';
 import { contentBlockCardView } from './blockStyles';
 import {
-	ComponentResolver, utils
+	ComponentResolver, settingsResolver, utils
 } from '../..';
 
 const StyledColumnWrapper = styled.div`
@@ -13,9 +13,20 @@ const StyledColumnWrapper = styled.div`
 		padding: 0;
 		display: flex;
 		flex-wrap: wrap;
-		${ props => props.keyname = 'catalog' && `
+		${ props => props.keyname === 'catalog' && `
 			padding: 100px 25px 25px;
 		`}
+		${ props=> props.keyname === '' && props.colLen > 1 && `
+			// if no keyname and there is more than 1 column
+			// this will add padding and allows flex items to flow in row
+			//
+			padding: 0 25px;
+			> div {
+				flex: 1;
+				padding: 15px;
+			}
+		`}
+		${ props=> props.settings }
 	}
 `;
 const SingleColumn = styled.div`
@@ -28,9 +39,21 @@ const SingleColumn = styled.div`
 		* {
 			padding: 0;
 		}
-		${props => props.keyname = 'catalog' && `
+		${props => props.keyname === 'catalog' && `
 			${ contentBlockCardView }
 		`}
+		${ ({ contentAlign }) => (
+			(contentAlign === 'top' && `
+				> * {
+					margin-bottom: auto;
+				}
+			`) ||
+			(contentAlign === 'bottom' && `
+				> * {
+					margin-top: auto;
+				}
+			`)
+	)}
 	}
 `;
 /*
@@ -104,32 +127,40 @@ function getContainerContent(columns, keyname) {
 	const ColumnContent = ({ ...item })=> {
 		if (item.content) {
 			return item.content.map(
-				(contentItem)=> <ComponentResolver
-					componentProps={contentItem}
-					key={utils.getRandomString()}
-				/>
+				(contentItem)=> (
+					<ComponentResolver
+						componentProps={contentItem}
+						key={utils.getRandomString()}
+					/>
+				)
 			);
 		};
 		return <></>;
 	};
 	return columns.map(
 		(item) => (
-			<SingleColumn key={utils.getRandomString()} keyname={ keyname }>
-				<ColumnContent { ...item } />
+			<SingleColumn
+				key={utils.getRandomString()}
+				contentAlign={ item.alignment || '' }
+				keyname={keyname}>
+					<ColumnContent {...item} />
 			</SingleColumn>
 		)
 	);
 };
 
-export default function MultiColumnContent({ columns, background, keyname = false }) {
-	console.log(keyname)
+export default function MultiColumnContent({ columns, background, keyname = false, settings }) {
 	return (
-		<StyledColumnWrapper keyname={ keyname } className={ 'multi-column-content' }>
-			{ columns.length > 0 
-				&& getContainerContent(columns, keyname) }
-			{ background.length > 0
-				&& <StandardBackground data={ background[0] } />
-			}
+		<StyledColumnWrapper 
+			keyname={ keyname } 
+			colLen={ columns.length } 
+			settings={ settingsResolver(settings) }
+			className={ 'multi-column-content' }>
+				{ columns.length > 0 
+					&& getContainerContent(columns, keyname) }
+				{ background.length > 0
+					&& <StandardBackground data={ background[0] } />
+				}
 		</StyledColumnWrapper>
 	);
 };

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { settingsResolver } from '../..';
 import { StandardContent, StandardBackground } from '../';
 
 const BasicContentSectionStyle = styled.section`
@@ -12,6 +13,7 @@ const BasicContentSectionStyle = styled.section`
 	> * {
 		height: 100%;
 	}
+	${ (props)=> props.settings }
 `;
 const StyledContent = styled.div`
 	width: 100%;
@@ -20,9 +22,9 @@ const StyledContent = styled.div`
 	margin: 0 auto;
 `;
 
-export default function BasicContentSection({ content, background }) {
+export default function BasicContentSection({ content, background, settings }) {
 	return (
-		<BasicContentSectionStyle>
+		<BasicContentSectionStyle settings={settingsResolver(settings)}>
 			<StyledContent>
 				{ content.length > 0
 					&& <StandardContent content={content}/>
@@ -36,9 +38,9 @@ export default function BasicContentSection({ content, background }) {
 };
 
 BasicContentSection.propTypes = {
-settings: PropTypes.object,
-content: PropTypes.array.isRequired,
-background: PropTypes.array,
+	settings: PropTypes.string,
+	content: PropTypes.array.isRequired,
+	background: PropTypes.array,
 };
 
 export const storyblok = [

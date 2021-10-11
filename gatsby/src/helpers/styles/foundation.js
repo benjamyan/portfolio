@@ -18,6 +18,7 @@ const foundation = `
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        resize: none;
     }
     html {
         -webkit-box-sizing: border-box;
@@ -31,17 +32,11 @@ const foundation = `
         -webkit-font-variant-ligatures: none;
         font-variant-ligatures: none;
     }
+    :-moz-placeholder,
+    :-ms-input-placeholder,
+    ::-moz-placeholder,
     ::-webkit-input-placeholder {
-        color: $black !important;
-    }
-    ::-moz-placeholder {
-        color:  $black !important;
-    }
-    :-ms-input-placeholder {
-        color:  $black !important;
-    }
-    :-moz-placeholder {
-        color:  $black !important;
+        color: var(--main-color);
     }
     * {
         margin: 0;
@@ -62,6 +57,14 @@ const foundation = `
         padding: 0;
         margin: 0;
         font-kerning: normal;
+    }
+    h1, h2, h3, h4 {
+        color: var(--main-color);
+        -webkit-text-stroke-color: var(--main-color);
+        span {
+            color: var(--main-color);
+            -webkit-text-stroke-color: var(--main-color);
+        }
     }
     center * {
         text-align: center;

@@ -14,10 +14,13 @@ const StyledStandardContent = styled.div`
     *:last-child {
         padding-bottom: 0;
     }
-	${ (props)=> props.theme === 'card' && `
+	${ ({ layout }) => layout === 'card' && `
 		${ contentBlockCardView }
 	`}
-	${ (props) => props.settings }
+	${ ({ layout }) => layout === 'row' && `
+		&&{ flex-direction: row; }
+	`}
+	${ ({ settings }) => settings }
 `;
 
 function ResolvedContent({ content }) {
@@ -31,14 +34,14 @@ function ResolvedContent({ content }) {
 export default function StandardContent({ ...contentProps }) {
 	const {
 		content = [], 
-		contentTheme = '',
+    contentLayout = '',
 		contentSettings = ''
 	} = contentProps;
 	if (Array.isArray(content) && content.length > 0) {
 		return (
 			<StyledStandardContent 
 				className={'standard-content'} 
-				theme={ contentTheme }
+        layout={contentLayout }
 				settings={ settingsResolver(contentSettings) }>
 					<ResolvedContent content={ content } />
 			</StyledStandardContent>
@@ -49,7 +52,7 @@ export default function StandardContent({ ...contentProps }) {
 
 StandardContent.propTypes = {
   content: PropTypes.array,
-  contentTheme: PropTypes.string,
+  contentLayout: PropTypes.string,
   contentSettings: PropTypes.string
 };
 

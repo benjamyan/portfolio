@@ -23,14 +23,15 @@ const SETTINGS = {
 	DIS: 	'display',
 	W: 		'width',
 	H: 		'height',
+	MH:		'min-height',
 	T: 		'top',
 	R: 		'right',
 	B: 		'bottom',
 	L: 		'left',
 	M: 		'margin',
 	P: 		'padding',
+	C: 		'color',
 	TA: 	'text-align',
-	C:		'color',
 	TRNS:	'transform'
 };
 const styleLookup = (curr)=> {
@@ -61,13 +62,16 @@ function getCssSettings(setting) {
 
 export default function settingsResolver(componentSettings) {
 	try {
-		if (componentSettings.indexOf(' ') > -1) {
-			const settings = componentSettings.split(' ');
-			return settings.map(
-				setting => getCssSettings(setting)
-			).filter(Boolean);
+		if (!!componentSettings) {
+			if (componentSettings.indexOf(' ') > -1) {
+				const settings = componentSettings.split(' ');
+				return settings.map(
+					setting => getCssSettings(setting)
+				).filter(Boolean);
+			};
+			return getCssSettings(componentSettings)
 		};
-		return getCssSettings(componentSettings)
+		return '';
 	} catch (err) {
 		console.log(err)
 		return '';

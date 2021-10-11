@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { settingsResolver } from '../..';
 import { ImageMedia, VideoMedia } from '../';
 
 const MediaContentStyled = styled.div`
@@ -12,6 +13,7 @@ const MediaContentStyled = styled.div`
         object-fit: cover;
         object-position: center center;
     }
+    ${ ({settings})=> settings }
 `;
 const MediaContentAsset = ({ asset }) => {
 	if (asset.video && asset.video.length > 0) {
@@ -23,11 +25,11 @@ const MediaContentAsset = ({ asset }) => {
 	return <></>
 };
 
-export default function MediaContent({ sbAsset }) {
+export default function MediaContent({ sbAsset, settings }) {
 	try {
 		if (sbAsset.length > 0) {
 			return (
-				<MediaContentStyled className={'media-content'}>
+        <MediaContentStyled settings={ settingsResolver(settings) } className={'media-content'}>
 					<MediaContentAsset asset={sbAsset[0]} />
 				</MediaContentStyled>
 			);
@@ -40,7 +42,8 @@ export default function MediaContent({ sbAsset }) {
 }
 
 MediaContent.propTypes = {
-	sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired
+	sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired,
+  settings: PropTypes.string
 };
 
 export const storyblok = [

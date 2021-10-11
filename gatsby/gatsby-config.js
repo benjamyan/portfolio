@@ -1,4 +1,4 @@
-console.log('*\n* gatsby-config\n*');
+// console.log('*\n* gatsby-config\n*');
 //
 // require('dotenv').config();
 //

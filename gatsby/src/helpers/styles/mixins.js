@@ -1,9 +1,9 @@
 const display = {
   flex: `
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
+        // display: -webkit-box;
+        // display: -moz-box;
+        // display: -ms-flexbox;
+        // display: -webkit-flex;
         display: flex;
     `,
   inline: `
@@ -15,23 +15,20 @@ const display = {
 };
 const flex = {
 	bottom: `
-		${display.flex}
+		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
-		resize: vertical;
 	`,
 	vertical: `
-      ${display.flex}
+      display: flex;
       flex-direction: column;
       justify-content: center;
-      resize: vertical;
     `,
 	horizontal: `
-		${display.flex}
+		display: flex;
 		-webkit-flex-flow: row wrap;
 		flex-flow: row wrap;
 		justify-content: center;
-		resize: horizontal;
 	`,
 };
 const align = {

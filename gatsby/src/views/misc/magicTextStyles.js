@@ -1,18 +1,4 @@
 const defaultTextStyling = `
-	h1 {
-		color: #09b3af;
-		* {
-			color: #09b3af;
-			-webkit-text-stroke-color: #09b3af;
-		}
-	}
-	h2 {
-		color: black;
-		* {
-			color: black;
-			-webkit-text-stroke-color: black;
-		}
-	}
 	p, a, button {
 		color: black;
 		z-index: 1;
@@ -43,7 +29,7 @@ const bigHeadline = `
 `;
 const floatingBox = `
 	&& {
-		min-width: 300px;
+		width: auto;
 		height: 100%;
 		display: block;
 		padding: 4vw 5vw;
@@ -60,6 +46,10 @@ const contentList = `
 	h1, h2, h3, h4, h5, p {
 		color: #000;
 		padding-bottom: 150px;
+		span {
+			color: #000;
+			-webkit-text-stroke-color: #000
+		}
 	}
 `;
 

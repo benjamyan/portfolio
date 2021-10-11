@@ -3,35 +3,38 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { styles } from '../../';
 
-export default function StandardButton({ copy, link, target }) {
-	const StyledStandardButton = styled.div`
-		position: relative;
-		width: 260px;
-		width: -moz-fit-content;
-		width: fit-content;
-		min-width: 200px;
-		height: 40px;
-		border-radius: 7.5px;
-		border: 2px solid #000;
+const StyledStandardButton = styled.div`
+	position: relative;
+	width: 260px;
+	width: -moz-fit-content;
+	width: fit-content;
+	min-width: 200px;
+	height: 40px;
+	border-radius: 7.5px;
+	border: 2px solid #000;
+	vertical-align: top;
+	color: #fff;
+	background-color: transparent;
+	a {
+		${ props=> props.fontFamily }
+		display: inline-block;
+		width: 100%;
+		padding: 0 15px;
+		text-align: center;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 1px;
+		line-height: 35px;
+		color: black;
 		vertical-align: top;
-		color: #fff;
-		background-color: transparent;
-		a {
-			${ styles.fonts.robotoMono }
-			display: inline-block;
-			width: 100%;
-			text-align: center;
-			font-size: 13px;
-			font-weight: 600;
-			letter-spacing: 2.5px;
-			line-height: 35px;
-			vertical-align: top;
-			border: none;
-			cursor: pointer;
-		}
-	`;
+		border: none;
+		cursor: pointer;
+	}
+`;
+
+export default function StandardButton({ copy, link, target }) {
 	return (
-		<StyledStandardButton>
+		<StyledStandardButton fontFamily={ styles.fonts.robotoMono }>
 			<a href={link} target={target}>
 				{ copy }
 			</a>

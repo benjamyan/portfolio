@@ -42,28 +42,48 @@ const ProductionWrapper = ({ node }) => {
 };
 
 export default function DOMContentWrapper({ ...props }) {
-	const { pageContext } = props;
-	return (
-		<>
-			<Styles />
-			{ !!pageContext && pageContext.data &&
-				<Meta
-					site={pageContext.data.full_slug}
-					meta={pageContext.data.content.meta}
-				/>
-			}
-			{ props.location.search.indexOf('_storyblok') > -1 ?
-				<StoryblokWrapper node={ props } />
-				:
-				<ProductionWrapper node={ props } />
-			}
-		</>
-	);
+	try {
+		const pageContent = function() {
+			if (props.pageContext) {
+				const contentProp = props.pageContext.data.content;
+				if (typeof contentProp === 'string') {
+					return JSON.parse(contentProp) || null;
+				}
+				return contentProp;
+			};
+			return false;
+		}();
+		const {
+			location,
+			pageContext = pageContent ? props.pageContext : false,
+			pageSlug = pageContent ? props.pageContext.data.full_slug : false,
+			pageMeta = pageContent ? pageContent.meta : false,
+			pageTheme = pageContent ? pageContent.theme.color : 'default'
+		} = props;
+		return (
+			<>
+				<Styles theme={ pageTheme } />
+				{ !!pageContext && pageContext.data &&
+					<Meta site={ pageSlug } meta={ pageMeta } />
+				}
+				{ location.search.indexOf('_storyblok') > -1 ?
+					<StoryblokWrapper node={ props } />
+					:
+					<ProductionWrapper node={ props } />
+				}
+			</>
+		);
+	} catch (err) {
+		console.log(err);
+		return (
+			<utils.DevDialogue message={ `An error occured during render.` }/>
+		);
+	};
 };
 
 DOMContentWrapper.propTypes = {
 	pageContext: PropTypes.object,
-	location: PropTypes.object,
+	location: PropTypes.object
 };
 StoryblokWrapper.propTypes = {
 	node: PropTypes.object,
