@@ -32,7 +32,8 @@ const SETTINGS = {
 	P: 		'padding',
 	C: 		'color',
 	TA: 	'text-align',
-	TRNS:	'transform'
+	TRNS:	'transform',
+	ZI:		'z-index'
 };
 const styleLookup = (curr)=> {
 	const initialStyle = SETTINGS[curr[0]] || false;

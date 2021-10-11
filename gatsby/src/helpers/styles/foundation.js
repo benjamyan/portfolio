@@ -61,9 +61,15 @@ const foundation = `
     h1, h2, h3, h4 {
         color: var(--main-color);
         -webkit-text-stroke-color: var(--main-color);
+        vertical-align: baseline;
         span {
             color: var(--main-color);
             -webkit-text-stroke-color: var(--main-color);
+            vertical-align: baseline;
+        }
+        span.super {
+            font-size: calc(1em + 0.33em);
+            vertical-align: baseline;
         }
     }
     center * {

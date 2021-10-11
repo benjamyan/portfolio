@@ -9,10 +9,24 @@ const MediaContentStyled = styled.div`
     height: 100%;
     display: block;
     video, img {
+		width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center center;
     }
+    ${ ({overlay})=> ( overlay && `
+		&::before {
+			content: ' ';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			opacity: 0.${ overlay };
+			background-color: var(--main-color);
+		}
+	`)}
     ${ ({settings})=> settings }
 `;
 const MediaContentAsset = ({ asset }) => {
@@ -25,16 +39,19 @@ const MediaContentAsset = ({ asset }) => {
 	return <></>
 };
 
-export default function MediaContent({ sbAsset, settings }) {
+export default function MediaContent({ sbAsset, settings, overlay }) {
 	try {
 		if (sbAsset.length > 0) {
 			return (
-        <MediaContentStyled settings={ settingsResolver(settings) } className={'media-content'}>
-					<MediaContentAsset asset={sbAsset[0]} />
+				<MediaContentStyled 
+					settings={ settingsResolver(settings) }
+					overlay={ overlay }
+					className={'media-content'}>
+						<MediaContentAsset asset={sbAsset[0]} />
 				</MediaContentStyled>
 			);
 		}
-		return <></>
+		return <></>;
 	} catch (err) {
 		console.log(err);
 		return <></>
@@ -43,7 +60,8 @@ export default function MediaContent({ sbAsset, settings }) {
 
 MediaContent.propTypes = {
 	sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired,
-  settings: PropTypes.string
+	settings: PropTypes.string,
+	overlay: PropTypes.string
 };
 
 export const storyblok = [

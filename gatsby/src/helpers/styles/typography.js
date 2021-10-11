@@ -8,13 +8,6 @@ const textH1 = `
     letter-spacing: -5px;
     line-height: 1.35;
     vertical-align: baseline;
-    span {
-        vertical-align: baseline;
-    }
-    span.super {
-        font-size: calc(1em + 0.33em);
-        vertical-align: baseline;
-    }
 `;
 const textH2 = `
     ${ fonts.archivo }
