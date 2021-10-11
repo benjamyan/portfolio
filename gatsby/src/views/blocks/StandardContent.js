@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { styles } from './';
-import { utils, ComponentResolver, settingsResolver } from '../..';
 import PropTypes from 'prop-types';
+import { contentBlockCardView } from './blockStyles';
+import { utils, ComponentResolver, settingsResolver } from '../..';
 
 const StyledStandardContent = styled.div`
     h1, h2, h3, h4, h5 {
@@ -15,7 +15,7 @@ const StyledStandardContent = styled.div`
         padding-bottom: 0;
     }
 	${ (props)=> props.theme === 'card' && `
-		${ styles.contentBlockCardView }
+		${ contentBlockCardView }
 	`}
 	${ (props) => props.settings }
 `;

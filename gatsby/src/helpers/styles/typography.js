@@ -7,6 +7,14 @@ const textH1 = `
     font-size: calc(60px + (190 - 60) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: -5px;
     line-height: 1.35;
+    vertical-align: baseline;
+    span {
+        vertical-align: baseline;
+    }
+    span.super {
+        font-size: calc(1em + 0.33em);
+        vertical-align: baseline;
+    }
 `;
 const textH2 = `
     ${ fonts.archivo }

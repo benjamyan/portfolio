@@ -5,7 +5,8 @@ const path  = require("path");
 const ENV = process.env.NODE_ENV;
 //
 exports.onCreateWebpackConfig = ({ actions, getConfig, plugins })=> {
-    console.log("\n-- onCreateWebpackConfig");
+    // console.log("\n-- onCreateWebpackConfig");
+    /*
     actions.setWebpackConfig({
         node: { 
             fs: 'empty'
@@ -18,6 +19,7 @@ exports.onCreateWebpackConfig = ({ actions, getConfig, plugins })=> {
             }
         }
     });
+    */
 };
 exports.onCreateDevServer = ({ app }) => {
     console.log("\n-- onCreateDevServer");

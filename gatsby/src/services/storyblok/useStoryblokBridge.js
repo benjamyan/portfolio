@@ -27,28 +27,30 @@ export default function useStoryblok(originalStory, location) {
 			const storyblokInstance = new StoryblokBridge(sbConfig);
 			storyblokInstance.on(['input'], (event) => {
 				// User changed the value of a field
-				console.log('useSb input');
+				//
+				// console.log('useSb input');
 				updateLocalStory(event.story);
-				// if (story && event.story._uid === story._uid) {
-				// 	updateLocalStory(event.story);
-				// }
 			});
 			storyblokInstance.on(['change'], (event) => {
 				// The user saves the content
-				console.log('useSb change');
+				//
+				// console.log('useSb change');
 			});
 			storyblokInstance.on(['published'], (event) => {
 				// After the user clicks publish
-				console.log('useSb published')
+				//
+				// console.log('useSb published')
 				return location.reload(true);
 			});
 			storyblokInstance.on(['unpublished'], (event) => {
 				// User clicks unpublish
-				console.log('useSb unpublished');
+				//
+				// console.log('useSb unpublished');
 			});
 			storyblokInstance.on(['enterEditmode'], (event) => {
 				// Editor has been initialized in the editmode
-				console.log('useSb enterEditmode');
+				//
+				// console.log('useSb enterEditmode');
 				sbGet(
 					`cdn/stories/${event.storyId}`, {},
 					(data) => updateLocalStory(data.story),

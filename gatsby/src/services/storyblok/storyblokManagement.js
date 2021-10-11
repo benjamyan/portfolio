@@ -9,7 +9,7 @@ const StoryblokCDN = new StoryblokClient({
   cache: {
     clear: 'auto',
     type: 'memory',
-  },
+  }
 });
 const StoryblokMGMT = new StoryblokClient({
   oauthToken: sbConfig.oauthToken,

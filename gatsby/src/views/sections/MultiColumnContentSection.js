@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { utils } from '../..';
-import { StandardContent, StandardBackground } from '../blocks';
 import PropTypes from 'prop-types';
+import { utils } from '../..';
+import { StandardContent, StandardBackground } from '../';
 
 const GriddedContentSection = styled.section`
     position: relative;

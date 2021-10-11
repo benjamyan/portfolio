@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { ImageMedia, VideoMedia } from '../media';
+import { ImageMedia, VideoMedia } from '../';
 
 const MediaContentStyled = styled.div`
     width: 100%;
@@ -14,22 +14,33 @@ const MediaContentStyled = styled.div`
     }
 `;
 const MediaContentAsset = ({ asset }) => {
-  if (asset.video && asset.video.length > 0) {
-    return <VideoMedia video={asset.video} />;
-  }
-  return <ImageMedia image={asset.image} />;
+	if (asset.video && asset.video.length > 0) {
+		return <VideoMedia video={asset.video} />
+	};
+	if (asset.image && typeof asset.image === 'object') {
+		return <ImageMedia image={asset.image} />
+	};
+	return <></>
 };
 
 export default function MediaContent({ sbAsset }) {
-  return (
-    <MediaContentStyled className={'media-content'}>
-      <MediaContentAsset asset={sbAsset[0]} />
-    </MediaContentStyled>
-  );
+	try {
+		if (sbAsset.length > 0) {
+			return (
+				<MediaContentStyled className={'media-content'}>
+					<MediaContentAsset asset={sbAsset[0]} />
+				</MediaContentStyled>
+			);
+		}
+		return <></>
+	} catch (err) {
+		console.log(err);
+		return <></>
+	}
 }
 
 MediaContent.propTypes = {
-  sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired
+	sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export const storyblok = [

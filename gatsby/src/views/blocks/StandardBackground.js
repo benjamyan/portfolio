@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { settingsResolver } from '../..';
-import { MediaContent } from '../../components/content';
 import PropTypes from 'prop-types';
+import { settingsResolver } from '../..';
+import { MediaContent } from '../../components';
 
 const StandardBackgroundStyle = styled.div`
     position: absolute;

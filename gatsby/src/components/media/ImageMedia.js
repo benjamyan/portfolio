@@ -4,24 +4,24 @@ import { Error } from '../..';
 import PropTypes from 'prop-types';
 
 const ImageMediaStyle = styled.img.attrs(
-  (props) => ({
-    src: props.src,
-    alt: props.alt,
-  }),
-)`
-    max-width: 100%;
+		(props) => ({
+			src: props.src,
+			alt: props.alt,
+		}),
+	)`
+		max-width: 100%;
 `;
 
 export default function ImageMedia({ image }) {
-  if (image.filename) {
-    return (
-      <ImageMediaStyle
-        src={image.filename}
-        alt={image.alt}
-      />
-    );
-  }
-  return <Error message="Image file not present." />;
+	if (image.filename.length > 0) {
+		return (
+			<ImageMediaStyle
+				src={image.filename}
+				alt={image.alt}
+			/>
+		);
+	};
+	return <Error message="Image file not present." />
 }
 
 ImageMedia.propTypes = {

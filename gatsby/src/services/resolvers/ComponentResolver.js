@@ -1,9 +1,9 @@
 /*
 The purpose of this file is to act a central junction for building our DOM objects recursively
 */
-
 import React from 'react';
 import PropTypes from 'prop-types';
+// import styled from 'styled-components';
 import SbEditable from 'storyblok-react';
 import { dictionary, utils } from '../..';
 
@@ -13,11 +13,8 @@ const filterSingleComponent = (componentProps)=> {
 		editable = true
 	} = componentProps;
 	const Component = dictionary[component];
-	const isEditable = componentProps.hasOwnProperty('editable') && !editable;
-	if (component.indexOf('global') > -1 || isEditable) {
-		return (
-			<Component { ...componentProps } />
-		);
+	if (component.indexOf('global') > -1 || !editable) {
+		return <Component {...componentProps} />
 	};
 	return (
 		<SbEditable content={ componentProps }>
@@ -26,38 +23,42 @@ const filterSingleComponent = (componentProps)=> {
 	);
 };
 
-function ResolvedContent({ ...componentProps }) {
-	const { component } = componentProps;
-	if (!!component && utils.doesComponentExist(component)) {
-		return filterSingleComponent(componentProps)
-	};
-	return (
-		<utils.DevDialogue
-			message={'The component has not been created yet.'}
-			{...componentProps}
-		/>
+const resolveGlobalComponent = ({ reference })=> {
+	return reference.map(
+		({slug, content})=> {
+			const GlobalComponent = dictionary[slug];
+			return (
+				<GlobalComponent { ...content } key={ utils.getRandomString() } />
+			)
+		}
 	);
-}
+};
 
-export default function Content({ componentProps }) {
+export default function ComponentResolver({ componentProps = [] }) {
 	try {
-		if (Array.isArray(componentProps)) {
-			return componentProps.map(
-				(component)=> <ResolvedContent {...component} key={ utils.getRandomString() } />
-			);
+		const { component } = componentProps;
+		if (!!component && utils.doesComponentExist(component)) {
+			if (component === 'global_components') {
+				return resolveGlobalComponent(componentProps);
+			};
+			return filterSingleComponent(componentProps);
 		};
 		return (
-			<ResolvedContent { ...componentProps } />
+			<utils.DevDialogue
+				message={`This component has not been created yet.\n${componentProps}`}
+				{...componentProps}
+			/>
 		);
 	} catch (err) {
 		console.log(err);
 		return <></>;
 	};
-}
+};
 
-Content.propTypes = {
+ComponentResolver.propTypes = {
 	componentProps: PropTypes.oneOfType([
 		PropTypes.object,
+		PropTypes.string,
 		PropTypes.array
 	])
 };

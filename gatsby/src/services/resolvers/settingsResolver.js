@@ -30,7 +30,8 @@ const SETTINGS = {
 	M: 		'margin',
 	P: 		'padding',
 	TA: 	'text-align',
-	C:		'color'
+	C:		'color',
+	TRNS:	'transform'
 };
 const styleLookup = (curr)=> {
 	const initialStyle = SETTINGS[curr[0]] || false;

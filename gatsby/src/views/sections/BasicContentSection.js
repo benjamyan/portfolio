@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { StandardContent, StandardBackground } from '../blocks';
+import { StandardContent, StandardBackground } from '../';
 
 const BasicContentSectionStyle = styled.section`
 	position: relative;

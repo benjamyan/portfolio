@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { 
-	StandardBackground , styles
-} from '.';
+import StandardBackground from './StandardBackground';
+import { contentBlockCardView } from './blockStyles';
 import {
 	ComponentResolver, utils
 } from '../..';
@@ -30,7 +29,7 @@ const SingleColumn = styled.div`
 			padding: 0;
 		}
 		${props => props.keyname = 'catalog' && `
-			${ styles.contentBlockCardView }
+			${ contentBlockCardView }
 		`}
 	}
 `;

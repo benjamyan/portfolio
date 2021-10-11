@@ -1,17 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
-//
-// instead of all the nonsense below, use this as a central object, and do a key name lookup
-/*
+
 const rtTagnames = {
-	'heading': `h${attrs.level}`,
+	'heading': function(attrs) {
+		return `h${attrs.level}`
+	},
 	'horizontal_rule': 'hr',
+	'bullet_list': 'ul',
+	'list_item': 'li',
 	_default: 'p'
 };
 const rtTypes = {
 	'hard_break': <br />,
-	_default: item.text
+	_default: function(item) {
+		return item.text
+	}
 };
 const rtMarks = {
 	'underline': 'text-decoration: underline;',
@@ -20,12 +24,15 @@ const rtMarks = {
 	_default: ''
 };
 const rtClasses = {
-	'text-left': `text-align:left;`,
-	'text-center': `text-align:center;`,
-	'text-right': `text-align:right;`,
-	'text-justify': `text-align:justify; text-align-last:justify;`
+	'text-left': `text-align: left;`,
+	'text-center': `text-align: center;`,
+	'text-right': `text-align: right;`,
+	'text-justify': `
+		text-align: justify; 
+		text-align-last: justify;
+	`
 };
-*/
+
 const RichtextStyleClasses = function({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
@@ -43,7 +50,11 @@ const RichtextStyleClasses = function({ attrs }) {
 const RT = {
 	type(item) {
 		switch (item.type) {
-			case ('hard_break'):
+			case 'list_item':
+				return (
+					<li>{RichtextResolver(item) }</li>
+				);
+			case 'hard_break':
 				return <br />;
 			default:
 				return item.text;
@@ -53,7 +64,8 @@ const RT = {
 		const MARKS = item.marks;
 		// const markStyle = ['display: inline-block;'];
 		const markStyle = ['display: inline;'];
-		let isLink = false;
+		let isLink = false,
+			isCode = false;
 		for (let i = 0; i < MARKS.length; i++) {
 			switch (MARKS[i].type) {
 				case 'underline':
@@ -81,23 +93,34 @@ const RT = {
 					break;
 				case 'styled':
 					break;
+				case 'code':
+					isCode = true;
+					break;
 				default:
 					console.log("No case")
 					console.log(MARKS[i])
 			};
-		}
+		};
 		const Mark = styled.span`${markStyle.join('')}`;
-		if (isLink !== false) {
+		if (!!isLink) {
 			return (
 				<Mark key={utils.getRandomString()}>
 					<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>
 				</Mark>
 			);
 		};
+		if (isCode) {
+			return (
+				<Mark 
+					key={utils.getRandomString()}
+					dangerouslySetInnerHTML={{ __html: item.text }}
+				/>
+			);
+		};
 		return (
 			<Mark key={utils.getRandomString()}>{ item.text }</Mark>
 		);
-	},
+	}
 };
 
 const processSoloTextContent = (item) => {
@@ -117,7 +140,21 @@ const processSoloTextContent = (item) => {
 		contentStr, parentStyle
 	}
 };
-const getRichtextContent = (content)=> {
+const getElementTagname = ({ type, attrs }) => {
+	let tagname = '';
+	switch (type) {
+		case ('heading'):
+			tagname = `h${attrs.level}`;
+			break;
+		case 'bullet_list':
+			tagname = `ul`;
+			break;
+		default: 
+			tagname = 'p';
+	};
+	return tagname;
+};
+const resolvedRichtextContent = (content)=> {
 	const parentStyles = [];
 	const resolvedContent = content.map(
 		(item) => {
@@ -138,17 +175,10 @@ const getRichtextContent = (content)=> {
 	return {
 		parentStyles,
 		resolvedContent
-	}
-};
-const getElementTagname = ({ type, attrs }) => {
-	switch (type) {
-		case ('heading'):
-			return `h${attrs.level}`;
-		default: return 'p';
 	};
 };
 
-function Tempname1({ content, type, ...props }) {
+function ResolvedContentBlock({ content, type, ...props }) {
 	try {
 		switch (type) {
 			case 'horizontal_rule': 
@@ -156,19 +186,24 @@ function Tempname1({ content, type, ...props }) {
 					<hr></hr>
 				);
 			case 'blok':
-				return (
-					<ComponentResolver componentProps={props.attrs.body} />
+				return props.attrs.body.map(
+					(component)=> (
+						<ComponentResolver 
+							componentProps={component} 
+							key={ utils.getRandomString() }
+						/>
+					)
 				);
 			default:
-				console.log('default');
+				break;
 		};
 		const {
 			parentStyles = [],
 			resolvedContent = []
-		} = getRichtextContent(content);
+		} = resolvedRichtextContent(content);
+		const TextTag = getElementTagname({ type, ...props });
 		if (parentStyles.length > 0) {
-			const tagName = getElementTagname({ type, ...props });
-			const StyledTag = styled(tagName)`
+			const StyledTag = styled(TextTag)`
 				${ parentStyles }
 			`;
 			return (
@@ -177,7 +212,6 @@ function Tempname1({ content, type, ...props }) {
 				</StyledTag>
 			);
 		};
-		const TextTag = getElementTagname({ type, ...props });
 		return (
 			<TextTag key={utils.getRandomString()}>
 				{resolvedContent}
@@ -188,10 +222,9 @@ function Tempname1({ content, type, ...props }) {
 		return <></>;
 	}
 };
-
-export default function RichtextResolver({ content }) {
+function RichtextResolver({ content }) {
 	try {
-		const isValidContent = function() {
+		const isValidContent = function () {
 			if (content === undefined) {
 				return false
 			};
@@ -203,10 +236,10 @@ export default function RichtextResolver({ content }) {
 		if (isValidContent) {
 			if (Array.isArray(content)) {
 				return content.map(
-					(item) => <Tempname1 key={utils.getRandomString()} {...item} />
+					(item) => <ResolvedContentBlock key={utils.getRandomString()} {...item} />
 				);
 			};
-			return <Tempname1 {...content} />
+			return <ResolvedContentBlock {...content} />
 		};
 		return <></>;
 	} catch (err) {
@@ -214,3 +247,4 @@ export default function RichtextResolver({ content }) {
 		return <></>;
 	};
 };
+export default RichtextResolver;

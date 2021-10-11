@@ -32,7 +32,7 @@ module.exports = {
         name: 'static',
         path: `${__dirname}/static/scripts/`,
       }
-    }, // !! everything below was added default by storyblok
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -52,7 +52,10 @@ module.exports = {
         oauthToken: process.env.OAUTH_TOKEN,
         accessToken: '4Y80bAwp8vMrx8KBD46Epgtt',
         // accessToken: process.env.PREVIEW_TOKEN,
-        version: 'draft'
+        version: 'draft',
+        resolveRelations: [
+          'global_components.reference'
+        ]
       }
     }
   ]

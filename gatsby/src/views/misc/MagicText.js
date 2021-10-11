@@ -16,7 +16,7 @@ const MagicContainer = styled.div`
 		pointer-events: none;
 		* {
 			pointer-events: all;
-			vertical-align: middle;
+			// vertical-align: middle;
 		}
 		${ defaultTextStyling }
 		${ (props) => props.magicType === 'floating' && `
