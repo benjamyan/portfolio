@@ -133,7 +133,7 @@ exports.createPages = async function({ actions, graphql }) {
                     path: node.full_slug,
                     component: path.resolve(TEMPLATE),
                     context: {
-                        data: pageContextData,
+                        data: node,
                         location: {
                             search: ENV === 'development' ? '_storyblok' : 'benyan.dev'
                         }

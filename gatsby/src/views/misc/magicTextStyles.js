@@ -1,4 +1,4 @@
-const defaultTextStyling = `
+const defaultContainerStyling = `
 	p, a, button {
 		color: black;
 		z-index: 1;
@@ -52,10 +52,16 @@ const contentList = `
 		}
 	}
 `;
+const defaultItem = `
+	position: relative;
+	width: 100%;
+	height: 100%;
+`;
 
 export {
-	defaultTextStyling,
+	defaultContainerStyling,
 	floatingBox,
 	bigHeadline,
-	contentList
+	contentList,
+	defaultItem
 }

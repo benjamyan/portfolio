@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
 
@@ -35,14 +36,11 @@ const rtClasses = {
 };
 */
 
-// const StyledTextTag = styled((props) => !!props.tagName ? props.tagName : 'p')`
-const StyledTextTag = styled(
-		({ tag, children, ...props })=> React.createElement(tag, props, children)
-	)`
-		${({ tagStyles = '' }) => tagStyles}
-	`;
+const StyledTextTag = styled.div`
+	${(props) => props.styles}
+`;
 const MarkedText = styled.span`
-	${({ tagStyles = '' }) => tagStyles}
+	${(props) => props.styles}
 `;
 const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
@@ -117,45 +115,23 @@ const RT = {
 					<a href={isLink.href} target={isLink.target}>{item.text}</a>
 				);
 			} else if (isCode) {
-				return JSON.stringify(item.text);
+				return item.text;
 			};
-			return item.text;
+			return <>{item.text}</>;
 		}();
+		const textOptions = {};
+		if (isCode) {
+			textOptions.dangerouslySetInnerHTML = { __html: textContent };
+		} else {
+			textOptions.children = [<>{textContent}</>];
+		};
 		return (
 			<MarkedText
-				tagStyles={ markStyle.join('') }
-				key={utils.getRandomString()}
-				dangerouslySetInnerHTML={ isCode ? { __html: item.text } : null }>
-					{ !isCode ? textContent: false }
-			</MarkedText>
+				{...textOptions}
+				styles={ markStyle.join('') }
+				key={ utils.getRandomString() }
+			/>
 		);
-		/*
-		if (!!isLink) {
-			return (
-				<MarkedText 
-					tagStyles={ markStyle.join('') }
-					key={utils.getRandomString()}>
-						<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>
-				</MarkedText>
-			);
-		};
-		if (isCode) {
-			return (
-				<MarkedText
-					tagStyles={markStyle.join('')}
-					key={utils.getRandomString()}
-					dangerouslySetInnerHTML={{ __html: item.text }}
-				/>
-			);
-		};
-		return (
-			<MarkedText 
-				tagStyles={markStyle.join('')}
-				key={utils.getRandomString()}>
-					{item.text}
-			</MarkedText>
-		);
-		*/
 	}
 };
 
@@ -202,9 +178,7 @@ const resolvedRichtextContent = (content)=> {
 				parentStyles.push(parentStyle);
 			};
 			return (
-				<React.Fragment key={utils.getRandomString()}>
-					{contentStr}
-				</React.Fragment>
+				<Fragment key={utils.getRandomString()}>{contentStr}</Fragment>
 			);
 		}
 	);
@@ -238,10 +212,8 @@ function ResolvedContentBlock({ content, type, ...props }) {
 				} = resolvedRichtextContent(content);
 				return (
 					<StyledTextTag
-						tag={elementTextTag}
-						tagName={elementTextTag}
-						tagStyles={parentStyles}
-						key={utils.getRandomString()}>
+						as={elementTextTag}
+						styles={parentStyles}>
 							{resolvedContent}
 					</StyledTextTag>
 				);
@@ -277,3 +249,8 @@ function RichtextResolver({ content }) {
 	};
 };
 export default RichtextResolver;
+
+ResolvedContentBlock.propTypes = {
+	content: PropTypes.array,
+	type: PropTypes.string
+};
