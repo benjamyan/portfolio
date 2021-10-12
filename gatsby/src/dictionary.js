@@ -1,6 +1,7 @@
 /*
 A catalog of all components & templates with their corresponding key names in storyblok
 */
+import React from 'react';
 //
 // Globals
 import ComponentResolver from './services/resolvers/ComponentResolver';
@@ -24,6 +25,7 @@ import ImageMedia from './components/media/ImageMedia';
 import VideoMedia from './components/media/VideoMedia';
 import MediaContent from './components/content/MediaContent';
 import TextContent from './components/content/TextContent';
+import RawContent from './components/content/RawContent';
 import StandardButton from './components/button/StandardButton';
 import IconButton from './components/button/IconButton';
 
@@ -42,6 +44,7 @@ const contentViews = {
 	views_blocks_standard_background: StandardBackground,
 };
 const miscViews = {
+	misc_page_details: <></>,
 	misc_magic_text: MagicText,
 	misc_navigation_block: NavBlock
 };

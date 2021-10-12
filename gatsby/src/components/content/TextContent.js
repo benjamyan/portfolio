@@ -7,17 +7,19 @@ const TextWrapper = styled.div`
 	${ (props)=> props.settings }
 `;
 
-export default function TextContent({ sbCopy, sbSettings = '' }) {
-	const settings = settingsResolver(sbSettings);
+export default function TextContent({ sbCopy, settings = '' }) {
 	return (
-		<TextWrapper className={'text-content'} settings={settings }>
-			{ RichtextResolver(sbCopy) }
+    <TextWrapper 
+      className={'text-content'} 
+      settings={ settingsResolver(settings) }>
+        { RichtextResolver(sbCopy) }
 		</TextWrapper>
 	);
 };
 
 TextContent.propTypes = {
-	sbCopy: PropTypes.object.isRequired,
+	sbCopy: PropTypes.object,
+  settings: PropTypes.string
 };
 
 export const storyblok = [

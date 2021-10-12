@@ -22,7 +22,6 @@ const filterSingleComponent = (componentProps)=> {
 		</SbEditable>
 	);
 };
-
 const resolveGlobalComponent = ({ reference })=> {
 	return reference.map(
 		({slug, content})=> {
@@ -38,6 +37,10 @@ export default function ComponentResolver({ componentProps = [] }) {
 	try {
 		const { component } = componentProps;
 		if (!!component && utils.doesComponentExist(component)) {
+			if (component === 'misc_page_details') {
+				console.log(componentProps)
+				console.trace()
+			};
 			if (component === 'global_components') {
 				return resolveGlobalComponent(componentProps);
 			};
@@ -45,7 +48,7 @@ export default function ComponentResolver({ componentProps = [] }) {
 		};
 		return (
 			<utils.DevDialogue
-				message={`This component has not been created yet.\n${componentProps}`}
+				message={`This component has not been created yet. ---- ${JSON.stringify(componentProps)}`}
 				{...componentProps}
 			/>
 		);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DOMContentWrapper from '.';
 
 export default function ProjectLayout({ pageContext }) {
-	// console.log("ProjectLayout");
+	console.log("ProjectLayout");
 	return (
 		<>
 			<DOMContentWrapper

@@ -35,7 +35,16 @@ const rtClasses = {
 };
 */
 
-const RichtextStyleClasses = function({ attrs }) {
+// const StyledTextTag = styled((props) => !!props.tagName ? props.tagName : 'p')`
+const StyledTextTag = styled(
+		({ tag, children, ...props })=> React.createElement(tag, props, children)
+	)`
+		${({ tagStyles = '' }) => tagStyles}
+	`;
+const MarkedText = styled.span`
+	${({ tagStyles = '' }) => tagStyles}
+`;
+const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
 			return `text-align:center;`;
@@ -64,7 +73,6 @@ const RT = {
 	},
 	mark(item) {
 		const MARKS = item.marks;
-		// const markStyle = ['display: inline-block;'];
 		const markStyle = ['display: inline;'];
 		let isLink = false,
 			isCode = false;
@@ -103,25 +111,51 @@ const RT = {
 					console.log(MARKS[i])
 			};
 		};
-		const Mark = styled.span`${markStyle.join('')}`;
+		const textContent = function() {
+			if (!!isLink) {
+				return (
+					<a href={isLink.href} target={isLink.target}>{item.text}</a>
+				);
+			} else if (isCode) {
+				return JSON.stringify(item.text);
+			};
+			return item.text;
+		}();
+		return (
+			<MarkedText
+				tagStyles={ markStyle.join('') }
+				key={utils.getRandomString()}
+				dangerouslySetInnerHTML={ isCode ? { __html: item.text } : null }>
+					{ !isCode ? textContent: false }
+			</MarkedText>
+		);
+		/*
 		if (!!isLink) {
 			return (
-				<Mark key={utils.getRandomString()}>
-					<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>
-				</Mark>
+				<MarkedText 
+					tagStyles={ markStyle.join('') }
+					key={utils.getRandomString()}>
+						<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>
+				</MarkedText>
 			);
 		};
 		if (isCode) {
 			return (
-				<Mark 
+				<MarkedText
+					tagStyles={markStyle.join('')}
 					key={utils.getRandomString()}
 					dangerouslySetInnerHTML={{ __html: item.text }}
 				/>
 			);
 		};
 		return (
-			<Mark key={utils.getRandomString()}>{ item.text }</Mark>
+			<MarkedText 
+				tagStyles={markStyle.join('')}
+				key={utils.getRandomString()}>
+					{item.text}
+			</MarkedText>
 		);
+		*/
 	}
 };
 
@@ -197,28 +231,21 @@ function ResolvedContentBlock({ content, type, ...props }) {
 					)
 				);
 			default:
-				break;
+				const elementTextTag = getElementTagname({ type, ...props });
+				const {
+					parentStyles = [],
+					resolvedContent = []
+				} = resolvedRichtextContent(content);
+				return (
+					<StyledTextTag
+						tag={elementTextTag}
+						tagName={elementTextTag}
+						tagStyles={parentStyles}
+						key={utils.getRandomString()}>
+							{resolvedContent}
+					</StyledTextTag>
+				);
 		};
-		const {
-			parentStyles = [],
-			resolvedContent = []
-		} = resolvedRichtextContent(content);
-		const TextTag = getElementTagname({ type, ...props });
-		if (parentStyles.length > 0) {
-			const StyledTag = styled(TextTag)`
-				${ parentStyles }
-			`;
-			return (
-				<StyledTag key={utils.getRandomString()}>
-					{ resolvedContent }
-				</StyledTag>
-			);
-		};
-		return (
-			<TextTag key={utils.getRandomString()}>
-				{resolvedContent}
-			</TextTag>
-		);
 	} catch (err) {
 		console.log(err)
 		return <></>;
