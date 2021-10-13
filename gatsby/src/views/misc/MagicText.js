@@ -20,6 +20,8 @@ const MagicContainer = styled.div`
 		}
 		${ defaultContainerStyling }
 		${ (props) => props.magicType === 'floating' && `
+			min-width: 400px;
+			max-width: 600px;
 			padding: 35px;
 			border: 2px solid #333;
 			background-color: rgba(255,255,255,0.5);
@@ -34,30 +36,43 @@ const RichtextWrapper = styled.div`
 	${ props => props.contentStyles }
 `;
 
-export default function MagicText({ magicText, magicSettings, magicType }) {
-	const cssSettings = settingsResolver(magicSettings);
-	const richtextStyle = function() {
-		switch (magicType) {
-			case 'floating':
-				return floatingBox;
-			case 'headline':
-				return bigHeadline;
-			case 'list':
-				return contentList;
-			default:
-				return defaultItem;
-		}
-	}();
-	return (
-		<MagicContainer 
-			magicType={magicType} 
-			cssSettings={cssSettings} 
-			data-magictext={magicType}>
-				<RichtextWrapper contentStyles={richtextStyle}>
-					{ RichtextResolver(magicText) }
-				</RichtextWrapper>
-		</MagicContainer>
-	);
+export default function MagicText({ magicText, magicSettings, magicType, keyname }) {
+	try {
+		const cssSettings = settingsResolver(magicSettings);
+		const richtextStyle = function () {
+			switch (magicType) {
+				case 'floating':
+					return floatingBox;
+				case 'headline':
+					return bigHeadline;
+				case 'list':
+					return contentList;
+				default:
+					return defaultItem;
+			}
+		}();
+		const containerHtmlAttrs = function() {
+			const attrs = {};
+			if (keyname.length > 1) {
+				attrs['data-keyname'] = keyname;
+			};
+			attrs['data-magictext'] = magicType;
+			return attrs;
+		}();
+		return (
+			<MagicContainer
+				magicType={magicType}
+				cssSettings={cssSettings}
+				{ ...containerHtmlAttrs }>
+					<RichtextWrapper contentStyles={richtextStyle}>
+						{RichtextResolver(magicText)}
+					</RichtextWrapper>
+			</MagicContainer>
+		);
+	} catch (err) {
+		console.log(err);
+		return <></>;
+	}
 };
 
 MagicText.propTypes = {

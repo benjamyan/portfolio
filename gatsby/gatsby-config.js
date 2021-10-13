@@ -1,6 +1,9 @@
-// console.log('*\n* gatsby-config\n*');
+// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
+console.log('*\n* gatsby-config\n*');
 //
-// require('dotenv').config();
+// require('dotenv').config({
+//   path: `.env.${process.env.NODE_ENV}`,
+// });
 //
 module.exports = {
   siteMetadata: {

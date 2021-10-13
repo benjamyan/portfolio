@@ -12,6 +12,7 @@ const buildNewModule = (node='', module=Function)=> {
 };
 
 async function initFront() {
+	console.log("\n-- Init frontend\n");
 	// if (DOM.magicText.length > 0) {
 	// 	buildNewModule(
 	// 		'magicText',

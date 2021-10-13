@@ -19,7 +19,7 @@ const bigHeadline = `
 		font-size: 10vw;
 		line-height: calc(12vw + 2.5px);
 		padding: 0;
-		margin-top: calc(-2.5vw + 1.25px);
+		// margin-top: calc(-2.5vw + 1.25px);
 		margin-left: -0.5vw;
 		z-index: -1;
 		&:not(:last-of-type) {
@@ -32,7 +32,7 @@ const floatingBox = `
 		width: auto;
 		height: 100%;
 		display: block;
-		padding: 4vw 5vw;
+		padding: 25px 40px 75px 75px;
 		border: 2px solid #333;
 		background-color: white;
 		h1, h2, h3, h4, h5 p {

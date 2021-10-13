@@ -2,15 +2,19 @@
   "name": "surfair-gatsby",
   "version": "1.0.0",
   "private": true,
+  "author": "@benjamyan",
   "description": "surfair-gatsby",
+  "license": "ISC",
+  "main": "gatsby-config.js",
   "keywords": [
     "gatsby"
   ],
   "scripts": {
-    "dev": "gatsby develop",
-    "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "build": "gatsby build"
+    "dev": "SB_ENV=development && gatsby develop",
+    "stage": "SB_ENV=staging && gatsby develop",
+    "serve": "SB_ENV=serving && gatsby serve",
+    "build": "SB_ENV=production && gatsby build"
   },
   "dependencies": {
     "babel-plugin-styled-components": "^1.13.2",
@@ -38,8 +42,5 @@
     "storyblok-react": "^0.1.2",
     "styled-components": "^5.3.0"
   },
-  "main": "gatsby-config.js",
-  "devDependencies": {},
-  "author": "Benjamin Yannella",
-  "license": "ISC"
+  "devDependencies": {}
 }
