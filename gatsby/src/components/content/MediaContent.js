@@ -36,21 +36,22 @@ const MediaContentAsset = ({ asset }) => {
 	if (asset.image && typeof asset.image === 'object') {
 		return <ImageMedia image={asset.image} />
 	};
-	return <></>
+	return <></>;
 };
 
-export default function MediaContent({ sbAsset, settings, overlay }) {
+export default function MediaContent({ sbAsset, settings, overlay, htmlAttrs }) {
 	try {
 		if (sbAsset.length > 0) {
 			return (
 				<MediaContentStyled 
+					{ ...htmlAttrs }
 					settings={ settingsResolver(settings) }
 					overlay={ overlay }
 					className={'media-content'}>
 						<MediaContentAsset asset={sbAsset[0]} />
 				</MediaContentStyled>
 			);
-		}
+		};
 		return <></>;
 	} catch (err) {
 		console.log(err);
@@ -58,10 +59,14 @@ export default function MediaContent({ sbAsset, settings, overlay }) {
 	}
 }
 
+MediaContentAsset.propTypes = {
+	asset: PropTypes.object
+};
 MediaContent.propTypes = {
 	sbAsset: PropTypes.arrayOf(PropTypes.object).isRequired,
 	settings: PropTypes.string,
-	overlay: PropTypes.string
+	overlay: PropTypes.string,
+	htmlAttrs: PropTypes.object
 };
 
 export const storyblok = [

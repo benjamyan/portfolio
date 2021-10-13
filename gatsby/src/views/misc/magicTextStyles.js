@@ -31,12 +31,16 @@ const floatingBox = `
 	&& {
 		width: auto;
 		height: 100%;
-		display: block;
-		padding: 25px 40px 75px 75px;
+		flex: 1;
+		padding: 35px 45px 75px 125px;
 		border: 2px solid #333;
 		background-color: white;
 		h1, h2, h3, h4, h5 p {
 			display: block;
+		}
+		h3 {
+			padding: 0;
+			line-height: 0.9;
 		}
 	}
 `;

@@ -20,11 +20,17 @@ const MagicContainer = styled.div`
 		}
 		${ defaultContainerStyling }
 		${ (props) => props.magicType === 'floating' && `
+			min-height: 375px;
 			min-width: 400px;
 			max-width: 600px;
+			display: flex;
+			flex-direction: column;
 			padding: 35px;
 			border: 2px solid #333;
 			background-color: rgba(255,255,255,0.5);
+			&[data-keyname='business-card'] > div {
+				padding: 50px;
+			}
 		`}
 		${ (props) => props.magicType === 'list' && `
 			position: relative;
@@ -36,7 +42,7 @@ const RichtextWrapper = styled.div`
 	${ props => props.contentStyles }
 `;
 
-export default function MagicText({ magicText, magicSettings, magicType, keyname }) {
+export default function MagicText({ magicText, magicSettings, magicType, htmlAttrs={} }) {
 	try {
 		const cssSettings = settingsResolver(magicSettings);
 		const richtextStyle = function () {
@@ -51,19 +57,12 @@ export default function MagicText({ magicText, magicSettings, magicType, keyname
 					return defaultItem;
 			}
 		}();
-		const containerHtmlAttrs = function() {
-			const attrs = {};
-			if (keyname.length > 1) {
-				attrs['data-keyname'] = keyname;
-			};
-			attrs['data-magictext'] = magicType;
-			return attrs;
-		}();
 		return (
 			<MagicContainer
+				data-magictext={magicType}
 				magicType={magicType}
 				cssSettings={cssSettings}
-				{ ...containerHtmlAttrs }>
+				{ ...htmlAttrs }>
 					<RichtextWrapper contentStyles={richtextStyle}>
 						{RichtextResolver(magicText)}
 					</RichtextWrapper>
@@ -78,5 +77,6 @@ export default function MagicText({ magicText, magicSettings, magicType, keyname
 MagicText.propTypes = {
 	magicText: PropTypes.object.isRequired,
 	magicSettings: PropTypes.string,
-	magicType: PropTypes.string
+	magicType: PropTypes.string,
+	htmlAttrs: PropTypes.object
 };

@@ -22,17 +22,19 @@ const StyledContent = styled.div`
 	margin: 0 auto;
 `;
 
-export default function BasicContentSection({ content, background, settings }) {
+export default function BasicContentSection({ content, background, settings, htmlAttrs }) {
 	return (
-		<BasicContentSectionStyle settings={settingsResolver(settings)}>
-			<StyledContent>
-				{ content.length > 0
-					&& <StandardContent content={content}/>
+		<BasicContentSectionStyle 
+			{ ...htmlAttrs }
+			settings={settingsResolver(settings)}>
+				<StyledContent>
+					{ content.length > 0
+						&& <StandardContent content={content}/>
+					}
+				</StyledContent>
+				{ background.length > 0
+					&& <StandardBackground background={background[0]} />
 				}
-			</StyledContent>
-			{ background.length > 0
-				&& <StandardBackground background={background[0]} />
-			}
 		</BasicContentSectionStyle>
 	);
 };
@@ -41,6 +43,7 @@ BasicContentSection.propTypes = {
 	settings: PropTypes.string,
 	content: PropTypes.array.isRequired,
 	background: PropTypes.array,
+	htmlAttrs: PropTypes.object
 };
 
 export const storyblok = [

@@ -36,12 +36,6 @@ const rtClasses = {
 };
 */
 
-const StyledTextTag = styled.div`
-	${(props) => props.styles}
-`;
-const MarkedText = styled.span`
-	${(props) => props.styles}
-`;
 const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
@@ -135,6 +129,12 @@ const RT = {
 	}
 };
 
+const StyledTextTag = styled.div`
+	${(props) => props.styles}
+`;
+const MarkedText = styled.span`
+	${(props) => props.styles}
+`;
 const processSoloTextContent = (item) => {
 	let contentStr = item.text,
 		parentStyle = [];

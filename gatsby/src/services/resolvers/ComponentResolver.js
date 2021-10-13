@@ -10,11 +10,19 @@ import { dictionary, utils } from '../..';
 const filterSingleComponent = (componentProps)=> {
 	const {
 		component,
-		editable = true
+		editable = true,
+		keyname=''
 	} = componentProps;
 	const Component = dictionary[component];
+	const componentAttrs = {};
+	if (keyname.length > 1) {
+		componentAttrs['data-keyname'] = keyname;
+	};
+	componentProps.htmlAttrs = componentAttrs;
 	if (component.indexOf('global') > -1 || !editable) {
-		return <Component {...componentProps} />
+		return (
+			<Component {...componentProps} />
+		);
 	};
 	return (
 		<SbEditable content={ componentProps }>
@@ -37,10 +45,6 @@ export default function ComponentResolver({ componentProps = [] }) {
 	try {
 		const { component } = componentProps;
 		if (!!component && utils.doesComponentExist(component)) {
-			if (component === 'misc_page_details') {
-				console.log(componentProps)
-				console.trace()
-			};
 			if (component === 'global_components') {
 				return resolveGlobalComponent(componentProps);
 			};
