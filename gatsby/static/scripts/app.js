@@ -14,12 +14,12 @@ const buildNewModule = (node='', module=Function)=> {
 async function initFront() {
 	console.log("\nSTART initFront");
 	try {
-		if (DOM.magicText.length > 0) {
-			buildNewModule(
-				'magicText',
-				(data) => new MagicText(data)
-			);
-		};
+		// if (DOM.magicText.length > 0) {
+		// 	buildNewModule(
+		// 		'magicText',
+		// 		(data) => new MagicText(data)
+		// 	);
+		// };
 		return true;
 	} catch (err) {
 		console.log(err);

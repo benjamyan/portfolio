@@ -1,3 +1,4 @@
+// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
 // console.log('*\n* gatsby-browser\n*');
 //
 // exports.disableCorePrefetching = () => true;

@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import { Link } from "gatsby"
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
@@ -105,8 +106,23 @@ const RT = {
 		};
 		const textContent = function() {
 			if (!!isLink) {
+				if (isLink.linktype && isLink.linktype === 'story') {
+					console.log(isLink.href)
+					return (
+						<Link
+							to={isLink.href}
+							key={utils.getRandomString()}>
+								{item.text}
+						</Link>
+					);
+				};
 				return (
-					<a key={utils.getRandomString()} href={isLink.href} target={isLink.target}>{item.text}</a>
+					<a 
+						href={isLink.href}
+						target={isLink.target}
+						key={utils.getRandomString()}>
+							{item.text}
+					</a>
 				);
 			} else if (isCode) {
 				return item.text;
