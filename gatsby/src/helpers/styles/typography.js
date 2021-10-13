@@ -47,7 +47,7 @@ const textLi = `
     ${textP}
 `;
 const textA = `
-    color: white;
+    color: black;
     text-decoration: none;
 `;
 const textFigCaption = `

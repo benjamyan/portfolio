@@ -1,7 +1,6 @@
 /*
 A catalog of all components & templates with their corresponding key names in storyblok
 */
-import React from 'react';
 //
 // Globals
 import ComponentResolver from './services/resolvers/ComponentResolver';
@@ -17,15 +16,15 @@ import StandardBackground from './views/blocks/StandardBackground';
 import MultiColumnContent from './views/blocks/MultiColumnContent';
 //
 // Misc view components
-import NavBlock from './views/misc/NavBlock';
 import MagicText from './views/misc/MagicText';
 //
 // Atomic components
-import ImageMedia from './components/media/ImageMedia';
-import VideoMedia from './components/media/VideoMedia';
 import MediaContent from './components/content/MediaContent';
 import TextContent from './components/content/TextContent';
-import RawContent from './components/content/RawContent';
+import NavContent from './views/navigation/NavContent';
+// import RawContent from './components/content/RawContent';
+import ImageMedia from './components/media/ImageMedia';
+import VideoMedia from './components/media/VideoMedia';
 import StandardButton from './components/button/StandardButton';
 import IconButton from './components/button/IconButton';
 
@@ -37,38 +36,38 @@ const templates = {
 	containers_sections_basic_content_section: BasicContentSection,
 	containers_sections_multi_column_section: MultiColumnContentSection
 };
-const contentViews = {
+const views = {
 	views_blocks_single_column_content: StandardContent,
 	views_blocks_standard_content: StandardContent,
 	views_blocks_multi_column_content: MultiColumnContent,
 	views_blocks_standard_background: StandardBackground,
+	views_navigation_nav_block: NavContent
 };
-const miscViews = {
-	misc_page_details: <></>,
+const misc = {
 	misc_magic_text: MagicText,
-	misc_navigation_block: NavBlock
+	misc_single_image_media: ImageMedia,
+	misc_single_video_url: VideoMedia
 };
-const atomicComponents = {
+const atomic = {
+	// atomic_content_nav_content: NavContent,
 	atomic_content_media_content: MediaContent,
 	atomic_content_text_content: TextContent,
 	atomic_button_basic_button: StandardButton,
 	atomic_button_icon_button: IconButton,
-	misc_single_image_media: ImageMedia,
-	misc_single_video_url: VideoMedia
 };
 const dictionary = {
 	...globals,
 	...templates,
-	...contentViews,
-	...miscViews,
-	...atomicComponents
+	...views,
+	...misc,
+	...atomic
 };
 
 export {
 	globals,
 	templates,
-	contentViews,
-	miscViews,
-	atomicComponents
+	views,
+	misc,
+	atomic
 };
 export default dictionary;

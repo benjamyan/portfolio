@@ -59,10 +59,10 @@ export default function MagicText({ magicText, magicSettings, magicType, htmlAtt
 		}();
 		return (
 			<MagicContainer
+				{...htmlAttrs}
 				data-magictext={magicType}
 				magicType={magicType}
-				cssSettings={cssSettings}
-				{ ...htmlAttrs }>
+				cssSettings={cssSettings}>
 					<RichtextWrapper contentStyles={richtextStyle}>
 						{RichtextResolver(magicText)}
 					</RichtextWrapper>

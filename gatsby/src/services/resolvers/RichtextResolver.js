@@ -55,10 +55,10 @@ const RT = {
 		switch (item.type) {
 			case 'list_item':
 				return (
-					<li>{RichtextResolver(item) }</li>
+					<li key={utils.getRandomString()}>{RichtextResolver(item) }</li>
 				);
 			case 'hard_break':
-				return <br />;
+				return <br key={utils.getRandomString()} />;
 			default:
 				return item.text;
 		}
@@ -106,18 +106,20 @@ const RT = {
 		const textContent = function() {
 			if (!!isLink) {
 				return (
-					<a href={isLink.href} target={isLink.target}>{item.text}</a>
+					<a key={utils.getRandomString()} href={isLink.href} target={isLink.target}>{item.text}</a>
 				);
 			} else if (isCode) {
 				return item.text;
 			};
-			return <>{item.text}</>;
+			return <Fragment key={utils.getRandomString()}>{item.text}</Fragment>;
 		}();
 		const textOptions = {};
 		if (isCode) {
 			textOptions.dangerouslySetInnerHTML = { __html: textContent };
 		} else {
-			textOptions.children = [<>{textContent}</>];
+			textOptions.children = [
+				<Fragment key={utils.getRandomString()}>{textContent}</Fragment>
+			];
 		};
 		return (
 			<MarkedText
@@ -193,7 +195,7 @@ function ResolvedContentBlock({ content, type, ...props }) {
 		switch (type) {
 			case 'horizontal_rule': 
 				return (
-					<hr></hr>
+					<hr key={utils.getRandomString()}></hr>
 				);
 			case 'blok':
 				return props.attrs.body.map(
@@ -213,6 +215,7 @@ function ResolvedContentBlock({ content, type, ...props }) {
 				return (
 					<StyledTextTag
 						as={elementTextTag}
+						key={utils.getRandomString()}
 						styles={parentStyles}>
 							{resolvedContent}
 					</StyledTextTag>
@@ -220,17 +223,17 @@ function ResolvedContentBlock({ content, type, ...props }) {
 		};
 	} catch (err) {
 		console.log(err)
-		return <></>;
+		return <Fragment key={ utils.getRandomString() }></Fragment>;
 	}
 };
 function RichtextResolver({ content }) {
 	try {
 		const isValidContent = function () {
 			if (content === undefined) {
-				return false
+				return false;
 			};
 			if (Array.isArray(content) && !!content[0].content) {
-				return true
+				return true;
 			};
 			return false;
 		}();
@@ -240,12 +243,12 @@ function RichtextResolver({ content }) {
 					(item) => <ResolvedContentBlock key={utils.getRandomString()} {...item} />
 				);
 			};
-			return <ResolvedContentBlock {...content} />
+			return <ResolvedContentBlock {...content} key={utils.getRandomString()} />
 		};
-		return <></>;
+		return <Fragment key={utils.getRandomString()}></Fragment>;
 	} catch (err) {
 		console.log(err);
-		return <></>;
+		return <Fragment key={utils.getRandomString()}></Fragment>;
 	};
 };
 export default RichtextResolver;

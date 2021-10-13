@@ -1,18 +1,18 @@
-console.log('*\n* gatsby-browser\n*');
+// console.log('*\n* gatsby-browser\n*');
 //
 // exports.disableCorePrefetching = () => true;
 exports.onClientEntry = () => {
-    // console.log("\nonClientEntry");
-    window.sbGlobal = {
-        sbStoryMap: JSON.stringify(global.SB_STORY_MAP),
-        currentEnv: JSON.stringify(global.NODE_ENV)
+    // console.log("\n-- onClientEntry");
+    window._byd = {
+        sbStoryMap: global.STORY_MAP,
+        buildEnv: global.SB_ENV
     };
 };
 exports.onInitialClientRender = () => {
-    // console.log("\nonInitialClientRender");
+    // console.log("\n-- onInitialClientRender");
     window.initFront()
         .then(
-            () => console.log("Frontned finished")
+            ()=> console.log("END initFront")
         ).catch(
             err => console.warn(err)
         );

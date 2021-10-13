@@ -1,5 +1,5 @@
 // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
-console.log('*\n* gatsby-config\n*');
+// console.log('*\n* gatsby-config\n*');
 //
 // require('dotenv').config({
 //   path: `.env.${process.env.NODE_ENV}`,

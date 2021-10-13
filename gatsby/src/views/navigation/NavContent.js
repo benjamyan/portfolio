@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { RichtextResolver } from '../..';
 
-export default function NavBlock({ navigation = {} }) {
+export default function NavContent({ navigation = {}, settings = '' }) {
 	return (
 		<nav>
 			<RichtextResolver {...navigation } />
@@ -10,6 +10,7 @@ export default function NavBlock({ navigation = {} }) {
 	);
 };
 
-NavBlock.propTypes = {
-	navigation: PropTypes.object.isRequired
+NavContent.propTypes = {
+	navigation: PropTypes.object.isRequired,
+	settings: PropTypes.string
 };

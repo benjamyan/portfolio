@@ -45,14 +45,16 @@ const floatingBox = `
 	}
 `;
 const contentList = `
-	position: relative;
-	width: 100%;
-	h1, h2, h3, h4, h5, p {
-		color: #000;
-		padding-bottom: 150px;
-		span {
+	&&& {
+		position: relative;
+		width: 100%;
+		h1, h2, h3, h4, h5, p {
 			color: #000;
-			-webkit-text-stroke-color: #000
+			padding-bottom: 150px;
+			span {
+				color: #000;
+				-webkit-text-stroke-color: #000
+			}
 		}
 	}
 `;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { 
 	ComponentResolver, 
 	useStoryblokBridge,
@@ -42,6 +43,11 @@ const ProductionWrapper = ({ node }) => {
 	console.log('ProductionContainer');
 	// TODO
 };
+const IndexWrapper = styled.main`
+	position: relative;
+	width: 100%;
+	height: auto;
+`;
 
 export default function DOMContentWrapper({ ...props }) {
 	try {
@@ -60,31 +66,32 @@ export default function DOMContentWrapper({ ...props }) {
 			location,
 			// pages = pageContent ? props.pageContext.pages : { msg: badMsg },
 			globals = pageContent ? props.pageContext.globals : { msg: badMsg },
+			slug = pageContent ? props.pageContext.data.slug : badMsg,
+			fullSlug = pageContent ? props.pageContext.data.full_slug : badMsg,
 			pageContext = pageContent ? props.pageContext : { msg: badMsg },
-			pageSlug = pageContent ? props.pageContext.data.full_slug : badMsg,
 			pageMeta = pageContent ? pageContent.meta : false,
 			pageTheme = pageContent ? pageContent.theme.color : 'default'
 		} = props;
 		return (
-			<>
+			<div >
 				<Styles theme={pageTheme} />
 				{ !!pageContext && pageContext.data &&
-					<Meta site={ pageSlug } meta={ pageMeta } />
+					<Meta site={ fullSlug } meta={ pageMeta } />
 				}
 				{ globals && globals['header-navigation'] &&
 					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
-				<main>
+				<IndexWrapper className={ slug }>
 					{location.search.indexOf('_storyblok') > -1 ?
 						<StoryblokWrapper node={props} />
 						:
 						<ProductionWrapper node={props} />
 					}
-				</main>
+				</IndexWrapper>
 				{ globals && globals['footer-navigation'] &&
 					<FooterNavigation { ...globals['footer-navigation'] } />
 				}
-			</>
+			</div>
 		);
 	} catch (err) {
 		console.log(err);
