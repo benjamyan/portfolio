@@ -45,7 +45,7 @@ exports.createPages = async function({ actions, graphql }) {
             slug: data.slug,
             full_slug: data.full_slug,
             link: function() {
-                if (ENV === 'development') {
+                if (process.env.SB_ENV === 'development') {
                     return process.env.DEV_URL + data.full_slug;
                 }
                 return process.env.PROD_URL + data.full_slug;
@@ -66,11 +66,10 @@ exports.createPages = async function({ actions, graphql }) {
             }();
             if (i === 0) {
                 dataArr.forEach( (item)=> {
-                    if (item.field_component !== 'global') {
-                        sbStoryMap[item.slug] = new FinalDataItem(item)
-                    } else {
-                        sbGlobalComponents[item.slug] = item;
+                    if (item.field_component === 'global') {
+                        return sbGlobalComponents[item.slug] = item;
                     };
+                    return sbStoryMap[item.slug] = new FinalDataItem(item)
                 });
             };
             if (TEMPLATE) {
@@ -142,12 +141,6 @@ exports.onCreateDevServer = ({ app }) => {
         express.json({ type: '*/*' })
     );
     app.post('/publish', function (req, res) {
-        /*
-        Publishes all or specified pages
-        *
-        Request body: 
-        Response body: Array of strings/objects
-        */
         console.log(req.body);
         res.send(
             `200 - /publish`
