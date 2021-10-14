@@ -11,7 +11,7 @@ exports.onClientEntry = () => {
 };
 exports.onInitialClientRender = () => {
     // console.log("\n-- onInitialClientRender");
-    window.initFront()
+    window.initMain()
         .catch(
             err => console.warn(err)
         );

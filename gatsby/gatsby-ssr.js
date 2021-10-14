@@ -22,7 +22,6 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 					return global.PROD_URL;
 			};
 		}();
-		//
 		setPreBodyComponents([
 			<base href={ baseUrl } />
 		]);

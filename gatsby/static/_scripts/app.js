@@ -1,33 +1,34 @@
-window.MODULES = {};
-window.DOM = {
-	main: document.getElementById('___gatsby'),
-	catalog: document.getElementById('catalog'),
-	catalogList: document.querySelector('*[data-keyname="project-list"]'),
-	catalogImage: document.querySelector('*[data-keyname="project-image"]'),
-	magicText: Array.from(document.querySelectorAll('*[data-magictext]'))
+const buildNewModule = (node, Module) => {
+	const key = `${utils.randomString()}_${Module.name.replace(/[^A-Z]+/g, "")}`;
+	if (node.dataset.module) {
+		node.dataset.module += '+' + key;
+	} else {
+		node.dataset.module = key;
+	};
+	MODULES[key] = new Module(node, MODULES);
 };
 
-const buildNewModule = (node='', module=Function)=> {
-	MODULES[node] = [];
-	return Array.from(DOM[node]).forEach(
-		node=> MODULES[node].push( module(node) )
-	);
-};
-
-async function initFront() {
-	console.log("\nSTART initFront");
+async function initMain() {
+	console.log("\n-- initMain");
 	try {
-		if (window.DOM.catalog) {
-			window.MODULES.catalog = new CatalogModal(window.DOM.catalog, DOM)
-		};
-		/*
-		if (DOM.magicText.length > 0) {
-			buildNewModule(
-				'magicText',
-				(data) => new MagicText(data)
+		if (DOM.catalog) {
+			buildNewModule( 
+				DOM.catalog, 
+				CatalogModal
 			);
 		};
-		*/
+		if (DOM.magicText.length > 0) {
+			DOM.magicText.forEach(
+				textNode=> buildNewModule(
+					textNode,
+					MagicText
+				)
+			);
+			// buildNewModule(
+			// 	DOM.magicText,
+			// 	MagicText
+			// );
+		};
 	} catch (err) {
 		console.log(err);
 	} finally {

@@ -105,32 +105,21 @@ exports.onCreatePage = ({ page, actions }) => {
         createPage(page);
     };
 };
-exports.onCreateWebpackConfig = ({ actions, getConfig, plugins, stage }) => {
+exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     console.log("\n-- onCreateWebpackConfig");
     const staticScripts = __dirname + '/static/_scripts/';
-    console.log(path.resolve(staticScripts, 'app.js'))
     actions.setWebpackConfig({
-        /*
-        node: {
-            fs: 'empty'
-        },
-        resolve: {
-            fallback: {
-                'fs': false,
-                'os': require.resolve('os-browserify/browser'),
-                'path': require.resolve('path-browserify')
-            }
-        },
-        // All this takes care of errors caused by importing env vars
-        // Fruitless, however, since env vars stil breaks gatsby
-        */
-        //
         plugins: [
             new SingleFile({
                 // Concat our client scripts into single file
                 files: {
                     "scripts/main.js": [
+                        path.resolve(staticScripts, 'initial.js'),
+                        path.resolve(staticScripts, 'Navigation.js'),
                         path.resolve(staticScripts, 'CatalogModal.js'),
+                        path.resolve(staticScripts, 'StickyElement.js'),
+                        path.resolve(staticScripts, 'MagicText.js'),
+                        path.resolve(staticScripts, 'CustomKerning.js'),
                         path.resolve(staticScripts, 'app.js')
                     ]
                 }

@@ -35,7 +35,7 @@ const CatalogModal = function(ref) {
 		console.log("close CatalogModal");
 		// TODO
 	};
-	this.cleanModal = function() {
+	this.scrubModal = function() {
 
 	};
 	this._init = function () {
