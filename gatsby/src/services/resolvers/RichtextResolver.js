@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
-import { Link } from "gatsby"
+import { Link } from "gatsby";
+// import AniLink from "gatsby-plugin-transition-link/AniLink";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
@@ -13,12 +14,6 @@ const rtTagnames = {
 	'bullet_list': 'ul',
 	'list_item': 'li',
 	_default: 'p'
-};
-const rtTypes = {
-	'hard_break': <br />,
-	_default: function(item) {
-		return item.text
-	}
 };
 const rtMarks = {
 	'underline': 'text-decoration: underline;',
@@ -36,6 +31,18 @@ const rtClasses = {
 	`
 };
 */
+
+// const rtTypes = {
+// 	'list_item': (
+// 		<li key={utils.getRandomString()}>{RichtextResolver(item)}</li>
+// 	),
+// 	'hard_break': (
+// 		<br key={utils.getRandomString()} />
+// 	),
+// 	_default: function (item) {
+// 		return item.text
+// 	}
+// };
 
 const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
@@ -100,14 +107,13 @@ const RT = {
 					isCode = true;
 					break;
 				default:
-					console.log("No case")
-					console.log(MARKS[i])
+					console.log("No richtext case");
+					console.log(MARKS[i]);
 			};
 		};
 		const textContent = function() {
 			if (!!isLink) {
 				if (isLink.linktype && isLink.linktype === 'story') {
-					console.log(isLink.href)
 					return (
 						<Link
 							to={isLink.href}
@@ -153,14 +159,20 @@ const StyledTextTag = styled.div`
 const MarkedText = styled.span`
 	${(props) => props.styles}
 `;
+
+// const applyGivenRichtextChanges = ()=> {
+
+// };
+
 const processSoloTextContent = (item) => {
-	let contentStr = item.text,
+	const { text, type, marks } = item;
+	let contentStr = text,
 		parentStyle = [];
-	if (item.type) {
+	if (type) {
 		contentStr = RT.type(item);
 	};
-	if (item.marks) {
-		const itemStyle = item.marks.find(m => m.type === 'styled') || false;
+	if (marks) {
+		const itemStyle = marks.find(m => m.type === 'styled') || false;
 		if (!!itemStyle) {
 			parentStyle = RichtextStyleClasses(itemStyle);
 		};
@@ -272,4 +284,10 @@ export default RichtextResolver;
 ResolvedContentBlock.propTypes = {
 	content: PropTypes.array,
 	type: PropTypes.string
+};
+RichtextResolver.propTypes = {
+	content: PropTypes.oneOfType([
+		PropTypes.object,
+		PropTypes.array
+	])
 };

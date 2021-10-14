@@ -11,12 +11,16 @@ const filterSingleComponent = (componentProps)=> {
 	const {
 		component,
 		editable = true,
-		keyname=''
+		keyname='',
+		id=''
 	} = componentProps;
 	const Component = dictionary[component];
 	const componentAttrs = {};
 	if (keyname.length > 1) {
 		componentAttrs['data-keyname'] = keyname;
+	};
+	if (id.length > 0) {
+		componentAttrs['id'] = id;
 	};
 	componentProps.htmlAttrs = componentAttrs;
 	if (component.indexOf('global') > -1 || !editable) {

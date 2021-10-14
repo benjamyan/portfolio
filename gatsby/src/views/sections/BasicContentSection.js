@@ -22,7 +22,7 @@ const StyledContent = styled.div`
 	margin: 0 auto;
 `;
 
-export default function BasicContentSection({ content, background, settings, htmlAttrs }) {
+export default function BasicContentSection({ content, background, settings, htmlAttrs, ...props }) {
 	return (
 		<BasicContentSectionStyle 
 			{ ...htmlAttrs }

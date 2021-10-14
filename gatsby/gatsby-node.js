@@ -36,26 +36,19 @@ exports.createPages = async function({ actions, graphql }) {
             (err)=> console.log(err) 
         );
     function FinalDataItem(data) {
-        const { 
-            theme = '', 
-            details = {}
-        } = JSON.parse(data.content);
-        const {
-            slug = '', full_slug = ''
-        } = data;
-        const { title, description, page_image } = details;
+        const { theme, details } = JSON.parse(data.content);
         return {
-            title,
-            description,
-            image: page_image,
+            title: details.title,
+            description: details.description,
+            image: details.page_image,
             theme: theme.color,
-            slug: slug,
-            full_slug: full_slug,
+            slug: data.slug,
+            full_slug: data.full_slug,
             link: function() {
                 if (ENV === 'development') {
-                    return process.env.DEV_URL + full_slug;
+                    return process.env.DEV_URL + data.full_slug;
                 }
-                return process.env.PROD_URL + full_slug;
+                return process.env.PROD_URL + data.full_slug;
             }()
         };
     };

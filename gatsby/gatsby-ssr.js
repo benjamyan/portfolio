@@ -27,6 +27,7 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 			<base href={ baseUrl } />
 		]);
 		setPostBodyComponents([
+			<script type="text/javascript" src="../scripts/CatalogModal.js" />,
 			<script type="text/javascript" src="../scripts/MagicText.js" />,
 			<script type="text/javascript" src="../scripts/app.js"></script>
 		]);

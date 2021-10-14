@@ -73,7 +73,7 @@ export default function DOMContentWrapper({ ...props }) {
 			pageTheme = pageContent ? pageContent.theme.color : 'default'
 		} = props;
 		return (
-			<div >
+			<div>
 				<Styles theme={pageTheme} />
 				{ !!pageContext && pageContext.data &&
 					<Meta site={ fullSlug } meta={ pageMeta } />
@@ -81,8 +81,8 @@ export default function DOMContentWrapper({ ...props }) {
 				{ globals && globals['header-navigation'] &&
 					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
-				<IndexWrapper className={ slug }>
-					{location.search.indexOf('_storyblok') > -1 ?
+				<IndexWrapper id="mainContent" className={ slug }>
+					{ location.search.indexOf('_storyblok') > -1 ?
 						<StoryblokWrapper node={props} />
 						:
 						<ProductionWrapper node={props} />

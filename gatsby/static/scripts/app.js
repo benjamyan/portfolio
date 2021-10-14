@@ -1,7 +1,10 @@
-const MODULES = {};
-const DOM = {
+window.MODULES = {};
+window.DOM = {
 	main: document.getElementById('___gatsby'),
-	magicText: Array.from(document.querySelectorAll('*[data-magictext]')) || []
+	catalog: document.getElementById('catalog'),
+	catalogList: document.querySelector('*[data-keyname="project-list"]'),
+	catalogImage: document.querySelector('*[data-keyname="project-image"]'),
+	magicText: Array.from(document.querySelectorAll('*[data-magictext]'))
 };
 
 const buildNewModule = (node='', module=Function)=> {
@@ -14,14 +17,20 @@ const buildNewModule = (node='', module=Function)=> {
 async function initFront() {
 	console.log("\nSTART initFront");
 	try {
-		// if (DOM.magicText.length > 0) {
-		// 	buildNewModule(
-		// 		'magicText',
-		// 		(data) => new MagicText(data)
-		// 	);
-		// };
-		return true;
+		if (window.DOM.catalog) {
+			window.MODULES.catalog = new CatalogModal(window.DOM.catalog, DOM)
+		};
+		/*
+		if (DOM.magicText.length > 0) {
+			buildNewModule(
+				'magicText',
+				(data) => new MagicText(data)
+			);
+		};
+		*/
 	} catch (err) {
 		console.log(err);
+	} finally {
+		return;
 	};
 };
