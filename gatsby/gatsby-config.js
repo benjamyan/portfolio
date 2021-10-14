@@ -1,7 +1,12 @@
-// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
 // console.log('*\n* gatsby-config\n*');
-//
-// https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
+/*
+https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-typescript
+https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap
+https://www.gatsbyjs.com/plugins/gatsby-plugin-catch-links/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-create-client-paths/
+*/
 //
 module.exports = {
   siteMetadata: {
@@ -29,10 +34,24 @@ module.exports = {
       }
     }, 
     {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `${__dirname}/static`,
+        ignore: [
+          `_scripts/*`,
+          `_scripts/*.js`,
+          `_scripts/*/*.js`,
+          `_plugin/*`,
+          `_plugin/*.js`,
+          `_plugin/*/*.js`
+        ]
+      }
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'static',
-        path: `${__dirname}/static/scripts/`,
+        path: `${__dirname}/static/_scripts/`,
       }
     },
     {
@@ -59,6 +78,20 @@ module.exports = {
           'global_components.reference'
         ]
       }
-    }
+    },
+    // {
+    //   resolve: `gatsby-plugin-minify`,
+    //   options: {
+    //     removeAttributeQuotes: true,
+    //     collapseWhitespace: true,
+    //     minifyCSS: true,
+    //     minifyJS: true,
+    //     removeComments: true,
+    //     removeEmptyAttributes: true,
+    //     removeScriptTypeAttributes: true,
+    //     removeStyleLinkTypeAttributes: true,
+    //     processConditionalComments: true
+    //   }
+    // }
   ]
 };

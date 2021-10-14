@@ -12,9 +12,7 @@ exports.onClientEntry = () => {
 exports.onInitialClientRender = () => {
     // console.log("\n-- onInitialClientRender");
     window.initFront()
-        .then(
-            ()=> console.log("END initFront")
-        ).catch(
+        .catch(
             err => console.warn(err)
         );
 };
