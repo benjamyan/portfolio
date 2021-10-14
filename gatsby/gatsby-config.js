@@ -1,4 +1,4 @@
-console.log('*\n* gatsby-config\n*');
+// console.log('*\n* gatsby-config\n*');
 /*
 https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
 https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
@@ -34,10 +34,24 @@ module.exports = {
       }
     }, 
     {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `${__dirname}/static`,
+        ignore: [
+          `_scripts/*`,
+          `_scripts/*.js`,
+          `_scripts/*/*.js`,
+          `_plugin/*`,
+          `_plugin/*.js`,
+          `_plugin/*/*.js`
+        ]
+      }
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'static',
-        path: `${__dirname}/static/scripts/`,
+        path: `${__dirname}/static/_scripts/`,
       }
     },
     {

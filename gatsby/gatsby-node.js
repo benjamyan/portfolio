@@ -4,11 +4,13 @@ console.log('*\n* gatsby-node\n*');
 require('dotenv').config();
 const express = require('express');
 const path  = require("path");
-const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+const SingleFile = require('webpack-merge-and-include-globally');
 const ENV = process.env.NODE_ENV;
 //
-const sbStoryMap = {};
-const sbGlobalComponents = {};
+const _sb = {
+    storyMap: {},
+    globalComponents: {}
+};
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
     //
@@ -68,9 +70,9 @@ exports.createPages = async function({ actions, graphql }) {
             if (i === 0) {
                 dataArr.forEach( (item)=> {
                     if (item.field_component === 'global') {
-                        return sbGlobalComponents[item.slug] = item;
+                        return _sb.globalComponents[item.slug] = item;
                     };
-                    return sbStoryMap[item.slug] = new FinalDataItem(item)
+                    return _sb.storyMap[item.slug] = new FinalDataItem(item)
                 });
             };
             if (TEMPLATE) {
@@ -79,8 +81,8 @@ exports.createPages = async function({ actions, graphql }) {
                     component: path.resolve(TEMPLATE),
                     context: {
                         data: node,
-                        pages: sbStoryMap,
-                        globals: sbGlobalComponents,
+                        pages: _sb.storyMap,
+                        globals: _sb.globalComponents,
                         location: {
                             search: ENV === 'development' ? '_storyblok' : 'benyan'
                         }
@@ -105,10 +107,11 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 exports.onCreateWebpackConfig = ({ actions, getConfig, plugins, stage }) => {
     console.log("\n-- onCreateWebpackConfig");
-    /*
-    // This takes care of errors caused by importing env vars when importing into gatsby-config.
+    const staticScripts = __dirname + '/static/_scripts/';
+    console.log(path.resolve(staticScripts, 'app.js'))
     actions.setWebpackConfig({
-        node: { 
+        /*
+        node: {
             fs: 'empty'
         },
         resolve: {
@@ -117,38 +120,34 @@ exports.onCreateWebpackConfig = ({ actions, getConfig, plugins, stage }) => {
                 'os': require.resolve('os-browserify/browser'),
                 'path': require.resolve('path-browserify')
             }
-        }
-    });
-    */
-    try {
-        actions.setWebpackConfig({
-            plugins: [
-                new MergeIntoSingleFilePlugin({
-                    // concat our client scripts into single file
-                    // https://stackoverflow.com/questions/35471538/how-do-i-concatenate-and-minify-files-using-webpack
-                    // https://www.npmjs.com/package/webpack-merge-and-include-globally
-                    // 
-                    "main.js": [
-                        path.resolve(__dirname, 'static/CatalogModal.js'),
-                        path.resolve(__dirname, 'static/app.js')
+        },
+        // All this takes care of errors caused by importing env vars
+        // Fruitless, however, since env vars stil breaks gatsby
+        */
+        //
+        plugins: [
+            new SingleFile({
+                // Concat our client scripts into single file
+                files: {
+                    "scripts/main.js": [
+                        path.resolve(staticScripts, 'CatalogModal.js'),
+                        path.resolve(staticScripts, 'app.js')
                     ]
-                }),
-                plugins.define({
-                    // This allows usage of env variables through webpack globals
-                    global: {
-                        SB_ENV: JSON.stringify(process.env.SB_ENV),
-                        SERVE_URL: JSON.stringify(process.env.SERVE_URL),
-                        DEV_URL: JSON.stringify(process.env.DEV_URL),
-                        STAGE_URL: JSON.stringify(process.env.STAGE_URL),
-                        PROD_URL: JSON.stringify(process.env.PROD_URL),
-                        STORY_MAP: JSON.stringify(sbStoryMap)
-                    }
-                })
-            ]
-        })
-    } catch (err) {
-        console.log(err)
-    }
+                }
+            }),
+            plugins.define({
+                // Allows usage of env variables through webpack globals
+                global: {
+                    SB_ENV: JSON.stringify(process.env.SB_ENV),
+                    SERVE_URL: JSON.stringify(process.env.SERVE_URL),
+                    DEV_URL: JSON.stringify(process.env.DEV_URL),
+                    STAGE_URL: JSON.stringify(process.env.STAGE_URL),
+                    PROD_URL: JSON.stringify(process.env.PROD_URL),
+                    STORY_MAP: JSON.stringify(_sb.storyMap)
+                }
+            })
+        ]
+    });
 };
 exports.onCreateDevServer = ({ app }) => {
     console.log("\n-- onCreateDevServer");
