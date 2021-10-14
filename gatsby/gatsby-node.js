@@ -4,6 +4,7 @@ console.log('*\n* gatsby-node\n*');
 require('dotenv').config();
 const express = require('express');
 const path  = require("path");
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 const ENV = process.env.NODE_ENV;
 //
 const sbStoryMap = {};
@@ -119,21 +120,35 @@ exports.onCreateWebpackConfig = ({ actions, getConfig, plugins, stage }) => {
         }
     });
     */
-    actions.setWebpackConfig({
-        plugins: [
-            plugins.define({
-                // This allows usage of env variables through webpack globals
-                global: {
-                    SB_ENV: JSON.stringify(process.env.SB_ENV),
-                    SERVE_URL: JSON.stringify(process.env.SERVE_URL),
-                    DEV_URL: JSON.stringify(process.env.DEV_URL),
-                    STAGE_URL: JSON.stringify(process.env.STAGE_URL),
-                    PROD_URL: JSON.stringify(process.env.PROD_URL),
-                    STORY_MAP: JSON.stringify(sbStoryMap)
-                }
-            })
-        ]
-    })
+    try {
+        actions.setWebpackConfig({
+            plugins: [
+                new MergeIntoSingleFilePlugin({
+                    // concat our client scripts into single file
+                    // https://stackoverflow.com/questions/35471538/how-do-i-concatenate-and-minify-files-using-webpack
+                    // https://www.npmjs.com/package/webpack-merge-and-include-globally
+                    // 
+                    "main.js": [
+                        path.resolve(__dirname, 'static/CatalogModal.js'),
+                        path.resolve(__dirname, 'static/app.js')
+                    ]
+                }),
+                plugins.define({
+                    // This allows usage of env variables through webpack globals
+                    global: {
+                        SB_ENV: JSON.stringify(process.env.SB_ENV),
+                        SERVE_URL: JSON.stringify(process.env.SERVE_URL),
+                        DEV_URL: JSON.stringify(process.env.DEV_URL),
+                        STAGE_URL: JSON.stringify(process.env.STAGE_URL),
+                        PROD_URL: JSON.stringify(process.env.PROD_URL),
+                        STORY_MAP: JSON.stringify(sbStoryMap)
+                    }
+                })
+            ]
+        })
+    } catch (err) {
+        console.log(err)
+    }
 };
 exports.onCreateDevServer = ({ app }) => {
     console.log("\n-- onCreateDevServer");
