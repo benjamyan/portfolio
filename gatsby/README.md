@@ -1,12 +1,8 @@
-# Our front-end
-We're using Gatsby for our front-end. 
-
 ## Component technical-name naming conventions
 Your field keys are what Gatsby will use as a reference to lookup our specific components on the front-end. A basic field name works like:
 `{component-type}_{gatsby-parent-directory}_{component-name-seperated-with-underscores}`
 So the above would translate out to...
 `atomic_content_text_content` or `views_blocks_multi_column_content`
-Note: The only components these naming conventions do not apply to are the `Settings` component.
 
 ## Component block imports naming conventions
 These are the individual child component block fields that you call within a component schema. An example of this would be `containers_sections_basic_content_section`. Inside of this component, we call `content`, `background`, `settings`, and `name`. 
@@ -52,9 +48,3 @@ A few rules when you're using SB schema's inside your component files:
     ];
 ```
 3. When starting a new schema, you need to place `sb_schema_id: 0` somewhere within it (including the space before 0). This is so when you add the component schema, it can be replaced with the proper ID.
-
-## Common problems...
-
-#### Webpack is breaking when starting the Gatsby development process
-1. Run `npm update` where your node_modules for the front-end are.
-2. Run through your component structure for broken returns.

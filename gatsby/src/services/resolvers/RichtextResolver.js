@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import { Link } from "gatsby";
+// import AniLink from "gatsby-plugin-transition-link/AniLink";
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ComponentResolver, utils } from '../..';
 
@@ -11,12 +14,6 @@ const rtTagnames = {
 	'bullet_list': 'ul',
 	'list_item': 'li',
 	_default: 'p'
-};
-const rtTypes = {
-	'hard_break': <br />,
-	_default: function(item) {
-		return item.text
-	}
 };
 const rtMarks = {
 	'underline': 'text-decoration: underline;',
@@ -35,7 +32,19 @@ const rtClasses = {
 };
 */
 
-const RichtextStyleClasses = function({ attrs }) {
+// const rtTypes = {
+// 	'list_item': (
+// 		<li key={utils.getRandomString()}>{RichtextResolver(item)}</li>
+// 	),
+// 	'hard_break': (
+// 		<br key={utils.getRandomString()} />
+// 	),
+// 	_default: function (item) {
+// 		return item.text
+// 	}
+// };
+
+const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
 			return `text-align:center;`;
@@ -54,17 +63,16 @@ const RT = {
 		switch (item.type) {
 			case 'list_item':
 				return (
-					<li>{RichtextResolver(item) }</li>
+					<li key={utils.getRandomString()}>{RichtextResolver(item) }</li>
 				);
 			case 'hard_break':
-				return <br />;
+				return <br key={utils.getRandomString()} />;
 			default:
 				return item.text;
 		}
 	},
 	mark(item) {
 		const MARKS = item.marks;
-		// const markStyle = ['display: inline-block;'];
 		const markStyle = ['display: inline;'];
 		let isLink = false,
 			isCode = false;
@@ -99,40 +107,72 @@ const RT = {
 					isCode = true;
 					break;
 				default:
-					console.log("No case")
-					console.log(MARKS[i])
+					console.log("No richtext case");
+					console.log(MARKS[i]);
 			};
 		};
-		const Mark = styled.span`${markStyle.join('')}`;
-		if (!!isLink) {
-			return (
-				<Mark key={utils.getRandomString()}>
-					<a href={ isLink.href} target={ isLink.target }>{ item.text }</a>
-				</Mark>
-			);
-		};
+		const textContent = function() {
+			if (!!isLink) {
+				if (isLink.linktype && isLink.linktype === 'story') {
+					return (
+						<Link
+							to={isLink.href}
+							key={utils.getRandomString()}>
+								{item.text}
+						</Link>
+					);
+				};
+				return (
+					<a 
+						href={isLink.href}
+						target={isLink.target}
+						key={utils.getRandomString()}>
+							{item.text}
+					</a>
+				);
+			} else if (isCode) {
+				return item.text;
+			};
+			return <Fragment key={utils.getRandomString()}>{item.text}</Fragment>;
+		}();
+		const textOptions = {};
 		if (isCode) {
-			return (
-				<Mark 
-					key={utils.getRandomString()}
-					dangerouslySetInnerHTML={{ __html: item.text }}
-				/>
-			);
+			textOptions.dangerouslySetInnerHTML = { __html: textContent };
+		} else {
+			textOptions.children = [
+				<Fragment key={utils.getRandomString()}>{textContent}</Fragment>
+			];
 		};
 		return (
-			<Mark key={utils.getRandomString()}>{ item.text }</Mark>
+			<MarkedText
+				{...textOptions}
+				styles={ markStyle.join('') }
+				key={ utils.getRandomString() }
+			/>
 		);
 	}
 };
 
+const StyledTextTag = styled.div`
+	${(props) => props.styles}
+`;
+const MarkedText = styled.span`
+	${(props) => props.styles}
+`;
+
+// const applyGivenRichtextChanges = ()=> {
+
+// };
+
 const processSoloTextContent = (item) => {
-	let contentStr = item.text,
+	const { text, type, marks } = item;
+	let contentStr = text,
 		parentStyle = [];
-	if (item.type) {
+	if (type) {
 		contentStr = RT.type(item);
 	};
-	if (item.marks) {
-		const itemStyle = item.marks.find(m => m.type === 'styled') || false;
+	if (marks) {
+		const itemStyle = marks.find(m => m.type === 'styled') || false;
 		if (!!itemStyle) {
 			parentStyle = RichtextStyleClasses(itemStyle);
 		};
@@ -168,9 +208,7 @@ const resolvedRichtextContent = (content)=> {
 				parentStyles.push(parentStyle);
 			};
 			return (
-				<React.Fragment key={utils.getRandomString()}>
-					{contentStr}
-				</React.Fragment>
+				<Fragment key={utils.getRandomString()}>{contentStr}</Fragment>
 			);
 		}
 	);
@@ -185,7 +223,7 @@ function ResolvedContentBlock({ content, type, ...props }) {
 		switch (type) {
 			case 'horizontal_rule': 
 				return (
-					<hr></hr>
+					<hr key={utils.getRandomString()}></hr>
 				);
 			case 'blok':
 				return props.attrs.body.map(
@@ -197,41 +235,33 @@ function ResolvedContentBlock({ content, type, ...props }) {
 					)
 				);
 			default:
-				break;
+				const elementTextTag = getElementTagname({ type, ...props });
+				const {
+					parentStyles = [],
+					resolvedContent = []
+				} = resolvedRichtextContent(content);
+				return (
+					<StyledTextTag
+						as={elementTextTag}
+						key={utils.getRandomString()}
+						styles={parentStyles}>
+							{resolvedContent}
+					</StyledTextTag>
+				);
 		};
-		const {
-			parentStyles = [],
-			resolvedContent = []
-		} = resolvedRichtextContent(content);
-		const TextTag = getElementTagname({ type, ...props });
-		if (parentStyles.length > 0) {
-			const StyledTag = styled(TextTag)`
-				${ parentStyles }
-			`;
-			return (
-				<StyledTag key={utils.getRandomString()}>
-					{ resolvedContent }
-				</StyledTag>
-			);
-		};
-		return (
-			<TextTag key={utils.getRandomString()}>
-				{resolvedContent}
-			</TextTag>
-		);
 	} catch (err) {
 		console.log(err)
-		return <></>;
+		return <Fragment key={ utils.getRandomString() }></Fragment>;
 	}
 };
 function RichtextResolver({ content }) {
 	try {
 		const isValidContent = function () {
 			if (content === undefined) {
-				return false
+				return false;
 			};
 			if (Array.isArray(content) && !!content[0].content) {
-				return true
+				return true;
 			};
 			return false;
 		}();
@@ -241,12 +271,23 @@ function RichtextResolver({ content }) {
 					(item) => <ResolvedContentBlock key={utils.getRandomString()} {...item} />
 				);
 			};
-			return <ResolvedContentBlock {...content} />
+			return <ResolvedContentBlock {...content} key={utils.getRandomString()} />
 		};
-		return <></>;
+		return <Fragment key={utils.getRandomString()}></Fragment>;
 	} catch (err) {
 		console.log(err);
-		return <></>;
+		return <Fragment key={utils.getRandomString()}></Fragment>;
 	};
 };
 export default RichtextResolver;
+
+ResolvedContentBlock.propTypes = {
+	content: PropTypes.array,
+	type: PropTypes.string
+};
+RichtextResolver.propTypes = {
+	content: PropTypes.oneOfType([
+		PropTypes.object,
+		PropTypes.array
+	])
+};

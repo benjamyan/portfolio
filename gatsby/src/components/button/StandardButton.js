@@ -16,7 +16,6 @@ const StyledStandardButton = styled.div`
 	color: #fff;
 	background-color: transparent;
 	a {
-		${ props=> props.fontFamily }
 		display: inline-block;
 		width: 100%;
 		padding: 0 15px;
@@ -29,12 +28,13 @@ const StyledStandardButton = styled.div`
 		vertical-align: top;
 		border: none;
 		cursor: pointer;
+		${ (props)=> props.fontFamily }
 	}
 `;
 
 export default function StandardButton({ copy, link, target }) {
 	return (
-		<StyledStandardButton fontFamily={ styles.fonts.robotoMono }>
+		<StyledStandardButton fontFamily={ styles.fonts.robotoMono.trim() }>
 			<a href={link} target={target}>
 				{ copy }
 			</a>

@@ -10,11 +10,23 @@ import { dictionary, utils } from '../..';
 const filterSingleComponent = (componentProps)=> {
 	const {
 		component,
-		editable = true
+		editable = true,
+		keyname='',
+		id=''
 	} = componentProps;
 	const Component = dictionary[component];
+	const componentAttrs = {};
+	if (keyname.length > 1) {
+		componentAttrs['data-keyname'] = keyname;
+	};
+	if (id.length > 0) {
+		componentAttrs['id'] = id;
+	};
+	componentProps.htmlAttrs = componentAttrs;
 	if (component.indexOf('global') > -1 || !editable) {
-		return <Component {...componentProps} />
+		return (
+			<Component {...componentProps} />
+		);
 	};
 	return (
 		<SbEditable content={ componentProps }>
@@ -22,7 +34,6 @@ const filterSingleComponent = (componentProps)=> {
 		</SbEditable>
 	);
 };
-
 const resolveGlobalComponent = ({ reference })=> {
 	return reference.map(
 		({slug, content})=> {
@@ -45,7 +56,7 @@ export default function ComponentResolver({ componentProps = [] }) {
 		};
 		return (
 			<utils.DevDialogue
-				message={`This component has not been created yet.\n${componentProps}`}
+				message={`This component has not been created yet. ---- ${JSON.stringify(componentProps)}`}
 				{...componentProps}
 			/>
 		);

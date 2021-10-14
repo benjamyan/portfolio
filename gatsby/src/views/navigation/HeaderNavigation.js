@@ -7,10 +7,11 @@ const HeaderWrapper = styled.header`
 	top: 0;
 	left: 0;
 	width: unset;
-	img {
-		display: none;
-		width: 35px;
-	}
+	z-index: 100;
+	// img {
+	// 	display: none;
+	// 	width: 35px;
+	// }
 	nav {
 		padding: 25px 0px 0px 10px;
 		ul {
@@ -39,25 +40,21 @@ const HeaderWrapper = styled.header`
 
 const headerContent = (body)=> {
 	return body.map(
-		item=> (
-			<ComponentResolver 
-				componentProps={item} 
-				key={utils.getRandomString()} 
-			/>
-		)
+		(item) => <ComponentResolver componentProps={item} key={utils.getRandomString()} />
 	);
 };
 
-export default function HeaderNavigation({ body }) {
-	// const components = function() {
-	// 	return {
-	// 		component: '',
-	// 		logo: ''
-	// 	}
-	// }();
-	return (
-		<HeaderWrapper>
-			{ headerContent( body ) }
-		</HeaderWrapper>
-	);
+export default function HeaderNavigation({ content }) {
+	// console.log("-- HeaderNavigation");
+	content = JSON.parse(content);
+	try {
+		return (
+			<HeaderWrapper>
+				{ headerContent(content.body) }
+			</HeaderWrapper>
+		);
+	} catch (err) {
+		console.log(err);
+		return <></>;
+	};
 };

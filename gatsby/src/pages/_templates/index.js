@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { 
 	ComponentResolver, 
 	useStoryblokBridge,
@@ -7,6 +8,8 @@ import {
 } from '../..';
 import Meta from '../_static/Meta';
 import Styles from '../_static/Styles';
+import FooterNavigation from '../../views/navigation/FooterNavigation';
+import HeaderNavigation from '../../views/navigation/HeaderNavigation';
 
 const StoryblokWrapper = ({ node }) => {
 	// console.log('StoryblokWrapper');
@@ -40,9 +43,15 @@ const ProductionWrapper = ({ node }) => {
 	console.log('ProductionContainer');
 	// TODO
 };
+const IndexWrapper = styled.main`
+	position: relative;
+	width: 100%;
+	height: auto;
+`;
 
 export default function DOMContentWrapper({ ...props }) {
 	try {
+		const badMsg = `Bad render in pages > tempates > index`
 		const pageContent = function() {
 			if (props.pageContext) {
 				const contentProp = props.pageContext.data.content;
@@ -55,28 +64,39 @@ export default function DOMContentWrapper({ ...props }) {
 		}();
 		const {
 			location,
-			pageContext = pageContent ? props.pageContext : false,
-			pageSlug = pageContent ? props.pageContext.data.full_slug : false,
+			// pages = pageContent ? props.pageContext.pages : { msg: badMsg },
+			globals = pageContent ? props.pageContext.globals : { msg: badMsg },
+			slug = pageContent ? props.pageContext.data.slug : badMsg,
+			fullSlug = pageContent ? props.pageContext.data.full_slug : badMsg,
+			pageContext = pageContent ? props.pageContext : { msg: badMsg },
 			pageMeta = pageContent ? pageContent.meta : false,
 			pageTheme = pageContent ? pageContent.theme.color : 'default'
 		} = props;
 		return (
-			<>
-				<Styles theme={ pageTheme } />
+			<div>
+				<Styles theme={pageTheme} />
 				{ !!pageContext && pageContext.data &&
-					<Meta site={ pageSlug } meta={ pageMeta } />
+					<Meta site={ fullSlug } meta={ pageMeta } />
 				}
-				{ location.search.indexOf('_storyblok') > -1 ?
-					<StoryblokWrapper node={ props } />
-					:
-					<ProductionWrapper node={ props } />
+				{ globals && globals['header-navigation'] &&
+					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
-			</>
+				<IndexWrapper id="mainContent" className={ slug }>
+					{ location.search.indexOf('_storyblok') > -1 ?
+						<StoryblokWrapper node={props} />
+						:
+						<ProductionWrapper node={props} />
+					}
+				</IndexWrapper>
+				{ globals && globals['footer-navigation'] &&
+					<FooterNavigation { ...globals['footer-navigation'] } />
+				}
+			</div>
 		);
 	} catch (err) {
 		console.log(err);
 		return (
-			<utils.DevDialogue message={ `An error occured during render.` }/>
+			<utils.DevDialogue message={ `An error occured during render in pages > templates > index.` }/>
 		);
 	};
 };

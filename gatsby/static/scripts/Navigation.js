@@ -1,4 +1,4 @@
-const CustomKerning = function (ref) {
+const Navigation = function (ref) {
 	const self = this;
 	this.nodes = {};
 	this.destroy = function () {

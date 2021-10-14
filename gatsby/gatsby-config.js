@@ -1,6 +1,7 @@
+// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
 // console.log('*\n* gatsby-config\n*');
 //
-// require('dotenv').config();
+// https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
 //
 module.exports = {
   siteMetadata: {
@@ -11,6 +12,7 @@ module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-styled-components`,
+    `gatsby-plugin-transition-link`,
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
