@@ -1,33 +1,18 @@
-const buildNewModule = (node, Module) => {
-	const key = `${utils.randomString()}_${Module.name.replace(/[^A-Z]+/g, "")}`;
-	if (node.dataset.module) {
-		node.dataset.module += '+' + key;
-	} else {
-		node.dataset.module = key;
-	};
-	MODULES[key] = new Module(node, MODULES);
-};
-
+/********************************************
+ * Entry point - called from gatsby-browser *
+ *******************************************/
 async function initMain() {
-	console.log("\n-- initMain");
+	// console.log("\n-- initMain");
 	try {
+		modules._add( DOM.header, Navigation );
+		modules._add( DOM.main, CustomKerning );
 		if (DOM.catalog) {
-			buildNewModule( 
-				DOM.catalog, 
-				CatalogModal
-			);
+			modules._add( DOM.catalog, CatalogModal );
 		};
 		if (DOM.magicText.length > 0) {
 			DOM.magicText.forEach(
-				textNode=> buildNewModule(
-					textNode,
-					MagicText
-				)
+				textNode=> modules._add( textNode, MagicText )
 			);
-			// buildNewModule(
-			// 	DOM.magicText,
-			// 	MagicText
-			// );
 		};
 	} catch (err) {
 		console.log(err);

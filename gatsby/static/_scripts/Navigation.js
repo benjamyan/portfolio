@@ -1,13 +1,10 @@
-const Navigation = function (ref) {
+const Navigation = function (node) {
 	const self = this;
 	this.nodes = {};
 	this.destroy = function () {
 
 	},
-		this.stick = function () {
+	this._init = function () {
 
-		},
-		this._init = function () {
-
-		}
+	}()
 }

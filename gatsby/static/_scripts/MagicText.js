@@ -1,11 +1,12 @@
-const MagicText = function(ref) {
+const MagicText = function(node) {
 	const self = this;
 	self.nodes = {};
 	this.destory = function() {
-		console.log("destroy MagicText");
+		// console.log("destroy MagicText");
+		// TODO
 	};
-	this.init = function() {
-		console.log("init MagicText");
-		console.log(ref)
+	this._init = function() {
+		// console.log("init MagicText");
+		// TODO
 	}();
 }

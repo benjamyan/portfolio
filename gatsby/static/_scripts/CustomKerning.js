@@ -1,13 +1,13 @@
-const CustomKerning = function (ref) {
+const CustomKerning = function (node) {
 	const self = this;
 	this.nodes = {};
-	this.destroy = function () {
-
+	this.pairs = [];
+	this.destroy = function() {
+		// console.log("CustomKerning destroy");
+		// TODO
 	},
-		this.stick = function () {
-
-		},
-		this._init = function () {
-
-		}
-}
+	this._init = function() {
+		// console.log("CustomKerning init");
+		// TODO
+	}()
+};

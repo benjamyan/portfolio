@@ -114,6 +114,7 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
                 // Concat our client scripts into single file
                 files: {
                     "scripts/main.js": [
+                        path.resolve(staticScripts, 'utils.js'),
                         path.resolve(staticScripts, 'initial.js'),
                         path.resolve(staticScripts, 'Navigation.js'),
                         path.resolve(staticScripts, 'CatalogModal.js'),

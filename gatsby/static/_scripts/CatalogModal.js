@@ -1,54 +1,73 @@
-const CatalogModal = function(ref) {
+const CatalogModal = function(node) {
 	const self = this;
-	self.nodes = {
-		wrapper: ref,
-		list: ref.querySelector('*[data-keyname="project-list"]'),
-		image: ref.querySelector('*[data-keyname="project-image"]'),
+	this.nodes = {
+		wrapper: node,
+		list: node.querySelector('*[data-keyname="project-list"]'),
+		image: node.querySelector('*[data-keyname="project-image"]'),
 		frame: false
 	};
+	this.state = {
+		modal: false,
+		project: false
+	};
+	//
+	const transitions = {};
+	const modalFrameHtml = `
+		<div
+			data-catalog="modal"
+			style="position:absolute;top:0;left:0;width:100%;height:100%;">
+				<article></article>
+		</div>
+	`;
 	const updateHrefInModal = ()=> {
 		self.nodes.frame.href = '';
+	};
+	const listenToCatalogLinks = ()=> {
+		self.nodes.links = Array.from(self.nodes.list.getElementsByTagName('a'));
+		return self.nodes.links.forEach(
+			link => link.addEventListener('click', self.openProject)
+		);
+	};
+	function onModalStateChange() {
+
+	};
+	//
+	this.addProjectNode = function(data) {
+		console.log("open CatalogModal");
+		self.nodes.frame.querySelector
 	}
-	function listenToCatalogLinks() {
+	this.removeProjectNode = function(data) {
 
 	}
-	function buildIndividualProjectModal() {
-		// console.log("CatalogModal buildProjectModal");
-		self.nodes.image.insertAdjacentHTML(
-			'beforeend', 
-			`<iframe 
-				class="catalog-modal"
-				style="position:absolute;top:0;left:0;width:100%;height:100%;">
-			</iframe>`
-		);
-		self.nodes.frame = self.nodes.image.querySelector('.catalog-modal');
-	};
-	this.openProject = function() {
+	this.toggleProject = function(event) {
 		console.log("open CatalogModal");
-		// TODO
-	};
-	this.updateProject = function() {
-		console.log("update CatalogModal");
-		// TODO
-	};
-	this.closeProject = function() {
+		event.preventDefault();
+		console.log(self.state.project)
+		console.log(event.target)
+	}
+	this.hideProject = function() {
 		console.log("close CatalogModal");
 		// TODO
-	};
-	this.scrubModal = function() {
-
-	};
+	}
+	this.destory = function () {
+		console.log("destroy CatalogModal");
+		// TODO
+	}
 	this._init = function () {
 		try {
-			console.log("\ninit CatalogModal");
-			isInit = true;
-			return buildIndividualProjectModal();
+			// console.log("\ninit CatalogModal");
+			listenToCatalogLinks();
+			self.nodes.image.insertAdjacentHTML(
+				'beforeend', modalFrameHtml
+			);
+			self.nodes.frame = 
+				self.nodes.image.querySelector('div[data-catalog="modal"]');
+			return (
+				self.state.modal = true,
+				self.state.project = false
+			);
 		} catch (err) {
 			console.log(err)
 		}
-	}();
-	this._destory = function () {
-		console.log("destroy CatalogModal");
-		// TODO
-	};
-}
+	}()
+};

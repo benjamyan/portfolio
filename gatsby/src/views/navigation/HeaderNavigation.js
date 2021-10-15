@@ -49,7 +49,7 @@ export default function HeaderNavigation({ content }) {
 	content = JSON.parse(content);
 	try {
 		return (
-			<HeaderWrapper>
+			<HeaderWrapper id="bydHeaderNav">
 				{ headerContent(content.body) }
 			</HeaderWrapper>
 		);
