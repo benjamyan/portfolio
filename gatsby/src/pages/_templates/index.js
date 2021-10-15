@@ -81,7 +81,7 @@ export default function DOMContentWrapper({ ...props }) {
 				{ globals && globals['header-navigation'] &&
 					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
-				<IndexWrapper id="mainContent" className={ slug }>
+				<IndexWrapper id="mainContent" className={ slug } data-maincontent>
 					{ location.search.indexOf('_storyblok') > -1 ?
 						<StoryblokWrapper node={props} />
 						:
@@ -100,6 +100,10 @@ export default function DOMContentWrapper({ ...props }) {
 		);
 	};
 };
+export {
+	StoryblokWrapper,
+	ProductionWrapper
+}
 
 DOMContentWrapper.propTypes = {
 	pageContext: PropTypes.object,

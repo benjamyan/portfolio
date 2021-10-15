@@ -4,7 +4,9 @@ const CatalogModal = function(node) {
 		wrapper: node,
 		list: node.querySelector('*[data-keyname="project-list"]'),
 		image: node.querySelector('*[data-keyname="project-image"]'),
-		frame: false
+		frame: {},
+		links: [],
+		articles: {}
 	};
 	this.state = {
 		modal: false,
@@ -25,19 +27,37 @@ const CatalogModal = function(node) {
 	const listenToCatalogLinks = ()=> {
 		self.nodes.links = Array.from(self.nodes.list.getElementsByTagName('a'));
 		return self.nodes.links.forEach(
-			link => link.addEventListener('click', self.openProject)
+			link => link.addEventListener('click', self.toggleProject)
 		);
 	};
 	function onModalStateChange() {
 
 	};
 	//
-	this.addProjectNode = function(data) {
-		console.log("open CatalogModal");
-		self.nodes.frame.querySelector
+	this.addProjectNode = function(data=[]) {
+		const buildAndAppendNodeToFrame = (node)=> {
+			const newNode = self.nodes.frame.article.cloneNode();
+			newNode.dataset.projectname = node.slug;
+			newNode.style.display = 'none !important';
+			newNode.innerHTML = window._byd.renderedPages[node.slug].innerHTML;
+			return newNode
+		}
+		return data.forEach(
+			node => {
+				const newNode = buildAndAppendNodeToFrame(node);
+				self.nodes.frame.wrapper.insertAdjacentHTML(
+					'beforeend', newNode.outerHTML
+				);
+				self.nodes.articles[node.slug] =
+					self.nodes.frame.wrapper.querySelector(`[data-projectname=${node.slug}]`);
+				return self.nodes.articles[node.slug].setAttribute(
+					'style', 'display:none !important;'
+				);
+			}
+		);
 	}
 	this.removeProjectNode = function(data) {
-
+		
 	}
 	this.toggleProject = function(event) {
 		console.log("open CatalogModal");
@@ -45,29 +65,27 @@ const CatalogModal = function(node) {
 		console.log(self.state.project)
 		console.log(event.target)
 	}
-	this.hideProject = function() {
-		console.log("close CatalogModal");
-		// TODO
-	}
 	this.destory = function () {
 		console.log("destroy CatalogModal");
 		// TODO
 	}
 	this._init = function () {
 		try {
-			// console.log("\ninit CatalogModal");
 			listenToCatalogLinks();
 			self.nodes.image.insertAdjacentHTML(
 				'beforeend', modalFrameHtml
 			);
-			self.nodes.frame = 
+			self.nodes.frame.wrapper = 
 				self.nodes.image.querySelector('div[data-catalog="modal"]');
+			self.nodes.frame.article =
+				self.nodes.frame.wrapper.firstElementChild;
+		} catch (err) {
+			console.log(err);
+		} finally {
 			return (
 				self.state.modal = true,
 				self.state.project = false
 			);
-		} catch (err) {
-			console.log(err)
 		}
 	}()
 };

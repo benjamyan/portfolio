@@ -27,10 +27,9 @@ const modules = {
 		if (!this._directory[moduleName]) {
 			this._directory[moduleName] = [];
 		};
-		return (
-			this[moduleKey] = new Module(node, modules),
-			this._directory[moduleName].push(moduleKey)
-		);
+		this[moduleKey] = new Module(node, modules);
+		this._directory[moduleName].push(moduleKey);
+		return moduleKey;
 	},
 	_remove(moduleKey) {
 		return (
@@ -39,3 +38,49 @@ const modules = {
 		);
 	}
 };
+/********************************************
+ * Some state stuff *************************
+ *******************************************/
+let context = {
+	isInit: false,
+	win: {}
+};
+/********************************************
+ * Proxy watchers ***************************
+ *******************************************/
+const proxies = {
+	pageData({ _byd }) {
+		let oldData = [ ..._byd.pageData ];
+		const isolateNewData = (newData)=> {
+			return newData.map(
+				(item, i) => !oldData[i] ? item : false
+			).filter(Boolean);
+		};
+		const updateModules = (catalogModule)=> {
+			const newData = [..._byd.pageData];
+			catalogModule.forEach(
+				(catalog) => {
+					const isolatedData = isolateNewData(newData);
+					return (
+						oldData = newData,
+						modules[catalog].addProjectNode(isolatedData)
+					);
+				}
+			);
+			return context.win.pageData = newData
+		};
+		return utils.watchObject(
+			_byd.pageData, ()=> {
+				const catalogModule = modules._directory.CatalogModal;
+				if (catalogModule.length > 0) {
+					if (oldData.length !== _byd.pageData.length) {
+						return updateModules(catalogModule)
+					}
+				}
+			}
+		);
+	},
+	_init() {
+		window._byd.proxies['pageData'] = this.pageData(window);
+	}
+}

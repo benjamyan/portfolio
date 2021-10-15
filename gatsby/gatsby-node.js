@@ -8,6 +8,7 @@ const SingleFile = require('webpack-merge-and-include-globally');
 const ENV = process.env.NODE_ENV;
 //
 const _sb = {
+    buildLocation: ENV === 'development' ? '_storyblok' : 'benyan',
     storyMap: {},
     globalComponents: {}
 };
@@ -84,7 +85,7 @@ exports.createPages = async function({ actions, graphql }) {
                         pages: _sb.storyMap,
                         globals: _sb.globalComponents,
                         location: {
-                            search: ENV === 'development' ? '_storyblok' : 'benyan'
+                            search: _sb.buildLocation
                         }
                     }
                 });
@@ -133,7 +134,8 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
                     DEV_URL: JSON.stringify(process.env.DEV_URL),
                     STAGE_URL: JSON.stringify(process.env.STAGE_URL),
                     PROD_URL: JSON.stringify(process.env.PROD_URL),
-                    STORY_MAP: JSON.stringify(_sb.storyMap)
+                    STORY_MAP: JSON.stringify(_sb.storyMap),
+                    LOCATION: JSON.stringify(_sb.buildLocation)
                 }
             })
         ]
