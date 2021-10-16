@@ -7,7 +7,6 @@ https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap
 https://www.gatsbyjs.com/plugins/gatsby-plugin-catch-links/
 https://www.gatsbyjs.com/plugins/gatsby-plugin-create-client-paths/
 */
-//
 module.exports = {
   siteMetadata: {
     title: `SurfAir Gatsby StoryBlok`,
@@ -33,20 +32,20 @@ module.exports = {
         ]
       }
     }, 
-    {
-      resolve: `gatsby-plugin-page-creator`,
-      options: {
-        path: `${__dirname}/static`,
-        ignore: [
-          `_scripts/*`,
-          `_scripts/*.js`,
-          `_scripts/*/*.js`,
-          `_plugin/*`,
-          `_plugin/*.js`,
-          `_plugin/*/*.js`
-        ]
-      }
-    },
+    // {
+    //   resolve: `gatsby-plugin-page-creator`,
+    //   options: {
+    //     path: `${__dirname}/static`,
+    //     ignore: [
+    //       `_scripts/*`,
+    //       `_scripts/*.js`,
+    //       `_scripts/*/*.js`,
+    //       `_plugin/*`,
+    //       `_plugin/*.js`,
+    //       `_plugin/*/*.js`
+    //     ]
+    //   }
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {

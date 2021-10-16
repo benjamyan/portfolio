@@ -94,7 +94,7 @@ GridColumnsWithContent.propTypes = {
 };
 GridContent.propTypes = {
   content: PropTypes.object.isRequired,
-  totalContentsLength: PropTypes.number.isRequired,
+  totalContentsLength: PropTypes.number,
 };
 
 export const storyblok = [

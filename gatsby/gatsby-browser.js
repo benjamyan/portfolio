@@ -7,28 +7,35 @@ const ReactDOM = require('react-dom');
 exports.onClientEntry = () => {
     // console.log("onClientEntry");
     //
-    const randomString = ()=> Math.random().toString(36).slice(2);
+    // assign our global variables and other desirables to the window
+    window._byd = {
+        sbStoryMap: global.STORY_MAP,   // list of all stories
+        pageData: [],   // page data as its passed through gatsby
+        buildEnv: global.SB_ENV,    // the build env of gatsby
+        buildLocation: global.Location,
+        proxies: {},        // object proxies watching for changes
+        renderDiv: window.document.getElementById(renderDumpId),    // node to render pages into
+        renderedPages: {}   // object of rendered pages
+    };
+    //
+    // build dump for html needing to be preloaded somewhere
+    const randomString = () => Math.random().toString(36).slice(2);
     const renderDumpId = '_render_' + randomString() + '_' + randomString();
     window.document.body.insertAdjacentHTML(
         'beforeend',
         `<div id="${renderDumpId}" style="display:none!important;"></div>`
     );
-    window._byd = {
-        sbStoryMap: global.STORY_MAP,
-        pageData: [],
-        buildEnv: global.SB_ENV,
-        buildLocation: global.Location,
-        proxies: {},
-        renderDiv: window.document.getElementById(renderDumpId),
-        renderedPages: {}
-    };
 };
 exports.onInitialClientRender = () => {
     // console.log("onInitialClientRender");
-    window.initMain()
-        .catch(
-            err => console.warn(err)
-        );
+    try {
+        window.initMain()
+            .then(
+                ()=> console.log('All done!')
+            );
+    } catch (err) {
+        console.log(err)
+    }
 };
 exports.onPrefetchPathname = ({...props})=> {
     // console.log("onPrefetchPathname")
@@ -49,16 +56,19 @@ exports.onPostPrefetchPathname = async ({ pathname, ...props })=> {
         .then(
             (res) => {
                 const { renderDiv, renderedPages, proxies } = window._byd;
-                const Component = res.component;
                 const resJson = processJsonResponse(res);
                 const SLUG = resJson.slug;
+                const Component = res.component;
                 renderDiv.insertAdjacentHTML(
                     'beforeend', 
                     `<div data-pageslug="${SLUG}"></div>`
                 );
                 renderedPages[SLUG] = renderDiv.querySelector(`div[data-pageslug="${SLUG}"]`);
                 ReactDOM.render(
-                    <Component pageContext={resJson._base.json.pageContext} />,
+                    <Component 
+                        pageContext={resJson._base.json.pageContext}
+                        restrictRender={'main'}
+                    />,
                     renderedPages[SLUG]
                 );
                 renderedPages[SLUG].innerHTML = 

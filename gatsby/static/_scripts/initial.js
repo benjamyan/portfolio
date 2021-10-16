@@ -42,7 +42,7 @@ const modules = {
  * Some state stuff *************************
  *******************************************/
 let context = {
-	isInit: false,
+	isInit: true,
 	win: {}
 };
 /********************************************
@@ -63,7 +63,7 @@ const proxies = {
 					const isolatedData = isolateNewData(newData);
 					return (
 						oldData = newData,
-						modules[catalog].addProjectNode(isolatedData)
+						modules[catalog].addNode(isolatedData)
 					);
 				}
 			);

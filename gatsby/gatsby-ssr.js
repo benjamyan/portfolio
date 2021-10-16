@@ -5,9 +5,13 @@ const React = require("react");
 
 exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 	// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody
-	console.log('\n-- onRenderBody');
+	// console.log('\n-- onRenderBody');
 	//
 	try {
+		/* * *
+		* * *
+		* Pre body 
+		* * */
 		const baseUrl = function () {
 			switch (global.SB_ENV) {
 				case 'serving':
@@ -25,9 +29,14 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 		setPreBodyComponents([
 			<base href={ baseUrl } />
 		]);
-		setPostBodyComponents([
-			<script type="text/javascript" src="/scripts/main.js"></script>
-		]);
+		/* * *
+		* * *
+		* POST BODY
+		* * */
+		const scripts = global.CLIENT_SCRIPTS.map( 
+			script=> <script type="text/javascript" src={`_scripts/${script}`} />
+		);
+		setPostBodyComponents(scripts);
 	} catch (err) {
 		console.log(err);
 	};

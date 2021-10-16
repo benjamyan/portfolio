@@ -19,6 +19,6 @@ async function initMain() {
 	} catch (err) {
 		console.log(err);
 	} finally {
-		return;
+		return context.isInit = false;
 	};
 };

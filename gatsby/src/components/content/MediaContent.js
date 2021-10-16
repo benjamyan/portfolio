@@ -16,7 +16,7 @@ const MediaContentStyled = styled.div`
     }
     ${ ({overlay})=> ( overlay && `
 		&::before {
-			content: ' ';
+			// content: ' ';
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -28,6 +28,21 @@ const MediaContentStyled = styled.div`
 		}
 	`)}
     ${ ({settings})=> settings }
+`;
+const MediaOverlay = styled.div`
+	display: none;
+    ${ ({ overlay }) => (overlay && `
+		display: block;
+		content: ' ';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		opacity: 0.${overlay};
+		background-color: var(--main-color);
+	`)}
 `;
 const MediaContentAsset = ({ asset }) => {
 	if (asset.video && asset.video.length > 0) {
@@ -46,8 +61,8 @@ export default function MediaContent({ sbAsset, settings, overlay, htmlAttrs }) 
 				<MediaContentStyled 
 					{ ...htmlAttrs }
 					settings={ settingsResolver(settings) }
-					overlay={ overlay }
 					className={'media-content'}>
+						<MediaOverlay overlay={overlay} />
 						<MediaContentAsset asset={sbAsset[0]} />
 				</MediaContentStyled>
 			);
