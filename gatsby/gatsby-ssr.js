@@ -34,7 +34,7 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 		* POST BODY
 		* * */
 		const scripts = global.CLIENT_SCRIPTS.map( 
-			script=> <script type="text/javascript" src={`_scripts/${script}`} />
+			script=> <script type="text/javascript" src={`scripts/${script}`} />
 		);
 		setPostBodyComponents(scripts);
 	} catch (err) {

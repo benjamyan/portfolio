@@ -2,6 +2,7 @@
 console.log('*\n* gatsby-node\n*');
 //
 require('dotenv').config();
+const config = require('./gatsby-config');
 const express = require('express');
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
@@ -10,17 +11,7 @@ const _sb = {
     buildLocation: ENV === 'development' ? '_storyblok' : 'benyan',
     storyMap: {},
     globalComponents: {},
-    clientScripts: [
-        'plugins.js',
-        'utils.js',
-        'initial.js',
-        'Navigation.js',
-        'CatalogModal.js',
-        'StickyElement.js',
-        'MagicText.js',
-        'CustomKerning.js',
-        'app.js'
-    ]
+    clientScripts: config.siteMetadata.clientScripts
 };
 
 exports.createPages = async function({ actions, graphql }) {
@@ -60,7 +51,7 @@ exports.createPages = async function({ actions, graphql }) {
             slug: data.slug,
             full_slug: data.full_slug,
             link: function() {
-                if (process.env.SB_ENV === 'development') {
+                if (config.flags.SB_ENV === 'development') {
                     return process.env.DEV_URL + data.full_slug;
                 }
                 return process.env.PROD_URL + data.full_slug;
@@ -119,7 +110,7 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     console.log("\n-- onCreateWebpackConfig");
-    const staticScripts = __dirname + '/static/_scripts/';
+    const staticScripts = __dirname + '/static/scripts/';
     if (ENV === 'production') {
         actions.setWebpackConfig({
             plugins: [
@@ -145,7 +136,7 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
         plugins: [
             plugins.define({ // Allows usage of env variables through webpack globals
                 global: {
-                    SB_ENV: JSON.stringify(process.env.SB_ENV),
+                    SB_ENV: JSON.stringify(config.flags.SB_ENV),
                     SERVE_URL: JSON.stringify(process.env.SERVE_URL),
                     DEV_URL: JSON.stringify(process.env.DEV_URL),
                     STAGE_URL: JSON.stringify(process.env.STAGE_URL),

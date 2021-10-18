@@ -1,4 +1,4 @@
-const StickyElement = function(ref) {
+const StickyElement = function(ref, boundaries) {
 	const self = this;
 	this.nodes = {};
 	this.destroy = function() {
