@@ -148,7 +148,12 @@ const CatalogModal = function(node) {
 			transition.fadeIn(frame.content[slug]);
 			Array.from(image.children)
 				.forEach(child => {
-					child !== frame.wrapper && transition.fadeOut(child);
+					if (child !== frame.wrapper) {
+						transition.fadeOut(
+							child,
+							() => child.style.pointerEvents = 'none'
+						)
+					}
 				});
 			_nodes.wrapper.classList.add('active');
 			_nodes.overlay.addEventListener(
@@ -195,9 +200,6 @@ const CatalogModal = function(node) {
 	this.destory = function() {
 		console.log("- destroy");
 		// TODO
-	}
-	this._refresh = function() {
-
 	}
 	this._init = function() {
 		console.log("-- CatalogModal");

@@ -9,9 +9,6 @@ const homepage = function(){
 		main {
 			> #catalog {
 				overflow: hidden;
-				* {
-					// transition: 0.35s;
-				}
 				div[${catalog.list}] {
 					h2:not(:last-of-type) {
 						padding-bottom: 150px;
@@ -30,9 +27,6 @@ const homepage = function(){
 						opacity: 1;
 						background-color: rgba(9,179,175,0.75);
 					}
-					// > * {
-					// 	transition: 0.35s;
-					// }
 				}
 				&.active {
 					.catalog-overlay {
