@@ -85,7 +85,7 @@ const SingleColumn = styled.div`
 			&:nth-child(3) {
 				margin-bottom: 0;
 			}
-			.text-content {
+			.text_content {
 				position: absolute;
 				width: 75%;
 				top: 15%;
@@ -104,7 +104,7 @@ const SingleColumn = styled.div`
 					float: right;
 				}
 			}
-			.media-content {
+			.media_content {
 				position: relative;
 				overflow: hidden;
 				border: 2px solid #333;

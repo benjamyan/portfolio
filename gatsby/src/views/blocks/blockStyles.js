@@ -11,7 +11,7 @@ const contentBlockCardView = `
 	&:last-child {
 		padding-bottom: 50px;
 	}
-	.text-content {
+	.text_content {
 		// position: absolute;
 		// width: 75%;
 		// top: 15%;
@@ -35,7 +35,7 @@ const contentBlockCardView = `
 			}
 		}
 	}
-	// .media-content {
+	// .media_content {
 	// 	position: relative;
 	// 	overflow: hidden;
 	// 	border: 2px solid #333;

@@ -2,37 +2,44 @@ const CatalogModal = function(node) {
 	const self = this;
 	this.nodes = {
 		wrapper: node,
-		list: node.querySelector('*[data-keyname="project-list"]'),
-		image: node.querySelector('*[data-keyname="project-image"]'),
+		overlay: false,
+		list: node.querySelector('*[data-catalog="list"]'),
+		image: node.querySelector('*[data-catalog="image"]'),
+		links: Array.from(node.getElementsByTagName('a')),
 		frame: {
 			wrapper: false,
 			article: false,
 			content: {}
-		},
-		// articles: {},
-		links: []
+		}
 	};
 	this.state = {
 		project: false,
-		setProject: (str)=> self.state.project = str
+		setProject: (val)=> self.state.project = val
 	};
 	const _nodes = self.nodes;
-	const { project, setProject } = self.state;
+	const _state = self.state;
+	const { setProject } = _state;
 	//
 	const transition = {
-		fadeIn(targetEl) {
-			console.log('- transition.fadeIn');
+		fadeIn(targetEl, cb=null) {
+			// console.log('- transition.fadeIn');
 			//
 			targetEl.style.display = 'block';
 			gsap.to(targetEl, {
 				duration: 0.5,
 				delay: 0.1,
 				opacity: 1,
-				ease: "sine.out"
+				ease: "sine.out",
+				onComplete: !!cb && cb
 			});
 		},
-		fadeOut(targetEl) {
-
+		fadeOut(targetEl, cb=null) {
+			gsap.to(targetEl, {
+				duration: 0.5,
+				opacity: 0,
+				ease: "sine.out",
+				onComplete: !!cb && cb
+			});
 		},
 		clearSizeChange(targetEl) {
 
@@ -44,7 +51,7 @@ const CatalogModal = function(node) {
 				);
 			}
 			return gsap.to(targetEl, {
-				duration: 0.5,
+				duration: 1,
 				opacity: 0,
 				transform: 'scale(0.975)',
 				ease: "sine.out",
@@ -74,7 +81,7 @@ const CatalogModal = function(node) {
 		}
 	};
 	const listenToCatalogLinks = ()=> {
-		_nodes.links = Array.from(_nodes.list.getElementsByTagName('a'));
+		// _nodes.links = ;
 		return _nodes.links.forEach(
 			link => link.addEventListener('click', self.changeActive)
 		);
@@ -110,7 +117,7 @@ const CatalogModal = function(node) {
 			newNode.dataset.projectname = node.slug;
 			newNode.style.display = 'none !important';
 			newNode.innerHTML = 
-				window._byd.renderDump.ref[node.slug].innerHTML;
+				window._byd.renderDump.ref[node.slug].querySelector('main').innerHTML;
 			return newNode;
 		};
 		for (let i = 0; i < nodeDataGroup.length; i++) {
@@ -118,7 +125,7 @@ const CatalogModal = function(node) {
 			const SLUG = NODE.slug;
 			const newNode = newNodeForFrame(NODE);
 			_nodes.frame.wrapper.insertAdjacentHTML(
-				'beforeend', newNode.innerHTML
+				'beforeend', newNode.outerHTML
 			);
 			_nodes.frame.content[SLUG] =
 				_nodes.frame.wrapper.querySelector(`[data-projectname=${SLUG}]`);
@@ -132,43 +139,75 @@ const CatalogModal = function(node) {
 	}
 	this.toggleModal = function(slug) {
 		// console.log("- toggleModal");
-		if (!project) {
-			const { frame, image } = _nodes;
-			const modalParent = frame.wrapper.parentElement;
-			modalParent.classList.add('active');
-			// frame.wrapper.style.height = 'auto';
-			transition.fadeIn(
-				frame.content[slug]
+		const { frame, image } = _nodes;
+		if (!_state.project) {
+			// console.log("- - modal closed");
+			// if the modal is closed
+			//
+			utils.scroll.disable(document.body);
+			transition.fadeIn(frame.content[slug]);
+			Array.from(image.children)
+				.forEach(child => {
+					child !== frame.wrapper && transition.fadeOut(child);
+				});
+			_nodes.wrapper.classList.add('active');
+			_nodes.overlay.addEventListener(
+				'click', self.toggleModal
+			);
+			setProject(slug);
+		} else {
+			// console.log("- - modal open");
+			// if the modal is open
+			//
+			utils.scroll.enable(document.body);
+			transition.fadeOut(
+				frame.content[_state.project]
 			);
 			Array.from(image.children)
 				.forEach(child => {
 					if (child !== frame.wrapper) {
-						transition.fadeOutNodeGetSmol(child);
+						transition.fadeIn(
+							child, 
+							()=> {
+								child.removeAttribute('style')
+							}
+						);
 					}
 				});
-		};
+			_nodes.wrapper.classList.remove('active');
+			setProject(false);
+		}
 	}
 	this.changeActive = function(event) {
 		// console.log("- changeActive");
 		event.preventDefault();
 		try {
 			const linkSlug = event.target.href.split('/').at(-1);
-			if (!project) { // if a project was not active
+			if (!_state.project) { // if a project was not active
 				return self.toggleModal(linkSlug);
 			};
-			setProject(linkSlug);
+			// setProject(linkSlug);
 		} catch (err) {
 			console.log(err)
-			setProject(false);
+			// setProject(false);
 		}
 	}
-	this.destory = function () {
+	this.destory = function() {
 		console.log("- destroy");
 		// TODO
 	}
-	this._init = function () {
+	this._refresh = function() {
+
+	}
+	this._init = function() {
 		console.log("-- CatalogModal");
 		try {
+			_nodes.wrapper.insertAdjacentHTML(
+				'afterbegin',
+				`<div class="catalog-overlay"></div>`
+			);
+			_nodes.overlay =
+				_nodes.wrapper.querySelector('.catalog-overlay');
 			_nodes.image.insertAdjacentHTML(
 				'beforeend', `
 					<div 

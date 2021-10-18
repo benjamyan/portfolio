@@ -1,28 +1,29 @@
-	console.log('*\n* gatsby-config\n*');
-	/*
-	https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
-	https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
-	https://www.gatsbyjs.com/plugins/gatsby-plugin-typescript
-	https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap
-	https://www.gatsbyjs.com/plugins/gatsby-plugin-catch-links/
-	https://www.gatsbyjs.com/plugins/gatsby-plugin-create-client-paths/
-	*/
-	module.exports = {
+// console.log('*\n* gatsby-config\n*');
+/*
+https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-minify/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-typescript
+https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap
+https://www.gatsbyjs.com/plugins/gatsby-plugin-catch-links/
+https://www.gatsbyjs.com/plugins/gatsby-plugin-create-client-paths/
+*/
+module.exports = {
 	siteMetadata: {
-	author: `@benjamyan`,
-	title: `benyan.dev`,
-	description: `Portfolio site of Benjamin Yannella.`,
-	clientScripts: [
-		'plugins.js',
-		'utils.js',
-		'initial.js',
-		'Navigation.js',
-		'StickyElement.js',
-		'CatalogModal.js',
-		'MagicText.js',
-		'CustomKerning.js',
-		'app.js'
-	]
+		author: `@benjamyan`,
+		title: `benyan.dev`,
+		description: `Portfolio site of Benjamin Yannella.`,
+		clientScripts: [
+			'plugins.js',
+			'utils.js',
+			'initial.js',
+			'Navigation.js',
+			'StickyElement.js',
+			'CatalogModal.js',
+			'MagicText.js',
+			'KillWidows.js',
+			'CustomKerning.js',
+			'app.js'
+		]
 	},
 	flags: {
 		SB_ENV: function() {

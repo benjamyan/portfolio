@@ -36,9 +36,9 @@ exports.onInitialClientRender = () => {
     // console.log("onInitialClientRender");
     try {
         window.initMain()
-            .then(
-                ()=> console.log('All done!')
-            );
+            // .then(
+            //     ()=> console.log('All done!')
+            // );
     } catch (err) {
         console.log(err)
     }

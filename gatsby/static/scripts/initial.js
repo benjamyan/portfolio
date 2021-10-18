@@ -11,30 +11,27 @@ const DOM = {
  * Page modules *****************************
  *******************************************/
 const modules = {
-	_directory: {},
-	_add(node, Module) {
+	directory: {},
+	add(node, Module) {
 		const moduleName = Module.name;
-		const moduleKey = (
-			utils.randomString() 
-				+ '_' 
-				+ moduleName.replace(/[^A-Z]+/g, "")
-		).trim();
+		const moduleKey =
+			`_${utils.randomString()}_${moduleName.replace(/[^A-Z]+/g, "")}`;
 		if (node.dataset.module) {
 			node.dataset.module += '++' + moduleKey;
 		} else {
 			node.dataset.module = moduleKey;
 		};
-		if (!this._directory[moduleName]) {
-			this._directory[moduleName] = [];
+		if (!this.directory[moduleName]) {
+			this.directory[moduleName] = [];
 		};
 		this[moduleKey] = new Module(node, modules);
-		this._directory[moduleName].push(moduleKey);
+		this.directory[moduleName].push(moduleKey);
 		return moduleKey;
 	},
-	_remove(moduleKey) {
+	remove(moduleKey) {
 		return (
 			delete this[moduleKey],
-			delete this._directory[moduleName]
+			delete this.directory[moduleName]
 		);
 	}
 };
@@ -70,8 +67,11 @@ const proxies = {
 			return context.win.pageData = newData
 		};
 		return utils.watchObject(
-			_byd.pageData, ()=> {
-				const catalogModule = modules._directory.CatalogModal;
+			_byd.pageData, () => {
+				if (!modules.directory.CatalogModal) {
+					modules.directory.CatalogModal = []
+				}
+				const catalogModule = modules.directory.CatalogModal;
 				if (catalogModule.length > 0) {
 					if (oldData.length !== _byd.pageData.length) {
 						return updateModules(catalogModule)
@@ -80,7 +80,7 @@ const proxies = {
 			}
 		);
 	},
-	_init() {
+	init() {
 		window._byd.proxies['pageData'] = this.pageData(window);
 	}
-}
+};

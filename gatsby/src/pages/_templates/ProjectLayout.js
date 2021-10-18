@@ -4,7 +4,7 @@ import { MainContent } from '.';
 // import DOMContentWrapper, { MainContent } from '.';
 
 export default function ProjectLayout({ pageContext, restrictRender = '' }) {
-	console.log("ProjectLayout");
+	// console.log("ProjectLayout");
 	// if (restrictRender === 'main') {
 		return (
 			<MainContent 

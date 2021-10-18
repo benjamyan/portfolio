@@ -1,3 +1,10 @@
+const initialModules = ()=> {
+	proxies.init();
+	modules.add(DOM.header, Navigation);
+	modules.add(DOM.main, CustomKerning);
+	modules.add(DOM.main, KillWidows);
+}
+
 /********************************************
  * Entry point - called from gatsby-browser *
  *******************************************/
@@ -5,15 +12,13 @@ async function initMain() {
 	// console.log("\n-- initMain");
 	try {
 		context.win = { ...window._byd };
-		proxies._init();
-		modules._add( DOM.header, Navigation );
-		modules._add( DOM.main, CustomKerning );
+		initialModules();
 		if (DOM.catalog) {
-			modules._add(DOM.catalog, CatalogModal);
+			modules.add(DOM.catalog, CatalogModal);
 		};
 		if (DOM.magicText.length > 0) {
 			DOM.magicText.forEach(
-				textNode=> modules._add( textNode, MagicText )
+				textNode=> modules.add( textNode, MagicText )
 			);
 		};
 	} catch (err) {

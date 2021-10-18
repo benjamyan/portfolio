@@ -11,7 +11,7 @@ export default function TextContent({ sbCopy, settings = '', htmlAttrs={} }) {
 	return (
     <TextWrapper 
       {...htmlAttrs}
-      className={'text-content'}
+      className={'text_content'}
       settings={ settingsResolver(settings) }>
         { RichtextResolver(sbCopy) }
 		</TextWrapper>

@@ -61,9 +61,9 @@ export default function MediaContent({ sbAsset, settings, overlay, htmlAttrs }) 
 				<MediaContentStyled 
 					{ ...htmlAttrs }
 					settings={ settingsResolver(settings) }
-					className={'media-content'}>
-						<MediaOverlay overlay={overlay} />
-						<MediaContentAsset asset={sbAsset[0]} />
+					className={'media_content'}>
+						<MediaOverlay className={'media_content-overlay'} overlay={overlay} />
+					<MediaContentAsset className={'media_content-asset'} asset={sbAsset[0]} />
 				</MediaContentStyled>
 			);
 		};

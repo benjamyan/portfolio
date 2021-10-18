@@ -11,14 +11,14 @@ const textH1 = `
 `;
 const textH2 = `
     ${ fonts.archivo }
-    font-size: 100px;
-    font-size: calc(86px + (120 - 86) * ((99vw - 300px) / (1900 - 300)));
+    font-size: 84px;
+    font-size: calc(77px + (106 - 77) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: 1px;
 `;
 const textH3 = `
     ${fonts.archivo}
     font-size: 38px;
-    font-size: calc(42px + (60 - 42) * ((100vw - 300px) / (1900 - 300)));
+    font-size: calc(36px + (50 - 36) * ((100vw - 300px) / (1900 - 300)));
 `;
 const textH4 = `
     ${fonts.robotoMono}
