@@ -7,22 +7,63 @@ import PropTypes from 'prop-types';
 import SbEditable from 'storyblok-react';
 import { dictionary, utils } from '../..';
 
+const processDatasetAttrib = (datasets)=> {
+	const attribsToReturn = {};
+	const getSingleDataset = (dataset) => {
+		const dataSplit = dataset.split('=');
+		if (!dataSplit[0].startsWith('data-')) {
+			dataSplit[0] = 'data-' + dataSplit[0];
+		};
+		return (
+			attribsToReturn[dataSplit[0].trim()] = dataSplit[1].trim()
+		);
+	}
+	if (datasets.indexOf(' ') > -1) {
+		datasets.split(' ').forEach(
+			dataset => getSingleDataset(dataset)
+		);
+	} else {
+		getSingleDataset(datasets)
+	};
+	return attribsToReturn;
+}
+const buildHtmlAttrsObj = (componentProps)=> {
+	const {
+		id = '',
+		keyname = '',
+		sbHtmlAttrs = {}
+	} = componentProps;
+	const attribsToReturn = {};
+	if (id.length > 0) {
+		attribsToReturn['id'] = id;
+	};
+	if (keyname.length > 1) {
+		attribsToReturn['data-keyname'] = keyname;
+	};
+	if (Object.entries(sbHtmlAttrs).length > 0) {
+		if (sbHtmlAttrs.id.length > 0) {
+			attribsToReturn['id'] = sbHtmlAttrs.id;
+		};
+		if (sbHtmlAttrs.class.length > 0) {
+			attribsToReturn['className'] = sbHtmlAttrs.class;
+		};
+		if (sbHtmlAttrs.datasets.length > 0) {
+			const newDataSets = processDatasetAttrib(
+				sbHtmlAttrs.datasets
+			);
+			Object.assign(attribsToReturn, newDataSets);
+		};
+	};
+	return attribsToReturn;
+};
 const filterSingleComponent = (componentProps)=> {
 	const {
 		component,
-		editable = true,
-		keyname='',
-		id=''
+		editable = true
 	} = componentProps;
 	const Component = dictionary[component];
-	const componentAttrs = {};
-	if (keyname.length > 1) {
-		componentAttrs['data-keyname'] = keyname;
-	};
-	if (id.length > 0) {
-		componentAttrs['id'] = id;
-	};
-	componentProps.htmlAttrs = componentAttrs;
+	componentProps.htmlAttrs = buildHtmlAttrsObj(componentProps);
+	delete componentProps.sbHtmlAttrs;
 	if (component.indexOf('global') > -1 || !editable) {
 		return (
 			<Component {...componentProps} />
@@ -34,17 +75,17 @@ const filterSingleComponent = (componentProps)=> {
 		</SbEditable>
 	);
 };
-const resolveGlobalComponent = ({ reference })=> {
+
+function resolveGlobalComponent({ reference }) {
 	return reference.map(
-		({slug, content})=> {
+		({ slug, content }) => {
 			const GlobalComponent = dictionary[slug];
 			return (
-				<GlobalComponent { ...content } key={ utils.getRandomString() } />
+				<GlobalComponent {...content} key={utils.getRandomString()} />
 			)
 		}
 	);
 };
-
 export default function ComponentResolver({ componentProps = [] }) {
 	try {
 		const { component } = componentProps;

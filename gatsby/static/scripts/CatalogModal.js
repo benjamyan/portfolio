@@ -31,7 +31,27 @@ const CatalogModal = function(node) {
 				ease: "sine.out"
 			});
 		},
-		fadeInGetBig(targetEl) {
+		fadeOut(targetEl) {
+
+		},
+		clearSizeChange(targetEl) {
+
+		},
+		fadeOutNodeGetSmol(targetEl) {
+			const onCompleteFunc = () => {
+				targetEl.setAttribute(
+					'style', `display: none !important;`
+				);
+			}
+			return gsap.to(targetEl, {
+				duration: 0.5,
+				opacity: 0,
+				transform: 'scale(0.975)',
+				ease: "sine.out",
+				onComplete: onCompleteFunc
+			})
+		},
+		fadeInModalGetBig(targetEl) {
 			// console.log('- transition.fadeIn')
 			//
 			// targetEl.setAttribute(
@@ -49,25 +69,8 @@ const CatalogModal = function(node) {
 				// height: `${window.height - 150}px`
 			});
 		},
-		backToOriginalSize(targetEl) {
+		fadeOutModalShrinkBack() {
 
-		},
-		fadeOut(targetEl) {
-
-		},
-		fadeOutGetSmol(targetEl) {
-			const onCompleteFunc = ()=> {
-				targetEl.setAttribute(
-					'style', `display: none !important;`
-				);
-			}
-			return gsap.to(targetEl, {
-				duration: 0.5,
-				opacity: 0,
-				transform: 'scale(0.975)',
-				ease: "sine.out",
-				onComplete: onCompleteFunc
-			})
 		}
 	};
 	const listenToCatalogLinks = ()=> {
@@ -115,7 +118,7 @@ const CatalogModal = function(node) {
 			const SLUG = NODE.slug;
 			const newNode = newNodeForFrame(NODE);
 			_nodes.frame.wrapper.insertAdjacentHTML(
-				'beforeend', newNode.outerHTML
+				'beforeend', newNode.innerHTML
 			);
 			_nodes.frame.content[SLUG] =
 				_nodes.frame.wrapper.querySelector(`[data-projectname=${SLUG}]`);
@@ -131,15 +134,16 @@ const CatalogModal = function(node) {
 		// console.log("- toggleModal");
 		if (!project) {
 			const { frame, image } = _nodes;
-			frame.wrapper.parentElement.style.overflow = 'hidden';
-			frame.wrapper.style.height = 'auto';
+			const modalParent = frame.wrapper.parentElement;
+			modalParent.classList.add('active');
+			// frame.wrapper.style.height = 'auto';
 			transition.fadeIn(
 				frame.content[slug]
 			);
 			Array.from(image.children)
 				.forEach(child => {
 					if (child !== frame.wrapper) {
-						transition.fadeOutGetSmol(child);
+						transition.fadeOutNodeGetSmol(child);
 					}
 				});
 		};
@@ -167,7 +171,8 @@ const CatalogModal = function(node) {
 		try {
 			_nodes.image.insertAdjacentHTML(
 				'beforeend', `
-					<div data-catalog="modal"
+					<div 
+						data-catalog="modal"
 						style="position:absolute;top:0;left:0;width:100%;height:100%;">
 							<article></article>
 					</div>
@@ -179,8 +184,8 @@ const CatalogModal = function(node) {
 		} catch (err) {
 			console.log(err);
 		} finally {
-			listenToCatalogLinks();
 			setProject(false);
+			listenToCatalogLinks();
 		}
 	}()
 };

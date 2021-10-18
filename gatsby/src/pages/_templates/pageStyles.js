@@ -6,6 +6,17 @@ const homepage = `
 					padding-bottom: 150px;
 				}
 			}
+			div[data-keyname='project-image'] {
+				height: auto;
+				&.active {
+					width: calc(100vw - 200px);
+					height: 100%;
+					overflow: scroll;
+					div[data-catalog='modal'] {
+
+					}
+				}
+			}
 		}
 	}
 `;
