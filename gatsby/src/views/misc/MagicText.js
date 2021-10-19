@@ -42,8 +42,14 @@ const RichtextWrapper = styled.div`
 	${ props => props.contentStyles }
 `;
 
-export default function MagicText({ magicText, magicSettings, magicType, htmlAttrs={} }) {
+export default function MagicText({ ...props }) {
 	try {
+		const { 
+			magicText, 
+			magicSettings, 
+			magicType, 
+			htmlAttrs = {}
+		} = props;
 		const cssSettings = settingsResolver(magicSettings);
 		const richtextStyle = function () {
 			switch (magicType) {
@@ -60,6 +66,7 @@ export default function MagicText({ magicText, magicSettings, magicType, htmlAtt
 		return (
 			<MagicContainer
 				{...htmlAttrs}
+				className={'magic-text'}
 				data-magictext={magicType}
 				magicType={magicType}
 				cssSettings={cssSettings}>

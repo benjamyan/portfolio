@@ -2,15 +2,18 @@
 console.log('*\n* gatsby-node\n*');
 //
 require('dotenv').config();
+const config = require('./gatsby-config');
 const express = require('express');
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
 const ENV = process.env.NODE_ENV;
-//
 const _sb = {
+    buildLocation: ENV === 'development' ? '_storyblok' : 'benyan',
     storyMap: {},
-    globalComponents: {}
+    globalComponents: {},
+    clientScripts: config.siteMetadata.clientScripts
 };
+
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
     //
@@ -48,7 +51,7 @@ exports.createPages = async function({ actions, graphql }) {
             slug: data.slug,
             full_slug: data.full_slug,
             link: function() {
-                if (process.env.SB_ENV === 'development') {
+                if (config.flags.SB_ENV === 'development') {
                     return process.env.DEV_URL + data.full_slug;
                 }
                 return process.env.PROD_URL + data.full_slug;
@@ -84,7 +87,7 @@ exports.createPages = async function({ actions, graphql }) {
                         pages: _sb.storyMap,
                         globals: _sb.globalComponents,
                         location: {
-                            search: ENV === 'development' ? '_storyblok' : 'benyan'
+                            search: _sb.buildLocation
                         }
                     }
                 });
@@ -105,45 +108,42 @@ exports.onCreatePage = ({ page, actions }) => {
         createPage(page);
     };
 };
-exports.onCreateWebpackConfig = ({ actions, getConfig, plugins, stage }) => {
+exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     console.log("\n-- onCreateWebpackConfig");
-    const staticScripts = __dirname + '/static/_scripts/';
-    console.log(path.resolve(staticScripts, 'app.js'))
+    const staticScripts = __dirname + '/static/scripts/';
+    if (ENV === 'production') {
+        actions.setWebpackConfig({
+            plugins: [
+                new SingleFile({
+                    files: { // Concat our client scripts into single file
+                        "scripts/main.js": [
+                            path.resolve(staticScripts, 'plugins.js'),
+                            path.resolve(staticScripts, 'utils.js'),
+                            path.resolve(staticScripts, 'initial.js'),
+                            path.resolve(staticScripts, 'Navigation.js'),
+                            path.resolve(staticScripts, 'CatalogModal.js'),
+                            path.resolve(staticScripts, 'StickyElement.js'),
+                            path.resolve(staticScripts, 'MagicText.js'),
+                            path.resolve(staticScripts, 'CustomKerning.js'),
+                            path.resolve(staticScripts, 'app.js')
+                        ]
+                    }
+                })
+            ]
+        })
+    };
     actions.setWebpackConfig({
-        /*
-        node: {
-            fs: 'empty'
-        },
-        resolve: {
-            fallback: {
-                'fs': false,
-                'os': require.resolve('os-browserify/browser'),
-                'path': require.resolve('path-browserify')
-            }
-        },
-        // All this takes care of errors caused by importing env vars
-        // Fruitless, however, since env vars stil breaks gatsby
-        */
-        //
         plugins: [
-            new SingleFile({
-                // Concat our client scripts into single file
-                files: {
-                    "scripts/main.js": [
-                        path.resolve(staticScripts, 'CatalogModal.js'),
-                        path.resolve(staticScripts, 'app.js')
-                    ]
-                }
-            }),
-            plugins.define({
-                // Allows usage of env variables through webpack globals
+            plugins.define({ // Allows usage of env variables through webpack globals
                 global: {
-                    SB_ENV: JSON.stringify(process.env.SB_ENV),
+                    SB_ENV: JSON.stringify(config.flags.SB_ENV),
                     SERVE_URL: JSON.stringify(process.env.SERVE_URL),
                     DEV_URL: JSON.stringify(process.env.DEV_URL),
                     STAGE_URL: JSON.stringify(process.env.STAGE_URL),
                     PROD_URL: JSON.stringify(process.env.PROD_URL),
-                    STORY_MAP: JSON.stringify(_sb.storyMap)
+                    STORY_MAP: JSON.stringify(_sb.storyMap),
+                    LOCATION: JSON.stringify(_sb.buildLocation),
+                    CLIENT_SCRIPTS: JSON.stringify(_sb.clientScripts)
                 }
             })
         ]

@@ -47,11 +47,34 @@ const IndexWrapper = styled.main`
 	position: relative;
 	width: 100%;
 	height: auto;
+	overflow: hidden;
 `;
 
+function MainContent({ slug, ...props }) {
+	// let ContentBlock;
+	// if (location.search.indexOf('_storyblok') > -1) {
+	// 	ContentBlock = StoryblokWrapper
+	// } else {
+	// 	ContentBlock = ProductionWrapper
+	// };
+	// return (
+	// 	<IndexWrapper id="mainContent" className={slug} data-maincontent>
+	// 		<ContentBlock node={props} />
+	// 	</IndexWrapper>
+	// );
+	return (
+		<IndexWrapper id="mainContent" className={slug} data-maincontent>
+			{ props.location.search.indexOf('_storyblok') > -1 ?
+				<StoryblokWrapper node={props} />
+				:
+				<ProductionWrapper node={props} />
+			}
+		</IndexWrapper>
+	)
+};
 export default function DOMContentWrapper({ ...props }) {
 	try {
-		const badMsg = `Bad render in pages > tempates > index`
+		const badMsg = `Bad render in pages > tempates > index`;
 		const pageContent = function() {
 			if (props.pageContext) {
 				const contentProp = props.pageContext.data.content;
@@ -63,7 +86,6 @@ export default function DOMContentWrapper({ ...props }) {
 			return false;
 		}();
 		const {
-			location,
 			// pages = pageContent ? props.pageContext.pages : { msg: badMsg },
 			globals = pageContent ? props.pageContext.globals : { msg: badMsg },
 			slug = pageContent ? props.pageContext.data.slug : badMsg,
@@ -81,13 +103,14 @@ export default function DOMContentWrapper({ ...props }) {
 				{ globals && globals['header-navigation'] &&
 					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
-				<IndexWrapper id="mainContent" className={ slug }>
-					{ location.search.indexOf('_storyblok') > -1 ?
+				<MainContent slug={ slug } { ...props } />
+				{/* <IndexWrapper id="mainContent" className={ slug } data-maincontent>
+					{ props.location.search.indexOf('_storyblok') > -1 ?
 						<StoryblokWrapper node={props} />
 						:
 						<ProductionWrapper node={props} />
 					}
-				</IndexWrapper>
+				</IndexWrapper> */}
 				{ globals && globals['footer-navigation'] &&
 					<FooterNavigation { ...globals['footer-navigation'] } />
 				}
@@ -100,6 +123,9 @@ export default function DOMContentWrapper({ ...props }) {
 		);
 	};
 };
+export {
+	MainContent
+}
 
 DOMContentWrapper.propTypes = {
 	pageContext: PropTypes.object,

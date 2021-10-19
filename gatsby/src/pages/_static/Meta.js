@@ -62,7 +62,7 @@ export default function Meta({ site, meta }) {
     <>
       <Helmet>
         <OgMetaTags site={site} />
-        <SeoMetaTags meta={ meta } />
+        <SeoMetaTags meta={meta} />
       </Helmet>
     </>
   );

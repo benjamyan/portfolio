@@ -24,6 +24,7 @@ export default function StandardLayout({ pageContext }) {
 			<DOMContentWrapper
 				pageContext={pageContext}
 				pageType={'standard'}
+				// restrictRender={ 'none' }
 				location={pageContext.location}
 			/>
 		</StdWrapper>
