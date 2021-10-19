@@ -208,6 +208,16 @@ const CatalogModal = function(node) {
 	this._init = function() {
 		// console.log("-- CatalogModal");
 		try {
+			modules.add(
+				_nodes.image,
+				StickyElement.bind(
+					null, {
+						yStart: 0.5,
+						yEnd: 0.5,
+						endEl: 'contact'
+					}
+				)
+			);
 			_nodes.wrapper.insertAdjacentHTML(
 				'afterbegin',
 				`<div class="catalog-overlay"></div>`
@@ -228,11 +238,8 @@ const CatalogModal = function(node) {
 				_nodes.frame.wrapper.firstElementChild;
 		} catch (err) {
 			console.log(err);
+			return;
 		} finally {
-			modules.add(
-				_nodes.image, 
-				StickyElement.bind(null, 0.5, 'contact')
-			);
 			setProject(false);
 			listenToCatalogLinks();
 		}

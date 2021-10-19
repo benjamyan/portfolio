@@ -1,9 +1,34 @@
+const initPagePlacard = ()=> {
+	const stickyOpts = {
+		yStart: 0,
+		yEnd: 1,
+		cb: {
+			onUpdate: () => (
+				DOM.placard.style.top = (window.pageYOffset / 7.5 + 25) + 'px'
+			)
+		}
+	};
+	DOM.main.insertAdjacentHTML(
+		'afterbegin',
+		`<div id="pagePlacardEnd" style="position:absolute;top:-50px;left:-50px;"></div>`
+	);
+	stickyOpts.endEl = 'contact';
+	// stickyOpts.endEl = 'pagePlacardEnd';
+	modules.add(
+		DOM.placard,
+		StickyElement.bind(
+			null, stickyOpts
+		)
+	);
+	DOM.placard.parentElement.classList.add('scroll-trigger-top');
+};
 const initialModules = ()=> {
+	initPagePlacard();
 	proxies.init();
 	modules.add(DOM.header, Navigation);
 	modules.add(DOM.main, CustomKerning);
 	modules.add(DOM.main, KillWidows);
-}
+};
 
 /********************************************
  * Entry point - called from gatsby-browser *
@@ -23,6 +48,7 @@ async function initMain() {
 		};
 	} catch (err) {
 		console.log(err);
+		return;
 	} finally {
 		return context.isInit = false;
 	};

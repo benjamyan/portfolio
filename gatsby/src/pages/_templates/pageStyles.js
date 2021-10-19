@@ -7,6 +7,9 @@ const homepage = function(){
 	};
 	return (`
 		main {
+			.scroll-trigger-top {
+				z-index: 9 !important;
+			}
 			> #catalog {
 				// overflow: hidden;
 				padding-bottom: 0;
@@ -40,10 +43,6 @@ const homepage = function(){
 						left: 0;
 						z-index: 9;
 						background-color: rgba(0,0,0,0.5);
-					}
-					div[${catalog.list}],
-					div[${catalog.placard}] {
-						// z-index: -2;
 					}
 					.pin-spacer {
 						z-index: 10 !important;
