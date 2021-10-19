@@ -14,13 +14,11 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 		const baseUrl = function () {
 			const _links = _byd.LINKS;
 			switch (_byd.ENV) {
-				case 'serving': 	return _links.SERVE;
-				case 'development': return _links.DEV;
-				case 'staging': 	return _links.STAGE;
-				case 'production': return _links.DEV;
-				default: return _links.DEV;
-				// case 'production': 	return _links.PROD;
-				// default: return _links.PROD;
+				case 'serve': 	return _links.SERVE;
+				case 'dev': 	return _links.DEV;
+				case 'staging':	return _links.STAGE;
+				case 'prod': 	return _links.PROD;
+				default: 	return _links.PROD;
 			};
 		}();
 		setPreBodyComponents([
@@ -29,14 +27,14 @@ exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 		//
 		// POST BODY
 		let scripts;
-		if (_byd.ENV !== 'production') {
+		if (_byd.ENV === 'prod') {
+			scripts = <script type="text/javascript" src="scripts/main.js" />;
+		} else {
 			scripts = _byd.SCRIPTS.map(
 				script => (
 					<script type="text/javascript" src={`scripts/${script}`} />
 				)
 			);
-		} else {
-			scripts = <script type="text/javascript" src="scripts/main.js" />;
 		};
 		setPostBodyComponents(scripts);
 	} catch (err) {
