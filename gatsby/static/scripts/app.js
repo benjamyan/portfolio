@@ -4,23 +4,23 @@ const initPagePlacard = ()=> {
 		yEnd: 1,
 		cb: {
 			onUpdate: () => (
-				DOM.placard.style.top = (window.pageYOffset / 7.5 + 25) + 'px'
+				DOM.placard.style.top = ((window.pageYOffset / 7.5) + 25) + 'px'
 			)
 		}
 	};
 	DOM.main.insertAdjacentHTML(
-		'afterbegin',
-		`<div id="pagePlacardEnd" style="position:absolute;top:-50px;left:-50px;"></div>`
+		'beforeend',
+		`<div id="pagePlacardEnd" style="position:absolute;width:1px;height:1px;bottom:-50px;left:-50px;"></div>`
 	);
-	stickyOpts.endEl = 'contact';
-	// stickyOpts.endEl = 'pagePlacardEnd';
+	// stickyOpts.endEl = 'contact';
+	stickyOpts.endEl = 'pagePlacardEnd';
 	modules.add(
 		DOM.placard,
 		StickyElement.bind(
 			null, stickyOpts
 		)
 	);
-	DOM.placard.parentElement.classList.add('scroll-trigger-top');
+	// DOM.placard.parentElement.classList.add('scroll-trigger-top');
 };
 const initialModules = ()=> {
 	initPagePlacard();

@@ -5,7 +5,7 @@ const CatalogModal = function(node) {
 		overlay: false,
 		list: node.querySelector('*[data-catalog="list"]'),
 		image: node.querySelector('*[data-catalog="image"]'),
-		placard: node.querySelector('*[data-catalog="placard"]'),
+		// placard: node.querySelector('*[data-catalog="placard"]'),
 		links: Array.from(node.getElementsByTagName('a')),
 		frame: {
 			wrapper: false,

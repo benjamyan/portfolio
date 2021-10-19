@@ -1,24 +1,26 @@
 const homepage = function(){
-	const catalog = {
-		placard: `data-catalog='placard'`,
-		list: `data-catalog='list'`,
-		image: `data-catalog='image'`,
-		modal: `data-catalog='modal'`
-	};
+	const page = {
+		placard: `#pagePlacard`,
+		catalog: {
+			list: `data-catalog='list'`,
+			image: `data-catalog='image'`,
+			modal: `data-catalog='modal'`
+		}
+	}
+	const _catalog = page.catalog;
 	return (`
 		main {
-			.scroll-trigger-top {
-				z-index: 9 !important;
+			#pagePlacard {
+				z-index: 6 !important;
 			}
 			> #catalog {
-				// overflow: hidden;
 				padding-bottom: 0;
-				div[${catalog.list}] {
+				div[${_catalog.list}] {
 					h2:not(:last-of-type) {
 						padding-bottom: 150px;
 					}
 				}
-				div[${catalog.image}] {
+				div[${_catalog.image}] {
 					width: 80vw;
 					height: 80vh;
 					top: 17.5vh;
@@ -30,9 +32,6 @@ const homepage = function(){
 						opacity: 1;
 						background-color: rgba(9,179,175,0.75);
 					}
-				}
-				div[${catalog.placard}] {
-					top: 30%;
 				}
 				&.active {
 					.catalog-overlay {
@@ -46,7 +45,7 @@ const homepage = function(){
 					}
 					.pin-spacer {
 						z-index: 10 !important;
-						div[${catalog.image}] {
+						div[${_catalog.image}] {
 							width: calc(100vw - 100px) !important;
 							height: calc(100vh - 100px) !important;
 							max-width: unset !important;
@@ -57,7 +56,7 @@ const homepage = function(){
 							overflow: hidden;
 							z-index: 11;
 							background: white;
-							div[${catalog.modal}] {
+							div[${_catalog.modal}] {
 								overflow-y: scroll;
 							}
 						}
