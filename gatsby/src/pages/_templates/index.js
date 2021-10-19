@@ -47,6 +47,7 @@ const IndexWrapper = styled.main`
 	position: relative;
 	width: 100%;
 	height: auto;
+	overflow: hidden;
 `;
 
 function MainContent({ slug, ...props }) {

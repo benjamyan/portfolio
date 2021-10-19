@@ -5,6 +5,7 @@ const CatalogModal = function(node) {
 		overlay: false,
 		list: node.querySelector('*[data-catalog="list"]'),
 		image: node.querySelector('*[data-catalog="image"]'),
+		placard: node.querySelector('*[data-catalog="placard"]'),
 		links: Array.from(node.getElementsByTagName('a')),
 		frame: {
 			wrapper: false,
@@ -144,6 +145,9 @@ const CatalogModal = function(node) {
 			// console.log("- - modal closed");
 			// if the modal is closed
 			//
+			const onCompleteFunc = (element)=> {
+				element.style.pointerEvents = 'none'
+			}
 			utils.scroll.disable(document.body);
 			transition.fadeIn(frame.content[slug]);
 			Array.from(image.children)
@@ -151,7 +155,7 @@ const CatalogModal = function(node) {
 					if (child !== frame.wrapper) {
 						transition.fadeOut(
 							child,
-							() => child.style.pointerEvents = 'none'
+							() => onCompleteFunc(child)
 						)
 					}
 				});
@@ -202,7 +206,7 @@ const CatalogModal = function(node) {
 		// TODO
 	}
 	this._init = function() {
-		console.log("-- CatalogModal");
+		// console.log("-- CatalogModal");
 		try {
 			_nodes.wrapper.insertAdjacentHTML(
 				'afterbegin',
@@ -225,6 +229,10 @@ const CatalogModal = function(node) {
 		} catch (err) {
 			console.log(err);
 		} finally {
+			modules.add(
+				_nodes.image, 
+				StickyElement.bind(null, 0.5, 'contact')
+			);
 			setProject(false);
 			listenToCatalogLinks();
 		}

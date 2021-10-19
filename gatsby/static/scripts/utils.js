@@ -5,6 +5,24 @@ const utils = {
 	randomString() {
 		return Math.random().toString(36).slice(2);
 	},
+	// debounce(method, delay) {
+	debounce(func, timeFrame) {
+		// https://stackoverflow.com/questions/12009367/javascript-event-handling-scroll-event-with-a-delay
+		//
+		// clearTimeout(method._tId);
+		// method._tId = setTimeout(function () {
+		// 	method();
+		// }, delay);
+		//
+		let lastTime = 0;
+		return function() {
+			const NOW = new Date();
+			if (NOW - lastTime >= timeFrame) {
+				func();
+				lastTime = NOW;
+			}
+		};
+	},
 	watchObject(object, onChange) {
 		const handler = {
 			get(target, property, receiver) {
@@ -40,11 +58,3 @@ const utils = {
 		}
 	}
 };
-
-function disableScroll() {
-	
-}
-
-function enableScroll() {
-	window.onscroll = function () { };
-}
