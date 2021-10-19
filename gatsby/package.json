@@ -1,9 +1,9 @@
 {
-  "name": "surfair-gatsby",
+  "name": "storyblok-gatsby",
   "version": "1.0.0",
   "private": true,
   "author": "@benjamyan",
-  "description": "surfair-gatsby",
+  "description": "Storyblok/Gatsby personal portfolio site",
   "license": "ISC",
   "main": "gatsby-config.js",
   "keywords": [
@@ -11,10 +11,10 @@
   ],
   "scripts": {
     "clean": "gatsby clean",
-    "dev": "SB_ENV=development && gatsby develop",
-    "stage": "SB_ENV=staging && gatsby develop",
-    "serve": "SB_ENV=serving && gatsby serve",
-    "build": "SB_ENV=production && gatsby build"
+    "dev": "npm run clean && clear && SB_ENV=development && gatsby develop",
+    "stage": "gatsby develop",
+    "serve": "gatsby serve",
+    "build": "npm run clean && clear && SB_ENV=production && gatsby build"
   },
   "dependencies": {
     "@gatsbyjs/reach-router": "^1.3.6",

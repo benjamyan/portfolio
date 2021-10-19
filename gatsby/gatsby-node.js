@@ -6,10 +6,11 @@ const config = require('./gatsby-config');
 const express = require('express');
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
-const ENV = process.env.NODE_ENV;
-const _sb = {
-    buildLocation: ENV === 'development' ? '_storyblok' : 'benyan',
-    storyMap: {},
+// const ENV = process.env.NODE_ENV;
+const _byd = {
+    buildEnv: process.env.NODE_ENV,
+    buildArea: process.env.NODE_ENV === 'development' ? '_storyblok' : '_benyan',
+    sbStoryMap: {},
     globalComponents: {},
     clientScripts: config.siteMetadata.clientScripts
 };
@@ -51,7 +52,8 @@ exports.createPages = async function({ actions, graphql }) {
             slug: data.slug,
             full_slug: data.full_slug,
             link: function() {
-                if (config.flags.SB_ENV === 'development') {
+                // if (config.flags.SB_ENV === 'development') {
+                if (_byd.buildEnv === 'development') {
                     return process.env.DEV_URL + data.full_slug;
                 }
                 return process.env.PROD_URL + data.full_slug;
@@ -73,9 +75,10 @@ exports.createPages = async function({ actions, graphql }) {
             if (i === 0) {
                 dataArr.forEach( (item)=> {
                     if (item.field_component === 'global') {
-                        return _sb.globalComponents[item.slug] = item;
+                        _byd.globalComponents[item.slug] = item;
+                        return;
                     };
-                    return _sb.storyMap[item.slug] = new FinalDataItem(item)
+                    _byd.sbStoryMap[item.slug] = new FinalDataItem(item);
                 });
             };
             if (TEMPLATE) {
@@ -84,10 +87,10 @@ exports.createPages = async function({ actions, graphql }) {
                     component: path.resolve(TEMPLATE),
                     context: {
                         data: node,
-                        pages: _sb.storyMap,
-                        globals: _sb.globalComponents,
+                        pages: _byd.sbStoryMap,
+                        globals: _byd.globalComponents,
                         location: {
-                            search: _sb.buildLocation
+                            search: _byd.buildArea
                         }
                     }
                 });
@@ -102,7 +105,7 @@ exports.onCreatePage = ({ page, actions }) => {
     *
     Make this env dependent. If in prod, just serve a normal 404 page.
     */
-    if (ENV == 'development' && page.path === `/404/`) {
+    if (_byd.buildEnv === 'development' && page.path === `/404/`) {
         const { createPage } = actions;
         page.matchPath = `/*`;
         createPage(page);
@@ -110,23 +113,15 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     console.log("\n-- onCreateWebpackConfig");
-    const staticScripts = __dirname + '/static/scripts/';
-    if (ENV === 'production') {
+    if (_byd.buildEnv === 'production') {
+        const filesToConcat = config.siteMetadata.clientScripts.map(
+            (script) => path.resolve(`${__dirname}/static/scripts/`, script)
+        );
         actions.setWebpackConfig({
             plugins: [
                 new SingleFile({
                     files: { // Concat our client scripts into single file
-                        "scripts/main.js": [
-                            path.resolve(staticScripts, 'plugins.js'),
-                            path.resolve(staticScripts, 'utils.js'),
-                            path.resolve(staticScripts, 'initial.js'),
-                            path.resolve(staticScripts, 'Navigation.js'),
-                            path.resolve(staticScripts, 'CatalogModal.js'),
-                            path.resolve(staticScripts, 'StickyElement.js'),
-                            path.resolve(staticScripts, 'MagicText.js'),
-                            path.resolve(staticScripts, 'CustomKerning.js'),
-                            path.resolve(staticScripts, 'app.js')
-                        ]
+                        "scripts/main.js": [ ...filesToConcat ]
                     }
                 })
             ]
@@ -135,16 +130,29 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     actions.setWebpackConfig({
         plugins: [
             plugins.define({ // Allows usage of env variables through webpack globals
-                global: {
-                    SB_ENV: JSON.stringify(config.flags.SB_ENV),
-                    SERVE_URL: JSON.stringify(process.env.SERVE_URL),
-                    DEV_URL: JSON.stringify(process.env.DEV_URL),
-                    STAGE_URL: JSON.stringify(process.env.STAGE_URL),
-                    PROD_URL: JSON.stringify(process.env.PROD_URL),
-                    STORY_MAP: JSON.stringify(_sb.storyMap),
-                    LOCATION: JSON.stringify(_sb.buildLocation),
-                    CLIENT_SCRIPTS: JSON.stringify(_sb.clientScripts)
+                __BYD__: {
+                    ENV: JSON.stringify(_byd.buildEnv),
+                    AREA: JSON.stringify(_byd.buildArea),
+                    SCRIPTS: JSON.stringify(_byd.clientScripts),
+                    STORIES: JSON.stringify(_byd.sbStoryMap),
+                    LINKS: {
+                        SERVE: JSON.stringify(process.env.SERVE_URL),
+                        DEV: JSON.stringify(process.env.DEV_URL),
+                        STAGE: JSON.stringify(process.env.STAGE_URL),
+                        PROD: JSON.stringify(process.env.PROD_URL),
+                    }
                 }
+                // global: {
+                    // SB_ENV: JSON.stringify(config.flags.SB_ENV),
+                    // SERVE_URL: JSON.stringify(process.env.SERVE_URL),
+                    // DEV_URL: JSON.stringify(process.env.DEV_URL),
+                    // STAGE_URL: JSON.stringify(process.env.STAGE_URL),
+                    // PROD_URL: JSON.stringify(process.env.PROD_URL),
+
+                    // STORY_MAP: JSON.stringify(_byd.sbStoryMap),
+                    // LOCATION: JSON.stringify(_byd.buildArea),
+                    // CLIENT_SCRIPTS: JSON.stringify(_byd.clientScripts)
+                // }
             })
         ]
     });
