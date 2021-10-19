@@ -7,6 +7,22 @@ https://www.gatsbyjs.com/plugins/gatsby-plugin-sitemap
 https://www.gatsbyjs.com/plugins/gatsby-plugin-catch-links/
 https://www.gatsbyjs.com/plugins/gatsby-plugin-create-client-paths/
 */
+// const userFlags = function() {
+// 	const _cmd = process.env.npm_lifecycle_script;
+// 	const getFlagFromStr = (flag)=> {
+// 		return _cmd.split(`${flag}=`)[1].split(' ')[0]
+// 	}
+// 	const FLAGS = [
+// 		'SB_ENV'
+// 	];
+// 	const Final = {};
+// 	FLAGS.forEach( (flag)=> {
+// 		if (!!_cmd && _cmd.indexOf(flag) > -1) {
+// 			Final[flag] = getFlagFromStr(flag)
+// 		}
+// 	})
+// 	return Final;
+// }()
 module.exports = {
 	siteMetadata: {
 		author: `@benjamyan`,
@@ -25,15 +41,6 @@ module.exports = {
 			'app.js'
 		]
 	},
-	// flags: {
-	// 	SB_ENV: function() {
-	// 		if (process.env.SB_ENV) {
-	// 			return process.env.SB_ENV
-	// 		};
-	// 		return 'production';
-	// 		// return 'development';
-	// 	}()
-	// },
 	plugins: [
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-styled-components`,

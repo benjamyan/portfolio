@@ -6,10 +6,10 @@ const config = require('./gatsby-config');
 const express = require('express');
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
-// const ENV = process.env.NODE_ENV;
+console.log(process.env.SB_ENV)
 const _byd = {
-    buildEnv: process.env.NODE_ENV,
-    buildArea: process.env.NODE_ENV === 'development' ? '_storyblok' : '_benyan',
+    buildEnv: process.env.SB_ENV,
+    buildArea: process.env.SB_ENV === 'dev' ? '_storyblok' : '_benyan',
     sbStoryMap: {},
     globalComponents: {},
     clientScripts: config.siteMetadata.clientScripts
@@ -105,7 +105,7 @@ exports.onCreatePage = ({ page, actions }) => {
     *
     Make this env dependent. If in prod, just serve a normal 404 page.
     */
-    if (_byd.buildEnv === 'development' && page.path === `/404/`) {
+    if (_byd.buildEnv === 'dev' && page.path === `/404/`) {
         const { createPage } = actions;
         page.matchPath = `/*`;
         createPage(page);
@@ -142,17 +142,6 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
                         PROD: JSON.stringify(process.env.PROD_URL),
                     }
                 }
-                // global: {
-                    // SB_ENV: JSON.stringify(config.flags.SB_ENV),
-                    // SERVE_URL: JSON.stringify(process.env.SERVE_URL),
-                    // DEV_URL: JSON.stringify(process.env.DEV_URL),
-                    // STAGE_URL: JSON.stringify(process.env.STAGE_URL),
-                    // PROD_URL: JSON.stringify(process.env.PROD_URL),
-
-                    // STORY_MAP: JSON.stringify(_byd.sbStoryMap),
-                    // LOCATION: JSON.stringify(_byd.buildArea),
-                    // CLIENT_SCRIPTS: JSON.stringify(_byd.clientScripts)
-                // }
             })
         ]
     });
