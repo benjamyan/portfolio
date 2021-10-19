@@ -11,10 +11,15 @@
   ],
   "scripts": {
     "clean": "gatsby clean",
-    "dev": "npm run clean && clear && SB_ENV=development && gatsby develop",
-    "stage": "gatsby develop",
     "serve": "gatsby serve",
-    "build": "npm run clean && clear && SB_ENV=production && gatsby build"
+    "dev": 
+      "npm run clean && clear && SB_ENV=dev gatsby develop",
+    "test":
+      "npm run clean && clear && SB_ENV=serve gatsby build && gatsby serve",
+    "stage": 
+      "npm run clean && clear && SB_ENV=staging gatsby build",
+    "prod": 
+      "npm run clean && clear && SB_ENV=prod gatsby build"
   },
   "dependencies": {
     "@gatsbyjs/reach-router": "^1.3.6",
