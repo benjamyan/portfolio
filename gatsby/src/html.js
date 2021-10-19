@@ -14,9 +14,11 @@ export default function HTML(props) {
 				<link rel="preload" as="font" href="https://fonts.googleapis.com/css?family=Open+Sans" />
 				<link rel="preload" as="font" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" />
 				<link rel="preload" as="font" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;700&display=swap" />
+				<link rel="preload" as="font" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap" />
 				<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400;700&display=swap" rel="stylesheet" />
+				<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap" rel="stylesheet" />
 				{/* <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png" /> */}
 				{/* <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png" /> */}
 				{/* <link rel="manifest" href="/static/favicon/manifest.json" /> */}

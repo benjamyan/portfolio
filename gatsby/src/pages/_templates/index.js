@@ -64,11 +64,12 @@ function MainContent({ slug, ...props }) {
 	// );
 	return (
 		<IndexWrapper id="mainContent" className={slug} data-maincontent>
-			{ props.location.search.indexOf('_storyblok') > -1 ?
+			<StoryblokWrapper node={props} />
+			{/* { props.location.search.indexOf('_storyblok') > -1 ?
 				<StoryblokWrapper node={props} />
 				:
 				<ProductionWrapper node={props} />
-			}
+			} */}
 		</IndexWrapper>
 	)
 };
@@ -104,13 +105,6 @@ export default function DOMContentWrapper({ ...props }) {
 					<HeaderNavigation { ...globals['header-navigation'] } />
 				}
 				<MainContent slug={ slug } { ...props } />
-				{/* <IndexWrapper id="mainContent" className={ slug } data-maincontent>
-					{ props.location.search.indexOf('_storyblok') > -1 ?
-						<StoryblokWrapper node={props} />
-						:
-						<ProductionWrapper node={props} />
-					}
-				</IndexWrapper> */}
 				{ globals && globals['footer-navigation'] &&
 					<FooterNavigation { ...globals['footer-navigation'] } />
 				}

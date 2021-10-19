@@ -3,6 +3,9 @@
 //
 const React = require('react');
 const ReactDOM = require('react-dom');
+const _byd = __BYD__;
+// import React from 'react';
+// import ReactDOM from 'react-dom';
 
 exports.onClientEntry = () => {
     // console.log("onClientEntry");
@@ -17,10 +20,10 @@ exports.onClientEntry = () => {
     //
     // assign our global variables and other desirables to the window
     window._byd = {
-        sbStoryMap: global.STORY_MAP,   // list of all stories
+        sbStoryMap: _byd.STORIES,   // list of all stories
+        buildEnv: _byd.ENV,    // the build env of gatsby
+        buildLocation: _byd.AREA,     // domain the build is meant for
         pageData: [],   // page data as its passed through gatsby
-        buildEnv: global.SB_ENV,    // the build env of gatsby
-        buildLocation: global.Location,     // domain the build is meant for
         proxies: {},        // object proxies watching for changess
         renderDump: {    // node to render pages into
             container: window.document.getElementById(renderDumpId),

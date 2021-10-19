@@ -25,14 +25,15 @@ module.exports = {
 			'app.js'
 		]
 	},
-	flags: {
-		SB_ENV: function() {
-			if (process.env.SB_ENV) {
-			return process.env.SB_ENV
-			};
-			return 'development';
-		}()
-	},
+	// flags: {
+	// 	SB_ENV: function() {
+	// 		if (process.env.SB_ENV) {
+	// 			return process.env.SB_ENV
+	// 		};
+	// 		return 'production';
+	// 		// return 'development';
+	// 	}()
+	// },
 	plugins: [
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-styled-components`,

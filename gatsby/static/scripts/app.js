@@ -12,7 +12,6 @@ const initPagePlacard = ()=> {
 		'beforeend',
 		`<div id="pagePlacardEnd" style="position:absolute;width:1px;height:1px;bottom:-50px;left:-50px;"></div>`
 	);
-	// stickyOpts.endEl = 'contact';
 	stickyOpts.endEl = 'pagePlacardEnd';
 	modules.add(
 		DOM.placard,
@@ -20,7 +19,6 @@ const initPagePlacard = ()=> {
 			null, stickyOpts
 		)
 	);
-	// DOM.placard.parentElement.classList.add('scroll-trigger-top');
 };
 const initialModules = ()=> {
 	initPagePlacard();
