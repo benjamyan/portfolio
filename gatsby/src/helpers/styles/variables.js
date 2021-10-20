@@ -1,7 +1,15 @@
 const colors = {
   green: {
-    hex: '0A253E',
+    hex: '12A7A7',
     rgb: '',
+  },
+  yellow: {
+    hex: 'FFF52D',
+    rgb: '',
+  },
+  offBlack: {
+    hex: '1A170C',
+    rgb: '26,23,12'
   },
   black: {
     hex: '000000',
@@ -10,6 +18,9 @@ const colors = {
   white: {
     hex: 'ffffff',
     rgb: '255, 255, 255',
+  },
+  yellowWhite: {
+    hex: 'fffef3'
   }
 };
 const defaults = {
