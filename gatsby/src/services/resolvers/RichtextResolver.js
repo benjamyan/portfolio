@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import { Link } from "gatsby";
+import parse from 'html-react-parser';
 // import AniLink from "gatsby-plugin-transition-link/AniLink";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -44,6 +45,13 @@ const rtClasses = {
 // 	}
 // };
 
+const StyledTextTag = styled.div`
+	${(props) => props.styles}
+`;
+const MarkedText = styled.span`
+	${(props) => props.styles}
+`;
+
 const RichtextStyleClasses = function ({ attrs }) {
 	switch (attrs.class) {
 		case 'text-center':
@@ -73,7 +81,7 @@ const RT = {
 	},
 	mark(item) {
 		const MARKS = item.marks;
-		const markStyle = ['display: inline;'];
+		const markStyle = ['display:inline;'];
 		let isLink = false,
 			isCode = false;
 		for (let i = 0; i < MARKS.length; i++) {
@@ -135,34 +143,33 @@ const RT = {
 			};
 			return <Fragment key={utils.getRandomString()}>{item.text}</Fragment>;
 		}();
-		const textOptions = {};
 		if (isCode) {
-			textOptions.dangerouslySetInnerHTML = { __html: textContent };
+			if (textContent.indexOf('</div>') > -1) {
+				return (
+					<Fragment key={utils.getRandomString()}>
+						{ parse(textContent) }
+					</Fragment>
+				)
+			} else {
+				return (
+					<MarkedText
+						styles={markStyle.join('')}
+						key={utils.getRandomString()}
+						dangerouslySetInnerHTML={{ __html: textContent }}
+					/>
+				)
+			}
 		} else {
-			textOptions.children = [
-				<Fragment key={utils.getRandomString()}>{textContent}</Fragment>
-			];
-		};
-		return (
-			<MarkedText
-				{...textOptions}
-				styles={ markStyle.join('') }
-				key={ utils.getRandomString() }
-			/>
-		);
+			return (
+				<MarkedText
+					styles={markStyle.join('')}
+					key={utils.getRandomString()}>
+						<Fragment key={utils.getRandomString()}>{textContent}</Fragment>
+				</MarkedText>
+			)
+		}
 	}
 };
-
-const StyledTextTag = styled.div`
-	${(props) => props.styles}
-`;
-const MarkedText = styled.span`
-	${(props) => props.styles}
-`;
-
-// const applyGivenRichtextChanges = ()=> {
-
-// };
 
 const processSoloTextContent = (item) => {
 	const { text, type, marks } = item;
@@ -182,7 +189,18 @@ const processSoloTextContent = (item) => {
 		contentStr, parentStyle
 	}
 };
-const getElementTagname = ({ type, attrs }) => {
+const getElementTagname = ({ type, content, attrs }) => {
+	const isCode = function() {
+		// this func checks if a specific content block passed to it contains code
+		let includesCodeMarkType = false;
+		for (const { marks } of content) {
+			if (marks && marks.some( mark=> mark.type === 'code')) {
+				includesCodeMarkType = true;
+				break;
+			}
+		}
+		return includesCodeMarkType;
+	}();
 	let tagname = '';
 	switch (type) {
 		case ('heading'):
@@ -192,7 +210,9 @@ const getElementTagname = ({ type, attrs }) => {
 			tagname = `ul`;
 			break;
 		default: 
-			tagname = 'p';
+			isCode ?
+				tagname = false :
+				tagname = 'p';
 	};
 	return tagname;
 };
@@ -235,16 +255,24 @@ function ResolvedContentBlock({ content, type, ...props }) {
 					)
 				);
 			default:
-				const elementTextTag = getElementTagname({ type, ...props });
+				const elementTextTag = getElementTagname({ type, content, ...props });
 				const {
 					parentStyles = [],
 					resolvedContent = []
 				} = resolvedRichtextContent(content);
+				if (!elementTextTag) {
+					console.log(elementTextTag)
+					return (
+						<Fragment key={utils.getRandomString()}>
+							{resolvedContent}
+						</Fragment>
+					);
+				}
 				return (
 					<StyledTextTag
-						as={elementTextTag}
+						as={ elementTextTag ? elementTextTag : Fragment }
 						key={utils.getRandomString()}
-						styles={parentStyles}>
+						styles={ !!elementTextTag && parentStyles }>
 							{resolvedContent}
 					</StyledTextTag>
 				);

@@ -2,23 +2,26 @@
 import { fonts } from './variables';
 
 const textH1 = `
-    ${ fonts.archivo }
-    font-size: 120px;
-    font-size: calc(60px + (190 - 60) * ((99vw - 300px) / (1900 - 300)));
+    ${ fonts.playfair }
+    font-size: 200px;
+    font-size: calc(160px + (300 - 160) * ((99vw - 300px) / (1900 - 300)));
+    font-style: italic;
+    font-weight: 900;
     letter-spacing: -5px;
     line-height: 1.35;
     vertical-align: baseline;
 `;
 const textH2 = `
     ${ fonts.archivo }
-    font-size: 84px;
+    font-size: 100px;
     font-size: calc(77px + (106 - 77) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: 1px;
 `;
 const textH3 = `
     ${fonts.archivo}
-    font-size: 38px;
-    font-size: calc(36px + (50 - 36) * ((100vw - 300px) / (1900 - 300)));
+    font-size: 50px;
+    font-size: calc(40px + (65 - 40) * ((100vw - 300px) / (1900 - 300)));
+    line-height: 1.35;
 `;
 const textH4 = `
     ${fonts.robotoMono}
@@ -36,8 +39,8 @@ const textH5 = `
 `;
 const textP = `
     ${fonts.robotoMono}
-    font-size: 16px;
-    font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (1900 - 300)));
+    font-size: 13px;
+    font-size: calc(10px + (15 - 10) * ((100vw - 300px) / (1900 - 300)));
     letter-spacing: 0.0025rem;
     font-style: normal;
     font-weight: 400;

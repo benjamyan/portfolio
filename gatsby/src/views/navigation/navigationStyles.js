@@ -22,7 +22,7 @@ const StyledHeaderNavigation = styled.header`
 				margin: 0;
 				background: black;
 				p {
-					font-size: 13px;
+					font-size: 12px;
 					font-weight: 600;
 					letter-spacing: 3px;
 					text-transform: uppercase;

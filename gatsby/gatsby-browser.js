@@ -1,11 +1,10 @@
 // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
 // console.log('*\n* gatsby-browser\n*');
 //
+// eslint-disable-next-line
+const _byd = GATSBY_BYD;
 const React = require('react');
 const ReactDOM = require('react-dom');
-const _byd = __BYD__;
-// import React from 'react';
-// import ReactDOM from 'react-dom';
 
 exports.onClientEntry = () => {
     // console.log("onClientEntry");

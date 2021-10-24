@@ -6,7 +6,6 @@ const config = require('./gatsby-config');
 const express = require('express');
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
-console.log(process.env.SB_ENV)
 const _byd = {
     buildEnv: process.env.SB_ENV,
     buildArea: process.env.SB_ENV === 'dev' ? '_storyblok' : '_benyan',
@@ -129,8 +128,8 @@ exports.onCreateWebpackConfig = ({ actions, plugins }) => {
     };
     actions.setWebpackConfig({
         plugins: [
-            plugins.define({ // Allows usage of env variables through webpack globals
-                __BYD__: {
+            plugins.define({
+                GATSBY_BYD: {
                     ENV: JSON.stringify(_byd.buildEnv),
                     AREA: JSON.stringify(_byd.buildArea),
                     SCRIPTS: JSON.stringify(_byd.clientScripts),

@@ -8,10 +8,6 @@ const HeaderWrapper = styled.header`
 	left: 0;
 	width: unset;
 	z-index: 100;
-	// img {
-	// 	display: none;
-	// 	width: 35px;
-	// }
 	nav {
 		padding: 25px 0px 0px 10px;
 		ul {
@@ -26,7 +22,7 @@ const HeaderWrapper = styled.header`
 					margin: 35px 0 0;
 				}
 				p {
-					font-size: 15px;
+					font-size: 12px;
 					font-weight: 600;
 					letter-spacing: 2px;
 					color: white;

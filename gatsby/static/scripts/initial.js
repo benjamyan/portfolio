@@ -2,9 +2,10 @@
  * DOM nodes of interest ********************
  *******************************************/
 const DOM = {
-	main: document.getElementById('mainContent'),
 	header: document.getElementById('bydHeaderNav'),
+	main: document.getElementById('mainContent'),
 	placard: document.getElementById('pagePlacard'),
+	intro: document.getElementById('introduction'),
 	catalog: document.getElementById('catalog'),
 	magicText: Array.from(document.querySelectorAll('*[data-magictext]'))
 };

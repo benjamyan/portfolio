@@ -15,12 +15,12 @@ const colors = {
     hex: '000000',
     rgb: '0, 0, 0',
   },
+  yellowWhite: {
+    hex: 'fffef3'
+  },
   white: {
     hex: 'ffffff',
     rgb: '255, 255, 255',
-  },
-  yellowWhite: {
-    hex: 'fffef3'
   }
 };
 const defaults = {

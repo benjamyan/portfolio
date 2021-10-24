@@ -16,10 +16,9 @@ const defaultContainerStyling = `
 `;
 const bigHeadline = `
 	h1 {
-		font-size: 10vw;
-		line-height: calc(12vw + 2.5px);
+		// font-size: 10vw;
+		// line-height: calc(12vw + 2.5px);
 		padding: 0;
-		// margin-top: calc(-2.5vw + 1.25px);
 		margin-left: -0.5vw;
 		z-index: -1;
 		&:not(:last-of-type) {
@@ -32,7 +31,7 @@ const floatingBox = `
 		width: auto;
 		height: 100%;
 		flex: 1;
-		padding: 35px 45px 75px 125px;
+		// padding: 35px 45px 75px 125px;
 		border: 2px solid #333;
 		background-color: white;
 		h1, h2, h3, h4, h5 p {

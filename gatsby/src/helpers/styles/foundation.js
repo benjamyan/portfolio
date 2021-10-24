@@ -1,3 +1,5 @@
+import { colors } from './variables';
+
 const foundation = `
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -53,18 +55,18 @@ const foundation = `
     h1, h2, h3, h4, h5, h6, p, em, body, html, textarea, 
     input, submit, select, button, strong, span, b, sup, sub, 
     figcaption, blockquote {
-        color: black;
+        color: #${colors.offBlack.hex};
         padding: 0;
         margin: 0;
         font-kerning: normal;
     }
     h1, h2, h3, h4 {
-        color: var(--main-color);
-        -webkit-text-stroke-color: var(--main-color);
+        // color: var(--main-color);
+        // -webkit-text-stroke-color: var(--main-color);
         vertical-align: baseline;
         span {
-            color: var(--main-color);
-            -webkit-text-stroke-color: var(--main-color);
+            // color: var(--main-color);
+            // -webkit-text-stroke-color: var(--main-color);
             vertical-align: baseline;
         }
         span.super {

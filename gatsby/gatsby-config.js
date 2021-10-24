@@ -53,6 +53,8 @@ module.exports = {
 			options: {
 				path: `${__dirname}/src/pages`,
 				ignore: [ 
+					`_styles/*.js`,
+					`_styles/*/*.js`,
 					`_templates/*.js`, 
 					`_templates/*/*.js`,
 					`_static/*.js`,

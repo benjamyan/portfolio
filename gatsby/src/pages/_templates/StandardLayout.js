@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import DOMContentWrapper from './';
-import { homepage } from './pageStyles';
+import styles from '../_styles/homepage';
 
 const StdWrapper = styled.div`
 	${ props=> props.pageStyling}
@@ -10,17 +10,8 @@ const StdWrapper = styled.div`
 
 export default function StandardLayout({ pageContext }) {
 	// console.log("StandardLayout");
-	const pageStyle = function() {
-		return homepage
-		// switch (pageContext.slug) {
-		// 	case '/':
-		// 		return homepage;
-		// 	default:
-		// 		return '';
-		// }
-	}();
 	return (
-		<StdWrapper pageStyling={ pageStyle }>
+		<StdWrapper pageStyling={ styles }>
 			<DOMContentWrapper
 				pageContext={pageContext}
 				pageType={'standard'}

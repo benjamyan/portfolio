@@ -11,7 +11,13 @@ const homepage = function(){
 	return (`
 		main {
 			#pagePlacard {
+				width: 40vw;
+				top: 50px;
+				right: 50px;
 				z-index: 6 !important;
+			}
+			> #introduction {
+				
 			}
 			> #catalog {
 				padding-bottom: 0;

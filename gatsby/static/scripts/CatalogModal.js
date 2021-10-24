@@ -5,7 +5,7 @@ const CatalogModal = function(node) {
 		overlay: false,
 		list: node.querySelector('*[data-catalog="list"]'),
 		image: node.querySelector('*[data-catalog="image"]'),
-		// placard: node.querySelector('*[data-catalog="placard"]'),
+		headline: node.querySelector('*[data-catalog="headline"]'),
 		links: Array.from(node.getElementsByTagName('a')),
 		frame: {
 			wrapper: false,
@@ -106,6 +106,11 @@ const CatalogModal = function(node) {
 			funcToWatch
 		);
 		*/
+	};
+	const setupCatalogBackground = ()=> {
+		_nodes.image.insertAdjacentHTML(
+			'afterbegin', _nodes.headline.outerHTML
+		)
 	};
 	function onModalStateChange() {
 

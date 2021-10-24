@@ -34,7 +34,7 @@ const StyledStandardButton = styled.div`
 
 export default function StandardButton({ copy, link, target }) {
 	return (
-		<StyledStandardButton fontFamily={ styles.fonts.robotoMono.trim() }>
+		<StyledStandardButton className={'standard_button'} fontFamily={ styles.fonts.robotoMono.trim() }>
 			<a href={link} target={target}>
 				{ copy }
 			</a>

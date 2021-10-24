@@ -20,7 +20,7 @@ const MagicContainer = styled.div`
 		}
 		${ defaultContainerStyling }
 		${ (props) => props.magicType === 'floating' && `
-			min-height: 375px;
+			min-height: 350px;
 			min-width: 400px;
 			max-width: 600px;
 			display: flex;

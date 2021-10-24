@@ -1,8 +1,9 @@
 // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/
 console.log('*\n* gatsby-ssr\n*');
 //
+// eslint-disable-next-line
+const _byd = GATSBY_BYD;
 const React = require("react");
-const _byd = __BYD__;
 
 exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
 	// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody
