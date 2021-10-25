@@ -96,43 +96,6 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
         );
         renderDump.ref[slug] = _render;
         proxies.pageData.push(newPageData);
-        /*
-        const processJsonResponse = (res) => {
-            const resData = res.json.pageContext;
-            return {
-                _base: res,
-                slug: resData.data.slug,
-                path: pathname,
-                body: JSON.parse(resData.data.content).body
-            }
-        };
-        return await props.loadPage(pathname)
-            .then(
-                (res) => {
-                    const { renderDiv, renderedPages, proxies } = window._byd;
-                    const resJson = processJsonResponse(res);
-                    const SLUG = resJson.slug;
-                    const Component = res.component;
-                    renderDiv.insertAdjacentHTML(
-                        'beforeend',
-                        `<div data-pageslug="${SLUG}"></div>`
-                    );
-                    renderedPages[SLUG] = renderDiv.querySelector(`div[data-pageslug="${SLUG}"]`);
-                    ReactDOM.render(
-                        <Component
-                            pageContext={resJson._base.json.pageContext}
-                            restrictRender={'main'}
-                        />,
-                        renderedPages[SLUG]
-                    );
-                    renderedPages[SLUG].innerHTML =
-                        renderedPages[SLUG].querySelector('[data-maincontent]').innerHTML
-                    return proxies.pageData.push(resJson);
-                }
-            ).catch(
-                err => console.log(err)
-            );
-        */
     } catch (err) {
         console.log(err)
     }

@@ -7,7 +7,8 @@ const DOM = {
 	placard: document.getElementById('pagePlacard'),
 	intro: document.getElementById('introduction'),
 	catalog: document.getElementById('catalog'),
-	magicText: Array.from(document.querySelectorAll('*[data-magictext]'))
+	magicText: Array.from(document.querySelectorAll('*[data-magictext]')),
+	noWidowText: Array.from(document.querySelectorAll('h2, h3, h4, h5, p, a, span'))
 };
 /********************************************
  * Page modules *****************************

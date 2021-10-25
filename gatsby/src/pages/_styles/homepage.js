@@ -53,7 +53,7 @@ const introStyles = `
 	}
 `;
 const catalogStyles = `
-	padding-bottom: 0;
+	margin-bottom: 100px;
 	div[${page.catalog.list}] {
 		position: relative;
 		z-index: 1;
@@ -65,7 +65,7 @@ const catalogStyles = `
 			font-style: italic;
 		}
 		h2:not(:last-of-type) {
-			padding-bottom: 150px;
+			padding-bottom: 200px;
 		}
 	}
 	div[${page.catalog.image}] {
@@ -77,9 +77,10 @@ const catalogStyles = `
 		left: 0;
 		margin: 0 auto;
 		z-index: 0;
-		> div:first-of-type {
-			opacity: 1;
-			background-color: rgba(9,179,175,0.75);
+		.media_content-overlay {
+			opacity: 0.85;
+			transition: 0.35s background-color ease-in-out;
+			background-color: rgba(9,179,175);
 		}
 	}
 	&.active {
@@ -112,6 +113,17 @@ const catalogStyles = `
 		}
 	}
 `;
+const contactStyles = `
+	margin-bottom: 100px;
+	.magic-text {
+		bottom: -100px;
+		left: 50px;
+		h2 {
+			width: 50%;
+			margin: -25px 0 25px;
+		}
+	}
+`;
 
 export default (`
 		main {
@@ -119,5 +131,6 @@ export default (`
 			#pagePlacard 	{ ${ placardStyles } }
 			> #introduction { ${ introStyles } }
 			> #catalog 		{ ${ catalogStyles } }
+			> #contact		{ ${ contactStyles } }
 		}
 	`);

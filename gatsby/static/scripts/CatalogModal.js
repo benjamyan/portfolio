@@ -81,40 +81,73 @@ const CatalogModal = function(node) {
 
 		}
 	};
-	const listenToCatalogLinks = ()=> {
-		// _nodes.links = ;
-		return _nodes.links.forEach(
-			link => link.addEventListener('click', self.changeActive)
-		);
-	};
-	const listenToScrollStickImage = ()=> {
-		/**
-		const bound = {
-			top: 100,
-			bottom: 500
-		};
-		const funcToWatch = ()=> {
-			if (isInViewport) {
-				stickElementToScreen()
-				if (boundaryIsHit) {
-					stopToWhereBoundaryEnds()
-				}
-			}
+	const setup = {
+		imageSticking() {
+			modules.add(
+				_nodes.image, 
+				StickyElement.bind(
+					null, {
+						yStart: 0.5,
+						yEnd: 'top 75%',
+						endEl: 'contact',
+						cb: {
+							onLeave() {
+								changeImageTheme('rgba(9,179,175')
+							},
+							onLeaveBack() {
+								changeImageTheme('rgba(9,179,175')
+							}
+						}
+					})
+			);
+		},
+		catalogOverlay() {
+			_nodes.wrapper.insertAdjacentHTML(
+				'afterbegin',
+				`<div class="catalog-overlay"></div>`
+			);
+			_nodes.overlay =
+				_nodes.wrapper.querySelector('.catalog-overlay');
+		},
+		catalogModal() {
+			_nodes.image.insertAdjacentHTML(
+				'beforeend', `
+					<div 
+						data-catalog="modal"
+						style="position:absolute;top:0;left:0;width:100%;height:100%;">
+							<article></article>
+					</div>
+				`);
+			_nodes.frame.wrapper =
+				_nodes.image.querySelector('div[data-catalog="modal"]');
+			_nodes.frame.article =
+				_nodes.frame.wrapper.firstElementChild;
 		}
-		targetElement.addEventListener(
-			'scrolling/swiping?',
-			funcToWatch
+	};
+	const listenToCatalogLinks = ()=> {
+		const callback = (entries)=> {
+			entries.forEach( (entry) => {
+				if (entry.isIntersecting) {
+					const entrySlug = utils.getSlug(entry.target.href)
+					return self.focusProject(
+						context.win.sbStoryMap[entrySlug]
+					);
+				}
+			});
+		};
+		const bodyObserver = new IntersectionObserver(callback, {
+			rootMargin: '-40%'
+		});
+		_nodes.links.forEach(
+			(link)=> {
+				bodyObserver.observe(link);
+				link.addEventListener('click', self.changeActive);
+			}
 		);
-		*/
 	};
-	const setupCatalogBackground = ()=> {
-		_nodes.image.insertAdjacentHTML(
-			'afterbegin', _nodes.headline.outerHTML
-		)
-	};
-	function onModalStateChange() {
-
-	};
+	function changeImageTheme(color) {
+		_nodes.image.querySelector('.media_content-overlay').style.backgroundColor = color;
+	}
 	//
 	this.addNode = function(nodeDataGroup=[]) {
 		// console.log('- addNode');
@@ -147,20 +180,17 @@ const CatalogModal = function(node) {
 		// console.log("- toggleModal");
 		const { frame, image } = _nodes;
 		if (!_state.project) {
-			// console.log("- - modal closed");
-			// if the modal is closed
+			// console.log("- - closed " + slug);
+			// modal is not open
 			//
-			const onCompleteFunc = (element)=> {
-				element.style.pointerEvents = 'none'
-			}
+			const onCompleteFunc = (element) => element.style.pointerEvents = 'none'
 			utils.scroll.disable(document.body);
 			transition.fadeIn(frame.content[slug]);
 			Array.from(image.children)
 				.forEach(child => {
 					if (child !== frame.wrapper) {
 						transition.fadeOut(
-							child,
-							() => onCompleteFunc(child)
+							child, () => onCompleteFunc(child)
 						)
 					}
 				});
@@ -170,7 +200,7 @@ const CatalogModal = function(node) {
 			);
 			setProject(slug);
 		} else {
-			// console.log("- - modal open");
+			// console.log("- - open");
 			// if the modal is open
 			//
 			utils.scroll.enable(document.body);
@@ -182,9 +212,7 @@ const CatalogModal = function(node) {
 					if (child !== frame.wrapper) {
 						transition.fadeIn(
 							child, 
-							()=> {
-								child.removeAttribute('style')
-							}
+							() => child.removeAttribute('style')
 						);
 					}
 				});
@@ -192,18 +220,22 @@ const CatalogModal = function(node) {
 			setProject(false);
 		}
 	}
+	this.focusProject = function(project) {
+		console.log(project)
+		changeImageTheme(project.theme)
+	}
 	this.changeActive = function(event) {
-		// console.log("- changeActive");
+		console.log("- changeActive");
 		event.preventDefault();
 		try {
-			const linkSlug = event.target.href.split('/').at(-1);
+			const linkSlug = utils.getSlug(event.target.href);
 			if (!_state.project) { // if a project was not active
 				return self.toggleModal(linkSlug);
 			};
-			// setProject(linkSlug);
+			setProject(linkSlug);
 		} catch (err) {
 			console.log(err)
-			// setProject(false);
+			setProject(false);
 		}
 	}
 	this.destory = function() {
@@ -213,40 +245,15 @@ const CatalogModal = function(node) {
 	this._init = function() {
 		// console.log("-- CatalogModal");
 		try {
-			modules.add(
-				_nodes.image,
-				StickyElement.bind(
-					null, {
-						yStart: 0.5,
-						yEnd: 0.5,
-						endEl: 'contact'
-					}
-				)
-			);
-			_nodes.wrapper.insertAdjacentHTML(
-				'afterbegin',
-				`<div class="catalog-overlay"></div>`
-			);
-			_nodes.overlay =
-				_nodes.wrapper.querySelector('.catalog-overlay');
-			_nodes.image.insertAdjacentHTML(
-				'beforeend', `
-					<div 
-						data-catalog="modal"
-						style="position:absolute;top:0;left:0;width:100%;height:100%;">
-							<article></article>
-					</div>
-				`);
-			_nodes.frame.wrapper = 
-				_nodes.image.querySelector('div[data-catalog="modal"]');
-			_nodes.frame.article =
-				_nodes.frame.wrapper.firstElementChild;
+			setup.imageSticking();
+			setup.catalogOverlay();
+			setup.catalogModal();
+			listenToCatalogLinks();
 		} catch (err) {
 			console.log(err);
 			return;
 		} finally {
 			setProject(false);
-			listenToCatalogLinks();
 		}
 	}()
 };

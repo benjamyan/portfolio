@@ -5,6 +5,11 @@ const setup = {
 		modules.add(DOM.main, CustomKerning);
 		modules.add(DOM.main, KillWidows);
 	},
+	killWidows() {
+		// DOM.noWidowText.forEach(
+		// 	text => utils.killWidows(text)
+		// );
+	},
 	pagePlacard() {
 		const stickyOpts = {
 			yStart: 0,
@@ -28,13 +33,16 @@ const setup = {
 		);
 	},
 	sectionIntro() {
-		const headlineWrapper = DOM.intro.querySelector('[data-magictext="headline"] > div');
-		const headlineH1 = headlineWrapper.querySelector('h1');
-		headlineWrapper.insertAdjacentHTML(
-			'afterbegin', 
-			`<div class="headline_wrapper">${ headlineH1.outerHTML }</div>`
-		);
-		headlineH1.remove();
+		// const headlineWrapper = DOM.intro.querySelector('[data-magictext="headline"] > div');
+		// const headlineH1 = headlineWrapper.querySelector('h1');
+		// headlineWrapper.insertAdjacentHTML(
+		// 	'afterbegin', 
+		// 	`<div class="headline_wrapper">${ headlineH1.outerHTML }</div>`
+		// );
+		// headlineH1.remove();
+	},
+	sectionCatalog() {
+		
 	}
 };
 /********************************************
@@ -44,6 +52,7 @@ async function initMain() {
 	// console.log("\n-- initMain");
 	try {
 		context.win = { ...window._byd };
+		setup.killWidows();
 		setup.modules();
 		setup.pagePlacard();
 		// setup.sectionIntro();

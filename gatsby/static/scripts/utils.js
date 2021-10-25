@@ -5,7 +5,6 @@ const utils = {
 	randomString() {
 		return Math.random().toString(36).slice(2);
 	},
-	// debounce(method, delay) {
 	debounce(func, timeFrame) {
 		// https://stackoverflow.com/questions/12009367/javascript-event-handling-scroll-event-with-a-delay
 		//
@@ -43,8 +42,14 @@ const utils = {
 		};
 		return new Proxy(object, handler);
 	},
+	killWidows(text) {
+		text.innerHTML = text.innerHTML.replace(/\s(?=[^\s]*$)/g, "&nbsp;")
+	},
+	getSlug(str) {
+		return str.split('/').at(-1)
+	},
 	scroll: {
-		disable: function(targetEl = (document.body)) {
+		disable: function(targetEl = document.body) {
 			// https://www.geeksforgeeks.org/how-to-disable-scrolling-temporarily-using-javascript/
 			//
 			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;

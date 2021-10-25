@@ -261,7 +261,6 @@ function ResolvedContentBlock({ content, type, ...props }) {
 					resolvedContent = []
 				} = resolvedRichtextContent(content);
 				if (!elementTextTag) {
-					console.log(elementTextTag)
 					return (
 						<Fragment key={utils.getRandomString()}>
 							{resolvedContent}

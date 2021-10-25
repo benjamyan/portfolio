@@ -10,7 +10,7 @@ new StickyElement.bind( null, {
 	cbEvent: 'onUpdate'
 });
  * 
-@param yBound <Number>
+@param yStart <Number> && @param yEnd <Number>
 - Tolerence for the element being stuck to dom
 -- 0 to 1 value; ie 0 = top, 1 = bottom, 0.5 = dead center
 -- Relevent to the Y position the element is at on the DOM
@@ -40,6 +40,9 @@ const StickyElement = function ({...props}, ref) {
 	const PositionOpts = function() {
 		const temp = {};
 		temp.start = (()=> {
+			if (typeof(yStart) === 'string') {
+				return yStart
+			}
 			switch (yStart) {
 				case 0: return 'top center';
 				case 0.5: return 'center center';
@@ -48,6 +51,9 @@ const StickyElement = function ({...props}, ref) {
 			}
 		})();
 		temp.end = (()=> {
+			if (typeof (yEnd) === 'string') {
+				return yEnd
+			}
 			switch (yEnd) {
 				case 0: return 'top bottom';
 				case 0.5: return 'center bottom';
