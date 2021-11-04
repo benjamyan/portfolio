@@ -45,12 +45,10 @@ const RichtextWrapper = styled.div`
 export default function MagicText({ ...props }) {
 	try {
 		const { 
-			magicText, 
-			magicSettings, 
+			magicText,
 			magicType, 
 			htmlAttrs = {}
 		} = props;
-		const cssSettings = settingsResolver(magicSettings);
 		const richtextStyle = function () {
 			switch (magicType) {
 				case 'floating':
@@ -68,10 +66,9 @@ export default function MagicText({ ...props }) {
 				{...htmlAttrs}
 				className={'magic-text'}
 				data-magictext={magicType}
-				magicType={magicType}
-				cssSettings={cssSettings}>
+				magicType={magicType}>
 					<RichtextWrapper contentStyles={richtextStyle}>
-						{RichtextResolver(magicText)}
+						{ JSON.stringify(magicText) }
 					</RichtextWrapper>
 			</MagicContainer>
 		);

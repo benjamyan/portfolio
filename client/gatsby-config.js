@@ -33,7 +33,6 @@ module.exports = {
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-styled-components`,
 		`gatsby-plugin-image`,
-		`gatsby-transformer-remark`,
 		{
 			resolve: `gatsby-plugin-page-creator`,
 			options: {
@@ -47,34 +46,17 @@ module.exports = {
 			}
 		},
 		{
-			resolve: `gatsby-remark-custom-markup`,
+			resolve: 'gatsby-source-filesystem',
 			options: {
-				// Options here
+				name: 'content',
+				path: `${__dirname}/static/content/`,
 			}
-		},
-		{
-			// https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/
-			resolve: `gatsby-transformer-remark`,
-			options: {
-				// footnotes: true,
-				gfm: true,
-				plugins: [
-					`gatsby-remark-custom-markup`
-				]
-			},
 		},
 		{
 			resolve: 'gatsby-source-filesystem',
 			options: {
 				name: 'scripts',
 				path: `${__dirname}/static/scripts/`,
-			}
-		},
-		{
-			resolve: 'gatsby-source-filesystem',
-			options: {
-				name: 'content',
-				path: `${__dirname}/static/content/`,
 			}
 		},
 		{

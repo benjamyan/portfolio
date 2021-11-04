@@ -20,9 +20,9 @@ const StyledStandardButton = styled.div`
 		width: 100%;
 		padding: 0 15px;
 		text-align: center;
-		font-size: 13px;
+		font-size: 12px;
 		font-weight: 600;
-		letter-spacing: 1px;
+		letter-spacing: 1.5px;
 		line-height: 35px;
 		color: black;
 		vertical-align: top;
@@ -32,12 +32,12 @@ const StyledStandardButton = styled.div`
 	}
 `;
 
-export default function StandardButton({ copy, link, target }) {
+export default function StandardButton({ text, link, target, onclick }) {
 	return (
-		<StyledStandardButton className={'standard_button'} fontFamily={ styles.fonts.robotoMono.trim() }>
-			<a href={link} target={target}>
-				{ copy }
-			</a>
+		<StyledStandardButton 
+			className={'standard_button'} 
+			fontFamily={ styles.fonts.robotoMono.trim() }>
+				<a href={link} target={target}>{ text }</a>
 		</StyledStandardButton>
 	);
 }
@@ -47,54 +47,3 @@ StandardButton.propTypes = {
 	link: PropTypes.string,
 	target: PropTypes.string,
 };
-
-export const storyblok = [
-	{
-		name: 'atomic_button_basic_button',
-		display_name: 'Basic CTA button',
-		id: 1843312,
-		schema: {
-			link: {
-				type: 'text',
-				pos: 1,
-				description: 'Link for the button. Can be internal, external, or an anchor tag. If you are using an external link, be sure to use the whole link.',
-				default_value: '#',
-				required: true
-			},
-			target: {
-				type: 'option',
-				pos: 2,
-				description: 'Link behavior',
-				default_value: '_blank',
-				use_uuid: true,
-				exclude_empty_option: true,
-				options: [
-				{
-					value: '_blank',
-					name: 'Open in new tab'
-				},
-				{
-					value: '_self',
-					name: 'Open in same tab'
-				}
-				],
-				required: true
-			},
-			copy: {
-				type: 'text',
-				pos: 3,
-				required: true,
-				description: 'The copy that the user will see.',
-				default_value: '#',
-				display_name: 'Button copy'
-			}
-		},
-		preview_field: 'copy',
-		preview_tmpl: '{{copy}} - {{link}}',
-		is_root: false,
-		is_nestable: true,
-		real_name: 'Basic CTA button',
-		component_group_uuid: 'b3789d13-e842-4ae2-b945-c0c69789198e',
-		component_group_name: 'Atomic'
-	}
-];

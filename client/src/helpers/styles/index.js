@@ -1,10 +1,10 @@
-import foundation from './foundation';
+import global from './global';
 import * as typography from './typography';
 import * as variables from './variables';
 import * as mixins from './mixins';
 
 const stylesExport = {
-	foundation,
+	global,
 	...typography,
 	...variables,
 	...mixins,

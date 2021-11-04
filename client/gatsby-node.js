@@ -12,39 +12,32 @@ const _byd = {
     scripts: config.siteMetadata.clientScripts
 };
 
-/*
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
     //
     const { createPage } = actions;
     const DATA = await graphql(`
             query MyQuery {
-                allMarkdownRemark {
+                allFile(filter: {extension: {eq: "json"}, dir: {regex: "/(static/content)/"}}) {
                     nodes {
-                        html
-                        frontmatter {
-                            slug
-                            template
-                            name
-                            title
-                            theme
-                            image
-                            description
-                        }
+                        dir
+                        relativePath
                     }
                 }
             }
         `).then(
             ({data}) => {
-                const initial = JSON.parse(
-                    JSON.stringify(data.allMarkdownRemark.nodes)
+                const { allFile } = data;
+                return allFile.nodes.map(
+                    (file) => require(
+                        path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
+                    )
                 );
-                return Array.from(Object.values(initial))
             }
         ).catch( 
             (err)=> console.log(err) 
         );
-    function FinalDataItem({ frontmatter }) {
+    function FinalDataItem({ frontmatter, body }) {
         return {
             title: frontmatter.title || '!title',
             description: frontmatter.description || '!description',
@@ -56,14 +49,15 @@ exports.createPages = async function({ actions, graphql }) {
                     return (process.env.DEV_URL + frontmatter.slug) || '!link';
                 }
                 return (process.env.PROD_URL + frontmatter.slug) || '!link';
-            }()
+            }(),
+            content: JSON.stringify(body) || ''
         };
     };
     try {
         for (let i = 0; i < DATA.length; i++) {
-            if (DATA[i].html !== '') {
+            if (DATA[i].body !== '') {
                 const node = DATA[i];
-                const TEMPLATE = function () {
+                const TEMPLATE = function() {
                     switch (node.frontmatter.template) {
                         case 'index':
                             return `./src/pages/index.js`;
@@ -75,14 +69,16 @@ exports.createPages = async function({ actions, graphql }) {
                 }();
                 if (i === 0) {
                     DATA.forEach(
-                        (item) => _byd.pages[item.name] = new FinalDataItem(item)
+                        (node) => _byd.pages[node.frontmatter.name] = new FinalDataItem(node)
                     );
                 };
                 createPage({
-                    path: node.frontmatter.slug,
+                    path: (
+                        node.frontmatter.slug == '' ? '/' : node.frontmatter.slug
+                    ),
                     component: path.resolve(TEMPLATE),
                     context: {
-                        markdown: node,
+                        content: node,
                         pages: _byd.pages,
                         location: _byd.area
                     }
@@ -94,9 +90,8 @@ exports.createPages = async function({ actions, graphql }) {
         return;
     }
 };
-*/
 exports.onCreatePage = ({ page, actions }) => {
-    // console.log(`-- onCreatePage -> ${page.path}`);
+    console.log(`-- onCreatePage -> ${page.path}`);
     /*
     Overrides the default 404 page so gatsby serves up a rendered page in storyblok
     *

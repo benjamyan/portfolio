@@ -79,6 +79,11 @@ const textFoundation = `
     a { ${textA} }
     figcaption { ${textFigCaption} }
     blockquote { ${textBlockQuote} }
+    h1, h2, h3, h4, h5, p {
+        span.super {
+            font-size: calc(1em + 0.33em);
+        }
+    }
 `;
 
 export {

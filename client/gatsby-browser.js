@@ -22,9 +22,10 @@ exports.onClientEntry = () => {
         env: _byd.ENV,    // the build env of gatsby -- FORMERLY buildEnv
         location: _byd.AREA,     // domain the build is meant for  -- FORMERLY buildLocation
         pages: _byd.PAGES,   // list of all pages -- FORMERLY: sbStoryMap
+        active: 'initial',
         pageData: [],   // page data as its passed through gatsby -- FORMERLY buildEnv
         proxies: {},        // object proxies watching for changess -- FORMERLY buildEnv
-        shitass: {    // node to render pages into -- FORMERLY shitass
+        renders: {    // node to render pages into -- FORMERLY renders
             container: window.document.getElementById(DUMP_ID),
             ref: {}     // a directory of rendered elements
         }
@@ -56,16 +57,16 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
     */
     // console.log("onPostPrefetchPathname");
     try {
-        const { shitass, proxies } = window._byd;
-        const createshitassNode = (slug)=>  {
+        const { renders, proxies } = window._byd;
+        const createrendersNode = (slug)=>  {
             // creates the html element to render our page contents into
             //
             const datasetPageslug = `data-pageslug="${slug}"`;
-            shitass.container.insertAdjacentHTML(
+            renders.container.insertAdjacentHTML(
                 'beforeend', `<div ${ datasetPageslug }></div>`
             );
             return (
-                shitass.container.querySelector(`[${datasetPageslug}]`)
+                renders.container.querySelector(`[${datasetPageslug}]`)
             );
         };
         const newPageData = await loadPage(pathname)
@@ -79,7 +80,7 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
                         path: pathname,
                         body: JSON.parse(context.data.content).body,
                         _base: res,
-                        _render: createshitassNode(slug)
+                        _render: createrendersNode(slug)
                     };
                 }
             ).catch(
@@ -94,7 +95,7 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
             />,
             _render
         );
-        shitass.ref[slug] = _render;
+        renders.ref[slug] = _render;
         proxies.pageData.push(newPageData);
     } catch (err) {
         console.log(err)

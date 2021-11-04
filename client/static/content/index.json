@@ -1,0 +1,60 @@
+{
+	"frontmatter": {
+		"slug": "",
+		"name": "homepage",
+		"template": "index",
+		"title": "Portfolio site of Benjamin Yannella",
+		"description": "This is the page description about homepage.",
+		"image": "",
+		"theme": "yellow"
+	},
+	"body": {
+		"initial": {
+			"headline": {
+				"h1": "Hi,",
+				"h3": {
+					"super": "I'm Ben.",
+					"minor": "I'm a fullstack engineer seeking full-time work. Lorem ipsum dolor sit amet consectetor domas."
+				}
+			},
+			"placard": {
+				"p": "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+				"btn": {
+					"text": "See my work",
+					"onclick": "[next]",
+					"target": "_self"
+				}
+			}
+		},
+		"catalog": {
+			"headline": {
+				"h1": [
+					"some",
+					"of my",
+					"work"
+				]
+			},
+			"links": [
+				{
+					"text": "Surf Air",
+					"href": "/surfair"
+				},
+				{
+					"text": "Something else Here",
+					"href": "/something-else-here"
+				},
+				{
+					"text": "MyCology",
+					"href": "/mycology"
+				}
+			]
+		},
+		"contact": {
+			"headline": {
+				"h1": "drop a note...",
+				"h3": "lorem ipsum dolor sit amet domas lamprey ematus nombra ipsum dolor sit amet  lamprey ematus nombra domas"
+			}
+		}
+	}
+	
+}

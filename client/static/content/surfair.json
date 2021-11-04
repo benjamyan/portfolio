@@ -1,0 +1,13 @@
+{
+	"frontmatter": {
+		"slug": "surfair",
+		"name": "surfair",
+		"template": "project",
+		"title": "Surf Air",
+		"description": "Descrition of SA",
+		"image": "",
+		"theme": "#444"
+	},
+	"body": {}
+	
+}

@@ -3,13 +3,23 @@ console.log('*\n* gatsby-ssr\n*');
 //
 // eslint-disable-next-line
 const React = require("react");
+// const path = require("path");
 const _byd = GATSBY_BYD;
 
-exports.onRenderBody = ({ setPreBodyComponents, setPostBodyComponents }) => {
+exports.onRenderBody = ({ setHeadComponents, setPreBodyComponents, setPostBodyComponents }) => {
 	// https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody
 	// console.log('\n-- onRenderBody');
 	//
 	try {
+		//
+		// HEAD
+		// const globalStyling = require(
+		// 	path.resolve(__dirname + '/src/helpers/styles')
+		// )
+		// console.log(globalStyling)
+		// setHeadComponents([
+		// 	<style></style>
+		// ]);
 		//
 		// PRE BODY
 		const baseUrl = function () {

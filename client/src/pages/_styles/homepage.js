@@ -1,5 +1,6 @@
 import { styles } from '../../';
 const page = {
+	headline: `#headline`,
 	placard: `#pagePlacard`,
 	catalog: {
 		headline: `data-catalog='headline'`,
