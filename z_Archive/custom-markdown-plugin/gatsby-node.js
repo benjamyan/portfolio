@@ -5,78 +5,84 @@ require('dotenv').config();
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
 const config = require('./gatsby-config');
-
-/*#region -- */
-const _setup = require('./gatsby-setup');
-_setup.utils();
 const _byd = {
     env: process.env.BUILD_ENV,
     area: process.env.BUILD_ENV === 'prod' ? 'prod' : 'dev',
     pages: {},
-    scripts: _setup.scripts
+    scripts: config.siteMetadata.clientScripts
 };
-const templates = _setup.templates;
-/*#endregion*/
 
+/* createPages
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
     //
+    const { createPage } = actions;
     const DATA = await graphql(`
             query MyQuery {
-                allFile(filter: {extension: {eq: "json"}, dir: {regex: "/(static/content)/"}}) {
+                allMarkdownRemark {
                     nodes {
-                        dir
-                        relativePath
+                        html
+                        frontmatter {
+                            slug
+                            template
+                            name
+                            title
+                            theme
+                            image
+                            description
+                        }
                     }
                 }
             }
         `).then(
             ({data}) => {
-                const { allFile } = data;
-                return allFile.nodes.map(
-                    (file) => require(
-                        path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
-                    )
+                const initial = JSON.parse(
+                    JSON.stringify(data.allMarkdownRemark.nodes)
                 );
+                return Array.from(Object.values(initial))
             }
         ).catch( 
             (err)=> console.log(err) 
         );
-    try {
-        function FinalDataItem({ frontmatter, body }) {
-            const absoluteUrl = function () {
+    function FinalDataItem({ frontmatter }) {
+        return {
+            title: frontmatter.title || '!title',
+            description: frontmatter.description || '!description',
+            image: frontmatter.image || '!image',
+            theme: frontmatter.theme || '!theme',
+            slug: frontmatter.slug || '!slug',
+            link: function() {
                 if (_byd.env === 'development') {
                     return (process.env.DEV_URL + frontmatter.slug) || '!link';
                 }
                 return (process.env.PROD_URL + frontmatter.slug) || '!link';
             }()
-            return {
-                title: frontmatter.title || '!title',
-                description: frontmatter.description || '!description',
-                image: frontmatter.image || '!image',
-                theme: frontmatter.theme || '!theme',
-                slug: frontmatter.slug || '!slug',
-                url: absoluteUrl || '!link',
-                body: JSON.stringify(body) || ''
-            };
         };
+    };
+    try {
         for (let i = 0; i < DATA.length; i++) {
-            if (DATA[i].body !== '') {
+            if (DATA[i].html !== '') {
                 const node = DATA[i];
+                const TEMPLATE = function () {
+                    switch (node.frontmatter.template) {
+                        case 'index':
+                            return `./src/pages/index.js`;
+                        case 'project':
+                            return `./src/pages/templates/project.js`;
+                        default:
+                            return `./src/pages/404.js`;
+                    };
+                }();
                 if (i === 0) {
                     DATA.forEach(
-                        (node) => _byd.pages[node.frontmatter.name] = new FinalDataItem(node)
+                        (item) => _byd.pages[item.name] = new FinalDataItem(item)
                     );
                 };
-                actions.createPage({
-                    path: (
-                        node.frontmatter.slug == '' ? '/' : node.frontmatter.slug
-                    ),
-                    component: (
-                        path.resolve(templates[node.frontmatter.template])
-                    ),
+                createPage({
+                    path: node.frontmatter.slug,
+                    component: path.resolve(TEMPLATE),
                     context: {
-                        content: node,
+                        markdown: node,
                         pages: _byd.pages,
                         location: _byd.area
                     }
@@ -88,8 +94,9 @@ exports.createPages = async function({ actions, graphql }) {
         return;
     }
 };
+*/
 exports.onCreatePage = ({ page, actions }) => {
-    console.log(`-- onCreatePage -> ${page.path}`);
+    // console.log(`-- onCreatePage -> ${page.path}`);
     /*
     Overrides the default 404 page so gatsby serves up a rendered page in storyblok
     *

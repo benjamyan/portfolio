@@ -12,7 +12,19 @@ module.exports = {
 	siteMetadata: {
 		author: `@benjamyan`,
 		title: `benyan.dev`,
-		description: `Portfolio site of Benjamin Yannella.`
+		description: `Portfolio site of Benjamin Yannella.`,
+		clientScripts: [
+			'plugins.js',
+			'utils.js',
+			'initial.js',
+			'Navigation.js',
+			'StickyElement.js',
+			'CatalogModal.js',
+			'MagicText.js',
+			'KillWidows.js',
+			'CustomKerning.js',
+			'app.js'
+		]
 	},
 	flags: {
 		DEV_SSR: true
@@ -21,6 +33,7 @@ module.exports = {
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-styled-components`,
 		`gatsby-plugin-image`,
+		`gatsby-transformer-transformer`,
 		{
 			resolve: `gatsby-plugin-page-creator`,
 			options: {
@@ -34,17 +47,34 @@ module.exports = {
 			}
 		},
 		{
-			resolve: 'gatsby-source-filesystem',
+			resolve: `gatsby-remark-custom-markup`,
 			options: {
-				name: 'content',
-				path: `${__dirname}/static/content/`,
+				// Options here
 			}
+		},
+		{
+			// https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/
+			resolve: `gatsby-transformer-remark`,
+			options: {
+				// footnotes: true,
+				gfm: true,
+				plugins: [
+					`gatsby-remark-custom-markup`
+				]
+			},
 		},
 		{
 			resolve: 'gatsby-source-filesystem',
 			options: {
 				name: 'scripts',
 				path: `${__dirname}/static/scripts/`,
+			}
+		},
+		{
+			resolve: 'gatsby-source-filesystem',
+			options: {
+				name: 'content',
+				path: `${__dirname}/static/content/`,
 			}
 		},
 		{

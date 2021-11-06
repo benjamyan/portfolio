@@ -83,7 +83,7 @@ const CatalogModal = function(node) {
 	};
 	const setup = {
 		imageSticking() {
-			modules.add(
+			Modules.add(
 				_nodes.image, 
 				StickyElement.bind(
 					null, {
@@ -130,7 +130,7 @@ const CatalogModal = function(node) {
 				if (entry.isIntersecting) {
 					const entrySlug = utils.getSlug(entry.target.href)
 					return self.focusProject(
-						context.win.sbStoryMap[entrySlug]
+						Context.win.sbStoryMap[entrySlug]
 					);
 				}
 			});

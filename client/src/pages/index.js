@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import GlobalStyles from './_static/GlobalStyles';
-import { styles, atomic } from '../';
+import { atomic, styles  } from '../';
+import DirectionalNavigation from '../views/navigation/DirectionalNavigation';
+import HeaderNavigation from '../views/navigation/HeaderNavigation';
+
+const { TextContent } = atomic;
+const { colors } = styles;
 
 const MainContent = styled.main`
   width: 100%;
@@ -39,7 +44,7 @@ const MagicBox = styled.div`
 	width: 400px;
 	height: 350px;
 	z-index: -1;
-	background-color: #${styles.colors.yellow.hex};
+	background-color: rgb(${colors.yellow});
 `;
 const Headline = styled.div`
 	position: absolute;
@@ -68,7 +73,7 @@ const Placard = styled.aside`
 	max-width: 550px;
 	padding: 25px;
 	z-index: 3;
-	border: 5px solid #${styles.colors.offBlack.hex};
+	border: 5px solid rgb(${colors.offBlack});
     background: rgba(255,255,255,0.75);
 	> div {
 		height: auto;
@@ -77,12 +82,12 @@ const Placard = styled.aside`
 		flex-flow: column;
 		justify-content: center;
 		padding: 25px 50px 25px 35px;
-		background-color: #${styles.colors.yellow.hex};
+		background-color: rgb(${colors.yellow});
 		h4, h5, p {
 			text-align: left;
 		}
 		.standard_button {
-			background-color: #${styles.colors.yellowWhite.hex};
+			background-color: rgb(${colors.yellowWhite});
 		}
 	}
 `;
@@ -92,7 +97,7 @@ const ContentBlock = ({ headline, placard })=> {
 		<Section>
 			<Placard id="placard" className={'placard'}>
 				<div>
-					<atomic.TextContent text={ placard } />
+					<TextContent text={ placard } />
 				</div>
 			</Placard>
 			<Headline id="headline" className={'headline'}>
@@ -105,18 +110,20 @@ const ContentBlock = ({ headline, placard })=> {
 			<MagicBox />
 		</Section>
 	)
-}
+};
 
 export default function Index({ pageContext }) {
 	return (
 		<>
 			<GlobalStyles />
-			<MainContent>
-				<ContentBlock { ...pageContext.content.body.initial } />
-				<Modal style={{ opacity: '0', display:'none' }}>
+			<HeaderNavigation data-navigation="explicit" />
+			<MainContent id="main">
+				<Modal id="contentModal" style={{ opacity: '0', display: 'none' }}>
 					<div></div>
 				</Modal>
+				<ContentBlock { ...pageContext.content.body.initial } />
 			</MainContent>
+			<DirectionalNavigation data-navigation="implicit" />
 		</>
 	)
 }

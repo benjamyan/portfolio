@@ -10,12 +10,11 @@ const StyledStandardButton = styled.div`
 	width: fit-content;
 	min-width: 200px;
 	height: 40px;
-	border-radius: 7.5px;
 	border: 2px solid #000;
 	vertical-align: top;
 	color: #fff;
 	background-color: transparent;
-	a {
+	> a {
 		display: inline-block;
 		width: 100%;
 		padding: 0 15px;
@@ -28,16 +27,14 @@ const StyledStandardButton = styled.div`
 		vertical-align: top;
 		border: none;
 		cursor: pointer;
-		${ (props)=> props.fontFamily }
+		${ styles.fonts.robotoMono }
 	}
 `;
 
-export default function StandardButton({ text, link, target, onclick }) {
+export default function StandardButton({ text, link, target, attrs }) {
 	return (
-		<StyledStandardButton 
-			className={'standard_button'} 
-			fontFamily={ styles.fonts.robotoMono.trim() }>
-				<a href={link} target={target}>{ text }</a>
+		<StyledStandardButton className={'standard_button'}>
+			<a href={link} target={target}>{text}</a>
 		</StyledStandardButton>
 	);
 }

@@ -1,27 +1,10 @@
 const colors = {
-  green: {
-    hex: '12A7A7',
-    rgb: '',
-  },
-  yellow: {
-    hex: 'FFF52D',
-    rgb: '',
-  },
-  offBlack: {
-    hex: '1A170C',
-    rgb: '26,23,12'
-  },
-  black: {
-    hex: '000000',
-    rgb: '0, 0, 0',
-  },
-  yellowWhite: {
-    hex: 'fffef3'
-  },
-  white: {
-    hex: 'ffffff',
-    rgb: '255, 255, 255',
-  }
+  green: '18, 167, 167',
+  yellow: '255, 245, 45',
+  offBlack: '26,23,12',
+  black: '0, 0, 0',
+  yellowWhite: '255, 254, 243',
+  white: '255, 255, 255'
 };
 const defaults = {
   section: {

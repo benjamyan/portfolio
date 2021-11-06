@@ -10,7 +10,6 @@ const TextWrapper = styled.div`
 `;
 
 export default function TextContent({ text, htmlAttrs={} }) {
-	console.log(text)
 	return (
 		<TextWrapper 
 			{...htmlAttrs}

@@ -1,7 +1,7 @@
 {
 	"frontmatter": {
 		"slug": "",
-		"name": "homepage",
+		"name": "index",
 		"template": "index",
 		"title": "Portfolio site of Benjamin Yannella",
 		"description": "This is the page description about homepage.",
@@ -21,8 +21,10 @@
 				"p": "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 				"btn": {
 					"text": "See my work",
-					"onclick": "[next]",
-					"target": "_self"
+					"target": "_self",
+					"attrs": [
+						"data-navigate='next'"
+					]
 				}
 			}
 		},

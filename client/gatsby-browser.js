@@ -1,17 +1,18 @@
 // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
 // console.log('*\n* gatsby-browser\n*');
 //
-// eslint-disable-next-line
-const _byd = GATSBY_BYD;
 const React = require('react');
 const ReactDOM = require('react-dom');
+// eslint-disable-next-line
+const _byd = GATSBY_BYD;
+const setup = require('./gatsby-setup');
+setup.utils();
 
 exports.onClientEntry = () => {
     // console.log("onClientEntry");
     //
     // the dump for html needing to be preloaded somewhere
-    const randomString = () => Math.random().toString(36).slice(2);
-    const DUMP_ID = '_render_' + randomString() + '_' + randomString();
+    const DUMP_ID = '_render_' + global.randomStr() + '_' + global.randomStr();
     window.document.body.insertAdjacentHTML(
         'beforeend',
         `<div id="${DUMP_ID}" style="display:none!important;"></div>`
@@ -21,31 +22,32 @@ exports.onClientEntry = () => {
     window._byd = {
         env: _byd.ENV,    // the build env of gatsby -- FORMERLY buildEnv
         location: _byd.AREA,     // domain the build is meant for  -- FORMERLY buildLocation
-        pages: _byd.PAGES,   // list of all pages -- FORMERLY: sbStoryMap
-        active: 'initial',
-        pageData: [],   // page data as its passed through gatsby -- FORMERLY buildEnv
-        proxies: {},        // object proxies watching for changess -- FORMERLY buildEnv
-        renders: {    // node to render pages into -- FORMERLY renders
+        // pages: _byd.PAGES,  // list of all pages -- FORMERLY: sbStoryMap
+        // pageData: [],   // page data as its passed through gatsby
+        proxies: {},        // object proxies watching for changess
+        pages: {
+            initialData: _byd.PAGES,
+            activePage: 'initial',
+            activeView: 'walkthrough',
+            walkthrough_order: setup.walkthroughOrder,
+            portfolio_order: setup.portfolioOrder
+        },
+        renders: {    // node to render HTML into -- FORMERLY renders
             container: window.document.getElementById(DUMP_ID),
             ref: {}     // a directory of rendered elements
         }
     };
 };
 exports.onInitialClientRender = () => {
-    /**
-    
-    */
     // console.log("onInitialClientRender");
     try {
         window.initMain()
-            // .then(
-            //     ()=> console.log('All done!')
-            // );
     } catch (err) {
         console.log(err)
     }
 };
 exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
+    // console.log("onPostPrefetchPathname");
     /**
     When Gatsby prefetches link data, make the request for the page here
     and render the resulting page into the dom.
@@ -55,7 +57,6 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
     @param loadPage <Function>
     - Function to fetch and load data for gatsby links
     */
-    // console.log("onPostPrefetchPathname");
     try {
         const { renders, proxies } = window._byd;
         const createrendersNode = (slug)=>  {

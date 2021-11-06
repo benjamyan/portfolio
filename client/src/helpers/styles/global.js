@@ -55,7 +55,7 @@ const global = `
     h1, h2, h3, h4, h5, h6, p, em, body, html, textarea, 
     input, submit, select, button, strong, span, b, sup, sub, 
     figcaption, blockquote {
-        color: #${colors.offBlack.hex};
+        color: rgb(${colors.offBlack});
         padding: 0;
         margin: 0;
         font-kerning: normal;
