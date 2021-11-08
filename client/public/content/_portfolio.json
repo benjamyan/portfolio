@@ -1,0 +1,30 @@
+{
+	"frontmatter": {
+		"title": "Portfolio site of Benjamin Yannella",
+		"description": "This is the page description about homepage.",
+		"image": "",
+		"theme": "yellow"
+	},
+	"body": {
+		"headline": {
+			"h2": "some of <br>my work..."
+		},
+		"links": [
+			"<a href='/surfair'>Surf Air</a>",
+			"<a href='/something-else-here'>Something else Here</a>",
+			"<a href='/mycology'>MyCology</a>",
+			{
+				"text": "Surf Air",
+				"href": "/surfair"
+			},
+			{
+				"text": "Something else Here",
+				"href": "/something-else-here"
+			},
+			{
+				"text": "MyCology",
+				"href": "/mycology"
+			}
+		]
+	}
+}

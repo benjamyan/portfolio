@@ -27,7 +27,7 @@ exports.onClientEntry = () => {
         proxies: {},        // object proxies watching for changess
         pages: {
             initialData: _byd.PAGES,
-            activePage: 'initial',
+            activePage: [ 'initial' ],
             activeView: 'walkthrough',
             walkthrough_order: setup.walkthroughOrder,
             portfolio_order: setup.portfolioOrder
@@ -73,32 +73,38 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
         const newPageData = await loadPage(pathname)
             .then(
                 (res)=> {
-                    const context = res.json.pageContext;
-                    const slug = context.data.slug;
-                    console.log(res)
-                    return {
-                        slug: slug,
-                        path: pathname,
-                        body: JSON.parse(context.data.content).body,
-                        _base: res,
-                        _render: createrendersNode(slug)
-                    };
+                    const { content } = res.json.pageContext;
+                    if (!!content) {
+                        const slug = content.data.slug || false;
+                        return {
+                            slug: slug,
+                            path: pathname,
+                            body: JSON.parse(content.data.content).body,
+                            _base: res,
+                            _render: createrendersNode(slug)
+                        };
+                    } throw '!slug';
                 }
             ).catch(
                 err=> console.log(err)
             );
-        const { slug, _render, _base } = newPageData;
-        const Component = _base.component;
-        ReactDOM.render(
-            <Component
-                pageContext={ _base.json.pageContext }
-                restrictRender={ 'main' }
-            />,
-            _render
-        );
-        renders.ref[slug] = _render;
-        proxies.pageData.push(newPageData);
+        if (!!newPageData) {
+            const { slug, _render, _base } = newPageData;
+            const Component = _base.component;
+            ReactDOM.render(
+                <Component
+                    pageContext={_base.json.pageContext}
+                    restrictRender={'main'}
+                />,
+                _render
+            );
+            renders.ref[slug] = _render;
+            proxies.pageData.push(newPageData);
+        } else throw '!page-data';
     } catch (err) {
         console.log(err)
     }
+};
+exports.onRouteUpdate = ({ location, prevLocation }) => {
+    console.log("Gatsby onRouteUpdate")
 };

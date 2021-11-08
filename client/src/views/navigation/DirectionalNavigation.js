@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'gatsby';
 
 const Navigate = styled.nav`
 	position: absolute;
@@ -32,6 +33,11 @@ const Navigate = styled.nav`
 `;
 
 export default function DirectionalNavigation({ ...props }) {
+	// return (
+	// 	<Navigate id="directional" {...props}>
+	// 		<Link to="/portfolio"></Link>
+	// 	</Navigate>
+	// )
 	return (
 		<Navigate id="directional" {...props}>
 			<ul>

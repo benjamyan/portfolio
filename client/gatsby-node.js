@@ -4,6 +4,7 @@ console.log('*\n* gatsby-node\n*');
 require('dotenv').config();
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
+const resolveJsonTextContent = require('./services/resolveJsonTextContent');
 const config = require('./gatsby-config');
 
 /*#region -- */
@@ -34,10 +35,16 @@ exports.createPages = async function({ actions, graphql }) {
             ({data}) => {
                 const { allFile } = data;
                 return allFile.nodes.map(
-                    (file) => require(
-                        path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
-                    )
-                );
+                        (file) => {
+                            if (file.relativePath.startsWith('_')) {
+                                return false;
+                            }
+                        console.log(file.relativePath)
+                            return require(
+                                path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
+                            )
+                        }
+                    ).filter(Boolean)
             }
         ).catch( 
             (err)=> console.log(err) 
@@ -57,30 +64,32 @@ exports.createPages = async function({ actions, graphql }) {
                 theme: frontmatter.theme || '!theme',
                 slug: frontmatter.slug || '!slug',
                 url: absoluteUrl || '!link',
-                body: JSON.stringify(body) || ''
+                body: resolveJsonTextContent(body)
             };
         };
         for (let i = 0; i < DATA.length; i++) {
             if (DATA[i].body !== '') {
                 const node = DATA[i];
-                if (i === 0) {
-                    DATA.forEach(
-                        (node) => _byd.pages[node.frontmatter.name] = new FinalDataItem(node)
-                    );
-                };
-                actions.createPage({
-                    path: (
-                        node.frontmatter.slug == '' ? '/' : node.frontmatter.slug
-                    ),
-                    component: (
-                        path.resolve(templates[node.frontmatter.template])
-                    ),
-                    context: {
-                        content: node,
-                        pages: _byd.pages,
-                        location: _byd.area
-                    }
-                });
+                if (!!node.frontmatter.template) {
+                    if (i === 0) {
+                        DATA.forEach(
+                            (node) => _byd.pages[node.frontmatter.name] = new FinalDataItem(node)
+                        );
+                    };
+                    actions.createPage({
+                        path: (
+                            node.frontmatter.slug == '' ? '/' : node.frontmatter.slug
+                        ),
+                        component: (
+                            path.resolve(templates[node.frontmatter.template])
+                        ),
+                        context: {
+                            content: resolveJsonTextContent(node.body),
+                            pages: _byd.pages,
+                            location: _byd.area
+                        }
+                    });
+                }
             }
         }
     } catch (err) {

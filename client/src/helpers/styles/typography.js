@@ -12,10 +12,13 @@ const textH1 = `
     vertical-align: baseline;
 `;
 const textH2 = `
-    ${ fonts.archivo }
+    ${ fonts.playfair }
     font-size: 100px;
-    font-size: calc(77px + (106 - 77) * ((99vw - 300px) / (1900 - 300)));
+    font-size: calc(90px + (200 - 90) * ((99vw - 300px) / (1900 - 300)));
     letter-spacing: 1px;
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
 `;
 const textH3 = `
     ${fonts.archivo}
@@ -40,7 +43,7 @@ const textH5 = `
 const textP = `
     ${fonts.robotoMono}
     font-size: 13px;
-    font-size: calc(10px + (15 - 10) * ((100vw - 300px) / (1900 - 300)));
+    font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1900 - 300)));
     letter-spacing: 0.0025rem;
     font-style: normal;
     font-weight: 400;
@@ -82,6 +85,12 @@ const textFoundation = `
     h1, h2, h3, h4, h5, p {
         span.super {
             font-size: calc(1em + 0.33em);
+        }
+        span.minor {
+            font-size: calc(1em - 0.33em);
+        }
+        b {
+            font-weight: 600;
         }
     }
 `;

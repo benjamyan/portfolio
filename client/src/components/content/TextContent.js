@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { atomic } from '../../';
 
 const TextWrapper = styled.div`
 	> *:not(:last-child) {
@@ -9,29 +8,25 @@ const TextWrapper = styled.div`
 	}
 `;
 
-export default function TextContent({ text, htmlAttrs={} }) {
+export default function TextContent({ text, id, className, htmlAttrs={} }) {
+	let finalText = '';
+	for (const item in text) {
+		if (item == 'h1' || item == 'h2' || item == 'h3' || item == 'h4' || item == 'h5' || item == 'p') {
+			finalText = finalText + text[item]
+		}
+	}
 	return (
 		<TextWrapper 
 			{...htmlAttrs}
-			className={'text_content'}>
-				{ text.h4 &&
-					<h4>{ text.h4 }</h4>	
-				}
-				{text.h5 &&
-					<h5>{text.h5}</h5>
-				}
-				{text.p &&
-					<p>{text.p}</p>
-				}
-				{ text.btn &&
-					<atomic.StandardButton { ...text.btn } />
-				}
-		</TextWrapper>
+			id={ id }
+			className={'text_content', className}
+			dangerouslySetInnerHTML={{ __html: finalText }} 
+		/>
 	);
 };
 
 TextContent.propTypes = {
-	sbCopy: PropTypes.object,
-	settings: PropTypes.string,
+	text: PropTypes.object,
+	className: PropTypes.string,
 	htmlAttrs: PropTypes.object
 };

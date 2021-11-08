@@ -4,6 +4,7 @@ import GlobalStyles from './_static/GlobalStyles';
 import { atomic, styles  } from '../';
 import DirectionalNavigation from '../views/navigation/DirectionalNavigation';
 import HeaderNavigation from '../views/navigation/HeaderNavigation';
+import CatalogNavigation from '../views/navigation/CatalogNavigation';
 
 const { TextContent } = atomic;
 const { colors } = styles;
@@ -46,22 +47,25 @@ const MagicBox = styled.div`
 	z-index: -1;
 	background-color: rgb(${colors.yellow});
 `;
-const Headline = styled.div`
-	position: absolute;
-	bottom: 5%;
-	left: 5%;
-	width: 90%;
-	display: inline-block;
-	margin: 0 auto;
-	text-align: left;
-	h1 {
-		margin-left: 10px;
-		line-height: 1;
-	}
-	h1, h2, h3, h4, h5 {
-		width: auto;
+const Headline = styled(TextContent)`
+	&& {
+		position: absolute;
+		bottom: 5%;
+		left: 5%;
+		width: 90%;
 		display: inline-block;
+		margin: 0 auto;
 		text-align: left;
+		h1 {
+			// margin-left: 10px;
+			margin: 0 0 50px 10px;
+			line-height: 0.75;
+		}
+		h1, h2, h3, h4, h5 {
+			width: auto;
+			display: inline-block;
+			text-align: left;
+		}
 	}
 `;
 const Placard = styled.aside`
@@ -91,37 +95,37 @@ const Placard = styled.aside`
 		}
 	}
 `;
-
-const ContentBlock = ({ headline, placard })=> {
-	return (
-		<Section>
-			<Placard id="placard" className={'placard'}>
-				<div>
-					<TextContent text={ placard } />
-				</div>
-			</Placard>
-			<Headline id="headline" className={'headline'}>
-				<h1>{ headline.h1 }</h1>
-				<h3>
-					<span className={'super'}>{ headline.h3.super } </span>
-					<span className={'minor'}>{ headline.h3.minor } </span>
-				</h3>
-			</Headline>
-			<MagicBox />
-		</Section>
-	)
-};
+const PlacardText = styled(TextContent)`
+	margin-bottom: 20px;
+`;
 
 export default function Index({ pageContext }) {
+	const { placard, headline } = pageContext.content.initial;
 	return (
 		<>
 			<GlobalStyles />
 			<HeaderNavigation data-navigation="explicit" />
-			<MainContent id="main">
-				<Modal id="contentModal" style={{ opacity: '0', display: 'none' }}>
-					<div></div>
-				</Modal>
-				<ContentBlock { ...pageContext.content.body.initial } />
+			<MainContent id="main" data-page="initial">
+				<Section>
+					<Placard id="placard" className={'placard'}>
+						<div>
+							<PlacardText text={placard} />
+							{ placard.btn &&
+								<atomic.StandardButton { ...placard.btn} />
+							}
+						</div>
+					</Placard>
+					<Headline id="headline" className={'headline'} text={ headline } />
+					<CatalogNavigation data-navigation="explicit" />
+					<MagicBox id="magicBox" className={'magicbox'}>
+						<div className={'magicbox_overlay'} />
+						<img className={'magicbox_image-active'} />
+						<img className={'magicbox_image-next'} />
+						<Modal id="modal" style={{ opacity: '0', display: 'none' }}>
+							<div></div>
+						</Modal>
+					</MagicBox>
+				</Section>
 			</MainContent>
 			<DirectionalNavigation data-navigation="implicit" />
 		</>
