@@ -8,6 +8,8 @@ const Navigate = styled.nav`
 	right: 0;
 	width: 300px;
 	height: 70px;
+	cursor: pointer;
+	z-index: 11;
 	> ul {
 		width: 100%;
 		height: 100%;
@@ -33,11 +35,6 @@ const Navigate = styled.nav`
 `;
 
 export default function DirectionalNavigation({ ...props }) {
-	// return (
-	// 	<Navigate id="directional" {...props}>
-	// 		<Link to="/portfolio"></Link>
-	// 	</Navigate>
-	// )
 	return (
 		<Navigate id="directional" {...props}>
 			<ul>

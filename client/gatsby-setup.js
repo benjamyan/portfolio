@@ -16,13 +16,13 @@ const walkthroughOrder = [
 	'portfolio',
 	'contact'
 ]
-const portfolioOrder = [
+const catalogOrder = [
 	'surfair',
 	'something-else-here',
 	'mycology'
 ]
 const templates = {
-	index: `./src/pages/index.js`,
+	index: `./src/pages/templates/index.js`,
 	project: `./src/pages/templates/project.js`
 }
 const utils = function() {
@@ -36,5 +36,5 @@ module.exports = {
 	scripts,
 	templates,
 	walkthroughOrder,
-	portfolioOrder
+	catalogOrder
 };

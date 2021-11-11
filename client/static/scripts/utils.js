@@ -48,6 +48,25 @@ const utils = {
 	getSlug(str) {
 		return str.split('/').at(-1)
 	},
+	applyStyles(element, stylePairs={}) {
+		try {
+			for (const value in stylePairs) {
+				element.style[value] = stylePairs[value];
+			}
+		} catch (err) {
+			console.log(err)
+			return err
+		}
+		return true
+	},
+	delayPromise(callback, duration) {
+		let promise = new Promise((a, b) => { resolve = a; reject = b; });
+		setTimeout(() => (
+			callback(),
+			resolve(true)
+		), duration);
+		return promise;
+	},
 	scroll: {
 		disable: function(targetEl = document.body) {
 			// https://www.geeksforgeeks.org/how-to-disable-scrolling-temporarily-using-javascript/

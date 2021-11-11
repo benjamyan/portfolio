@@ -89,6 +89,10 @@ const textFoundation = `
         span.minor {
             font-size: calc(1em - 0.33em);
         }
+        span.outline {
+            color: transparent;
+            -webkit-text-stroke: 2px black;
+        }
         b {
             font-weight: 600;
         }

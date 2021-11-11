@@ -31,9 +31,9 @@ const StyledStandardButton = styled.div`
 	}
 `;
 
-export default function StandardButton({ text, link, target, attrs }) {
+export default function StandardButton({ text, link, target, className }) {
 	return (
-		<StyledStandardButton className={'standard_button'}>
+		<StyledStandardButton className={`${className} standard_button`}>
 			<a href={link} target={target}>{text}</a>
 		</StyledStandardButton>
 	);

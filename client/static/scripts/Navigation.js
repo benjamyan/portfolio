@@ -7,7 +7,7 @@ const Navigation = function (node) {
 		mobileTrigger: node.querySelector('.mobile-trigger') || false
 	};
 	this.state = {
-		active: false,
+		// active: false,
 		type: node.dataset.navigation || 'explicit'
 	};
 	const self = this;
@@ -54,18 +54,18 @@ const Navigation = function (node) {
 		 * The purpose of this function is to get the nxt page, and route accordingly
 		 */
 		try {
-			if (self.state.active) {
-				return false
-			} else {
-				self.state.active = true;
+			if (!Context.active.nav) {
+				Context.active.nav = true;
+				// self.state.active = true;
 				const { activeView } = _byd.pages;
-				const viewOrder = _byd.pages[`${activeView}_order`];
 				const destination = function () {
 					// check for data-navigate attr on element
 					let targetDest = target.dataset.navigate || false;
 					if (self.state.type === 'implicit') {
 						// if nav type is implicit, get the next page in order
-						targetDest = getImplicitDestination(viewOrder, targetDest)
+						targetDest = getImplicitDestination(
+							_byd.pages[`${activeView}Order`], targetDest
+						);
 					}
 					return targetDest || false
 				}();
@@ -74,11 +74,19 @@ const Navigation = function (node) {
 						navigateWalkthrough(destination)
 						: navigatePortfolio(destination);
 				} else throw '!destination';
-			};
+			} else throw 'nav-in-progress';
 		} catch (err) {
 			console.log(err)
+			switch (err) {
+				case '!destination':
+					return false;
+				case 'nav-in-progress':
+					return false;
+				default: 
+					//
+			}
 		} finally {
-			self.state.active = false;
+			// self.state.active = false;
 		}
 		return true
 	};

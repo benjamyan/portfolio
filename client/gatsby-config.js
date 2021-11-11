@@ -27,9 +27,8 @@ module.exports = {
 				path: `${__dirname}/src/pages`,
 				ignore: [ 
 					`_styles/*.js`,
-					`_styles/*/*.js`,
 					`_static/*.js`,
-					`_static/*/*.js`
+					`templates/*.js`
 				]
 			}
 		},
@@ -37,7 +36,7 @@ module.exports = {
 			resolve: 'gatsby-source-filesystem',
 			options: {
 				name: 'content',
-				path: `${__dirname}/static/content/`,
+				path: `${__dirname}/static/_content/`,
 			}
 		},
 		{

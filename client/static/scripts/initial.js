@@ -29,6 +29,11 @@ const Modules = {
 				for (let i = 0; i < node.length; i++) {
 					addSingleModule(node[i], Module)
 				}
+			} else if (typeof node == 'object' ) {
+				const nodeArr = Object.values(node);
+				for (let i = 0; i < nodeArr.length; i++) {
+					addSingleModule(nodeArr[i], Module)
+				}
 			} else {
 				addSingleModule(node, Module)
 			}
@@ -51,8 +56,9 @@ const Modules = {
  * Some state stuff *************************
  *******************************************/
 const Context = {
-	isInit: true,
+	// isInit: true,
 	active: {
+		nav: false,
 		page: 'initial',
 		view: 'walkthrough'
 	},
@@ -102,10 +108,12 @@ const Proxies = {
 		return utils.watchObject(
 			_byd.pages,
 			()=> {
-				if (oldActiveData.length !== _byd.pages.activePage.length) {
-					const newPage = _byd.pages.activePage.at(-1);
+				const activePage = _byd.pages.activePage;
+				if (oldActiveData.length !== activePage.length) {
+					const newPage = activePage.at(-1);
 					oldActiveData.push(newPage);
-					PageTransitions[newPage]();
+					Transitions[_byd.pages.activeView](oldActiveData.at(-2), newPage);
+					Context.active.page = newPage;
 					DOM.main.dataset.page = newPage;
 				}
 			}

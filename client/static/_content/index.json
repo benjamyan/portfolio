@@ -1,0 +1,54 @@
+{
+	"frontmatter": {
+		"slug": "",
+		"name": "index",
+		"template": "index",
+		"title": "Portfolio site of Benjamin Yannella",
+		"description": "This is the page description about homepage.",
+		"image": "",
+		"theme": "yellow"
+	},
+	"body": {
+		"initial": {
+			"headline": {
+				"h1": "Hi,",
+				"h3": "<span class='outline super'>I'm Ben.</span> I'm a fullstack engineer seeking full-time work. Lorem ipsum dolor sit amet consectetor domas."
+			},
+			"placard": {
+				"p": "<b>It was popularised</b> in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+				"btn": {
+					"text": "See my work",
+					"target": "_self",
+					"attrs": [
+						"data-navigate='next'"
+					]
+				}
+			},
+			"links": [
+				{
+					"text": "Surf Air",
+					"href": "/surfair"
+				},
+				{
+					"text": "Something else Here",
+					"href": "/something-else-here"
+				},
+				{
+					"text": "MyCology",
+					"href": "/mycology"
+				}
+			]
+		},
+		"portfolio": {
+			"headline": {
+				"h2": "some <br>of <br>my <br>work..."
+			}
+		},
+		"contact": {
+			"headline": {
+				"h2": "drop a note...",
+				"h3": "lorem ipsum dolor sit amet domas lamprey ematus nombra ipsum dolor sit amet  lamprey ematus nombra domas"
+			}
+		}
+	}
+}

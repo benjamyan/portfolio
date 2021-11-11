@@ -4,9 +4,12 @@ const setup = {
 		DOM.main = document.getElementById('main');
 		DOM.headline = document.getElementById('headline');
 		DOM.placard = document.getElementById('placard');
-		DOM.navigation = Array.from(
-			document.querySelectorAll('[data-navigation]')
-		);
+		DOM.magicbox = document.getElementById('magicbox');
+		DOM.navigation = {
+			header: document.getElementById('header'),
+			catalog: document.getElementById('catalog'),
+			directional: document.getElementById('directional')
+		};
 		DOM.text = Array.from(
 			document.querySelectorAll('h2, h3, h4, h5, p, a, span')
 		);
@@ -24,15 +27,15 @@ const setup = {
 		try {
 			this._References();
 			this._Modules();
-			PageTransitions.initial();
 			Proxies.init();
 		} catch (err) {
 			console.log(err)
 			return err
 		} finally {
 			Context.win = { ...window._byd };
-			return true
+			Transitions.init();
 		}
+		return true
 	}
 };
 /********************************************
@@ -44,7 +47,7 @@ async function initMain() {
 	} catch (err) {
 		console.log(err);
 	} finally {
-		Context.isInit = false;
-		return true
-	};
-};
+		// Context.isInit = false;
+	}
+	return true
+}; 

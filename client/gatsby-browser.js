@@ -3,6 +3,7 @@
 //
 const React = require('react');
 const ReactDOM = require('react-dom');
+const { Link, navigate } = require('gatsby');
 // eslint-disable-next-line
 const _byd = GATSBY_BYD;
 const setup = require('./gatsby-setup');
@@ -18,7 +19,7 @@ exports.onClientEntry = () => {
         `<div id="${DUMP_ID}" style="display:none!important;"></div>`
     );
     //
-    // assign our global variables and other desirables to the window
+    // variables passed to window for use on client
     window._byd = {
         env: _byd.ENV,    // the build env of gatsby -- FORMERLY buildEnv
         location: _byd.AREA,     // domain the build is meant for  -- FORMERLY buildLocation
@@ -27,10 +28,10 @@ exports.onClientEntry = () => {
         proxies: {},        // object proxies watching for changess
         pages: {
             initialData: _byd.PAGES,
-            activePage: [ 'initial' ],
             activeView: 'walkthrough',
-            walkthrough_order: setup.walkthroughOrder,
-            portfolio_order: setup.portfolioOrder
+            activePage: [ 'initial' ],
+            walkthroughOrder: setup.walkthroughOrder,
+            catalogOrder: setup.catalogOrder
         },
         renders: {    // node to render HTML into -- FORMERLY renders
             container: window.document.getElementById(DUMP_ID),
@@ -46,8 +47,8 @@ exports.onInitialClientRender = () => {
         console.log(err)
     }
 };
-exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
-    // console.log("onPostPrefetchPathname");
+exports.onPrefetchPathname = async ({ pathname, loadPage })=> {
+    console.log("onPrefetchPathname");
     /**
     When Gatsby prefetches link data, make the request for the page here
     and render the resulting page into the dom.
@@ -59,7 +60,7 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
     */
     try {
         const { renders, proxies } = window._byd;
-        const createrendersNode = (slug)=>  {
+        const createRendersNode = (slug)=>  {
             // creates the html element to render our page contents into
             //
             const datasetPageslug = `data-pageslug="${slug}"`;
@@ -81,7 +82,7 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
                             path: pathname,
                             body: JSON.parse(content.data.content).body,
                             _base: res,
-                            _render: createrendersNode(slug)
+                            _render: createRendersNode(slug)
                         };
                     } throw '!slug';
                 }
@@ -105,6 +106,11 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage })=> {
         console.log(err)
     }
 };
-exports.onRouteUpdate = ({ location, prevLocation }) => {
-    console.log("Gatsby onRouteUpdate")
+exports.onPostPrefetchPathname = async ({ pathname, loadPage }) => {
+    console.log("onPostPrefetchPathname");
+    try {
+        //
+    } catch (err) {
+        console.log(err)
+    }
 };

@@ -19,7 +19,7 @@ export default function TextContent({ text, id, className, htmlAttrs={} }) {
 		<TextWrapper 
 			{...htmlAttrs}
 			id={ id }
-			className={'text_content', className}
+			className={`${className} text_content`}
 			dangerouslySetInnerHTML={{ __html: finalText }} 
 		/>
 	);

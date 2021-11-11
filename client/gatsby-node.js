@@ -2,6 +2,8 @@
 console.log('*\n* gatsby-node\n*');
 //
 require('dotenv').config();
+const fs = require("fs");
+const fsp = require("fs/promises");
 const path  = require("path");
 const SingleFile = require('webpack-merge-and-include-globally');
 const resolveJsonTextContent = require('./services/resolveJsonTextContent');
@@ -22,35 +24,50 @@ const templates = _setup.templates;
 exports.createPages = async function({ actions, graphql }) {
     console.log("\n-- createPages");
     //
-    const DATA = await graphql(`
-            query MyQuery {
-                allFile(filter: {extension: {eq: "json"}, dir: {regex: "/(static/content)/"}}) {
-                    nodes {
-                        dir
-                        relativePath
+    const DATA_LOCATION = `${__dirname}/static/_content`;
+    const DATA = (
+        await fsp.readdir(DATA_LOCATION)
+            .then( async (files)=> {
+                const jsonContentFromFiles = [];
+                for (let i = 0; i < files.length; i++) {
+                    if (!files[i].startsWith('_')) {
+                        const content = await fsp.readFile(`${DATA_LOCATION}/${files[i]}`);
+                        jsonContentFromFiles.push(JSON.parse(content))
                     }
                 }
-            }
-        `).then(
-            ({data}) => {
-                const { allFile } = data;
-                return allFile.nodes.map(
-                        (file) => {
-                            if (file.relativePath.startsWith('_')) {
-                                return false;
-                            }
-                        console.log(file.relativePath)
-                            return require(
-                                path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
-                            )
-                        }
-                    ).filter(Boolean)
-            }
-        ).catch( 
-            (err)=> console.log(err) 
-        );
+                return jsonContentFromFiles
+            })
+            .catch(
+                err=> console.log(err)
+            )
+    );
+    // const DATA = await graphql(`
+    //         query MyQuery {
+    //             allFile(filter: {extension: {eq: "json"}, dir: {regex: "/(static/content)/"}}) {
+    //                 nodes {
+    //                     dir
+    //                     relativePath
+    //                 }
+    //             }
+    //         }
+    //     `).then(
+    //         ({data}) => (
+    //             data.allFile.nodes.map(
+    //                 (file) => {
+    //                     if (file.relativePath.startsWith('_')) {
+    //                         return false;
+    //                     }
+    //                     return require(
+    //                         path.resolve('.' + file.dir.split(__dirname)[1] + '/' + file.relativePath)
+    //                     )
+    //                 }
+    //             ).filter(Boolean)
+    //         )
+    //     ).catch( 
+    //         (err)=> console.log(err) 
+    //     );
     try {
-        function FinalDataItem({ frontmatter, body }) {
+        function ClientsidePageData({ frontmatter, body }) {
             const absoluteUrl = function () {
                 if (_byd.env === 'development') {
                     return (process.env.DEV_URL + frontmatter.slug) || '!link';
@@ -66,29 +83,41 @@ exports.createPages = async function({ actions, graphql }) {
                 url: absoluteUrl || '!link',
                 body: resolveJsonTextContent(body)
             };
-        };
+        }
+        function CreatePageData({ frontmatter, body }) {
+            const pagePath = (
+                frontmatter.slug == '' ? '/' : `/${frontmatter.slug}`
+            );
+            const pageComponent = (
+                path.resolve(templates[frontmatter.template])
+            );
+            const pageContent = (
+                resolveJsonTextContent(body) || '!resolveJsonTextContent'
+            );
+            return {
+                path: pagePath,
+                component: pageComponent,
+                context: {
+                    content: pageContent,
+                    pages: _byd.pages,
+                    location: _byd.area
+                }
+            }
+        }
         for (let i = 0; i < DATA.length; i++) {
             if (DATA[i].body !== '') {
                 const node = DATA[i];
                 if (!!node.frontmatter.template) {
+                    const currentNodePageData = new CreatePageData(node);
                     if (i === 0) {
                         DATA.forEach(
-                            (node) => _byd.pages[node.frontmatter.name] = new FinalDataItem(node)
+                            (node) => _byd.pages[node.frontmatter.name] = new ClientsidePageData(node)
                         );
-                    };
-                    actions.createPage({
-                        path: (
-                            node.frontmatter.slug == '' ? '/' : node.frontmatter.slug
-                        ),
-                        component: (
-                            path.resolve(templates[node.frontmatter.template])
-                        ),
-                        context: {
-                            content: resolveJsonTextContent(node.body),
-                            pages: _byd.pages,
-                            location: _byd.area
-                        }
-                    });
+                    }
+                    console.log(currentNodePageData)
+                    console.log('1')
+                    actions.createPage(currentNodePageData);
+                    console.log('2')
                 }
             }
         }
@@ -99,11 +128,9 @@ exports.createPages = async function({ actions, graphql }) {
 };
 exports.onCreatePage = ({ page, actions }) => {
     console.log(`-- onCreatePage -> ${page.path}`);
-    /*
-    Overrides the default 404 page so gatsby serves up a rendered page in storyblok
-    *
-    Make this env dependent. If in prod, just serve a normal 404 page.
-    */
+    console.log(page)
+    console.log('\n')
+
     // if (_byd.buildEnv === 'dev' && page.path === `/404/`) {
     //     const { createPage } = actions;
     //     page.matchPath = `/*`;
