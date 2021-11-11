@@ -46,8 +46,8 @@ const MagicBox = styled.div`
 const Headline = styled(TextContent)`
 	&& {
 		position: absolute;
-		bottom: 5%;
-		left: 5%;
+		bottom: 25px;
+		left: 75px;
 		width: 90%;
 		display: inline-block;
 		margin: 0 auto;

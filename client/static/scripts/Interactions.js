@@ -77,37 +77,62 @@ const Transitions = {
 	_initial(state, { oldIndex, newIndex }) {
 		// console.log("initial")
 		const magicbox = ()=> {
+			const getBoxWidth = ()=> {
+				const headlineWidth = utils.getTextWidth(DOM.headline.querySelector('h1'));
+				return headlineWidth + (headlineWidth / 3)
+			};
+			const boxStyles = {
+				width: getBoxWidth() + 'px',
+				height: (
+					(DOM.headline.querySelector('h1').offsetHeight * 2.25) + 'px'
+				),
+				top: ((DOM.headline.offsetTop) / 3 * 2) + 'px',
+				left: (DOM.headline.offsetLeft / 2) + 'px'
+			}
+			function adjustBoxStyles() {
+				DOM.magicbox.style.width = `${getBoxWidth()}px`;
+			}
 			if (state) {
 				utils.applyStyles(
-					DOM.magicbox, { 
-						width: '450px',
-						height: '400px',
-						top: ((DOM.headline.offsetTop) / 3 * 2) + 'px',
-						left: (DOM.headline.offsetLeft / 2) + 'px'
-					});
+					DOM.magicbox, { ...boxStyles }
+				);
 				_tl.magicbox
 					.from(DOM.magicbox, {
 						width: 0, delay: 0.2
 					})
 					.from(DOM.magicbox, {
-						left: 450
-					}, '<');
+						left: parseInt(boxStyles.width)
+					}, '<')
+					.then( ()=> {
+						window.addEventListener("resize", adjustBoxStyles, false)
+					})
+					.catch(
+						err=> console.log(err)
+					);
 			} else {
 				_tl.magicbox
 					.to(DOM.magicbox, {
-						duration: 0.75, left: 450
+						duration: 0.75, left: parseInt(boxStyles.width)
 					})
 					.to(DOM.magicbox, {
 						duration: 0.75, width: 0
 					}, '<')
 					.then( ()=> {
+						window.removeEventListener("resize", adjustBoxStyles, false)
 						DOM.magicbox.removeAttribute('style');
 						_tl.magicbox.clear(true);
-					});
+					})
+					.catch(
+						err=> console.log(err)
+					)
 			}
 		}
-		// this._universalPage();
-		magicbox();
+		try {
+			magicbox();
+		} catch (err) {
+			console.log(err)
+			return err
+		}
 	},
 	_portfolio(state, { oldIndex, newIndex }) {
 		// console.log("portfolio")
@@ -172,12 +197,12 @@ const Transitions = {
 		console.log("about")
 	},
 	async init() {
-		const self = this;
 		try {
+			_self = this;
 			_tl = { ...Timelines };
 			await utils.delayPromise(
 				() => (
-					self._initial(true, {
+					_self._initial(true, {
 						oldIndex: -1,
 						newIndex: 0
 					})
@@ -213,7 +238,7 @@ const Transitions = {
 		}
 		return true;
 	},
-	portfolio() {
+	async portfolio() {
 		console.log("project")
 	}
 };
