@@ -93,9 +93,13 @@ const Navigation = function (node) {
 	this._init = function () {
 		// console.log('Navigation init')
 		try {
-			self.nodes.navItems.forEach(
-				navItem => navItem.addEventListener('click', self.navigate)
-			)
+			const { navItems } = self.nodes;
+			for (let i = 0; i < navItems.length; i++) {
+				navItems[i].addEventListener('click', self.navigate)
+			}
+			// self.nodes.navItems.forEach(
+			// 	navItem => navItem.addEventListener('click', self.navigate)
+			// )
 		} catch (err) {
 			console.log(err)
 		}

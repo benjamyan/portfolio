@@ -9,7 +9,7 @@ const SingleFile = require('webpack-merge-and-include-globally');
 const resolveJsonTextContent = require('./services/resolveJsonTextContent');
 const config = require('./gatsby-config');
 
-/*#region -- */
+/*#region -- custom setup*/
 const _setup = require('./gatsby-setup');
 _setup.utils();
 const _byd = {
@@ -68,12 +68,17 @@ exports.createPages = async function({ actions, graphql }) {
     //     );
     try {
         function ClientsidePageData({ frontmatter, body }) {
-            const absoluteUrl = function () {
-                if (_byd.env === 'development') {
-                    return (process.env.DEV_URL + frontmatter.slug) || '!link';
-                }
-                return (process.env.PROD_URL + frontmatter.slug) || '!link';
-            }()
+            const absoluteUrl = (
+                _byd.env === 'development' ?
+                    (process.env.DEV_URL + frontmatter.slug)
+                    : (process.env.PROD_URL + frontmatter.slug)
+            );
+            // const absoluteUrl = function () {
+            //     if (_byd.env === 'development') {
+            //         return (process.env.DEV_URL + frontmatter.slug) || '!link';
+            //     }
+            //     return (process.env.PROD_URL + frontmatter.slug) || '!link';
+            // }()
             return {
                 title: frontmatter.title || '!title',
                 description: frontmatter.description || '!description',
@@ -112,12 +117,9 @@ exports.createPages = async function({ actions, graphql }) {
                     if (i === 0) {
                         DATA.forEach(
                             (node) => _byd.pages[node.frontmatter.name] = new ClientsidePageData(node)
-                        );
-                    }
-                    console.log(currentNodePageData)
-                    console.log('1')
+                        )
+                    };
                     actions.createPage(currentNodePageData);
-                    console.log('2')
                 }
             }
         }
@@ -128,9 +130,6 @@ exports.createPages = async function({ actions, graphql }) {
 };
 exports.onCreatePage = ({ page, actions }) => {
     console.log(`-- onCreatePage -> ${page.path}`);
-    console.log(page)
-    console.log('\n')
-
     // if (_byd.buildEnv === 'dev' && page.path === `/404/`) {
     //     const { createPage } = actions;
     //     page.matchPath = `/*`;

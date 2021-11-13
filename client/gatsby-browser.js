@@ -1,6 +1,7 @@
 // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
 // console.log('*\n* gatsby-browser\n*');
 //
+/*#region -- requires*/
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { Link, navigate } = require('gatsby');
@@ -8,7 +9,9 @@ const { Link, navigate } = require('gatsby');
 const _byd = GATSBY_BYD;
 const setup = require('./gatsby-setup');
 setup.utils();
+/*#endregion*/
 
+/*#region -- exports*/
 exports.onClientEntry = () => {
     // console.log("onClientEntry");
     //
@@ -42,7 +45,7 @@ exports.onClientEntry = () => {
 exports.onInitialClientRender = () => {
     // console.log("onInitialClientRender");
     try {
-        window.initMain()
+        window.initMain();
     } catch (err) {
         console.log(err)
     }
@@ -114,3 +117,4 @@ exports.onPostPrefetchPathname = async ({ pathname, loadPage }) => {
         console.log(err)
     }
 };
+/*#endregion*/

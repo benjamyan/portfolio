@@ -6,7 +6,7 @@ const scripts = [
 	'plugins.js',
 	'utils.js',
 	'initial.js',
-	'Interactions.js',
+	'Interactivity.js',
 	'Navigation.js',
 	'CatalogModal.js',
 	'app.js'

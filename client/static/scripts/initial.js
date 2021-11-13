@@ -62,7 +62,20 @@ const Context = {
 		page: 'initial',
 		view: 'walkthrough'
 	},
+	offset: 0,
 	win: {}
+};
+const setOffset = ()=> {
+	switch (utils.width()) {
+		case 1024:
+			Context.offset = 50;
+			break;
+		case 768:
+			Context.offset = 25;
+			break;
+		default:
+			Context.offset = 65;
+	}
 };
 /********************************************
  * Proxy watchers ***************************

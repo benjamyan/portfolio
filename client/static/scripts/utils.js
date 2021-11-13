@@ -120,6 +120,9 @@ const utils = {
 			return err
 		}
 	},
+	width() {
+		return document.body.clientWidth
+	},
 	scroll: {
 		disable: function(targetEl = document.body) {
 			// https://www.geeksforgeeks.org/how-to-disable-scrolling-temporarily-using-javascript/

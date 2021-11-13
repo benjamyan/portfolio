@@ -25,9 +25,13 @@ const setup = {
 	},
 	async initial() {
 		try {
+			setOffset();
 			this._References();
 			this._Modules();
 			Proxies.init();
+			window.addEventListener(
+				'resize', setOffset
+			);
 		} catch (err) {
 			console.log(err)
 			return err
@@ -50,4 +54,4 @@ async function initMain() {
 		// Context.isInit = false;
 	}
 	return true
-}; 
+};
